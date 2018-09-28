@@ -74,24 +74,6 @@
         }
       },
       {
-        "package": "Stencil",
-        "repositoryURL": "https://github.com/stencilproject/Stencil.git",
-        "state": {
-          "branch": null,
-          "revision": "0e9a78d6584e3812cd9c09494d5c7b483e8f533c",
-          "version": "0.13.1"
-        }
-      },
-      {
-        "package": "StencilSwiftKit",
-        "repositoryURL": "https://github.com/SwiftGen/StencilSwiftKit.git",
-        "state": {
-          "branch": null,
-          "revision": "cf0f76b3911d4aee0f2496570461095d18d9d784",
-          "version": "2.7.0"
-        }
-      },
-      {
         "package": "SWXMLHash",
         "repositoryURL": "https://github.com/drmohundro/SWXMLHash.git",
         "state": {
