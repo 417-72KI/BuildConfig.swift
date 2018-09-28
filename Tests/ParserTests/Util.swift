@@ -2,12 +2,14 @@ import PathKit
 import Foundation
 
 let resourcePath: Path = {
-    if let oldPwd = ProcessInfo.processInfo.environment["OLDPWD"] {
+    let currentDirectoryPath = Path(FileManager.default.currentDirectoryPath)
+    if currentDirectoryPath.string.contains("Xcode/DerivedData"),
+        let oldPwd = ProcessInfo.processInfo.environment["OLDPWD"] {
         // Run via Xcode
         return Path(oldPwd) + "ConfigurationPlist/TestResources"
     } else {
         // Run via Terminal
-        return "./TestResources"
+        return Path(FileManager.default.currentDirectoryPath) + "TestResources"
     }
 }()
 
