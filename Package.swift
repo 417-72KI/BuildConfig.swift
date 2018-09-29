@@ -46,6 +46,14 @@ let package = Package(
             ]
         ),
         .testTarget(
+            name: "ConfigurationPlistTests",
+            dependencies: [
+                "ConfigurationPlist",
+                "Nimble",
+                "Quick",
+                // "MirrorDiffKit"
+            ]),
+        .testTarget(
             name: "ParserTests",
             dependencies: [
                 "Parser",
