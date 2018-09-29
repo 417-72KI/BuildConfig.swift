@@ -1,0 +1,9 @@
+API:
+  domain: http://localhost
+  path:
+    login:
+      method: POST
+      path: /login
+    getList:
+      method: GET
+      path: /list

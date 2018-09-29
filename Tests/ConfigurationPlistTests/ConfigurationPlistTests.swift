@@ -1,32 +1,58 @@
-import XCTest
-import class Foundation.Bundle
+import Quick
+import Nimble
+import Foundation
 
-final class ConfigurationPlistTests: XCTestCase {
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
+final class ConfigurationPlistTests: QuickSpec {
 
-        // Some of the APIs that we use below are available in macOS 10.13 and above.
-        guard #available(macOS 10.13, *) else {
-            return
+    override func spec() {
+        let tmpDirectory = productsDirectory.appendingPathComponent("tmp")
+        beforeSuite {
+            try? FileManager.default.createDirectory(at: tmpDirectory, withIntermediateDirectories: true, attributes: nil)
         }
+        afterSuite {
+            try? FileManager.default.removeItem(at: tmpDirectory)
+        }
+        guard #available(macOS 10.13, *) else { return }
 
-        let fooBinary = productsDirectory.appendingPathComponent("ConfigurationPlist")
+        describe("binary") {
+            let fooBinary = productsDirectory.appendingPathComponent("configurationPlist")
+            context("with environment.") {
+                let process = Process()
+                process.executableURL = fooBinary
+                process.arguments = [
+                    "-e",
+                    "staging",
+                    "-o",
+                    tmpDirectory.path,
+                    srcPath.absolute().string
+                ]
+                print(process.arguments ?? [])
+                let pipe = Pipe()
+                process.standardOutput = pipe
+                it("success") {
+                    expect { try process.run() }.notTo(throwError())
+                    process.waitUntilExit()
+                    let createdFile = tmpDirectory.appendingPathComponent("Config.plist")
+                    expect { FileManager.default.fileExists(atPath: createdFile.path) }.to(beTrue())
 
-        let process = Process()
-        process.executableURL = fooBinary
+                    let createdData = try? Data(contentsOf: createdFile)
+                    expect(createdData).notTo(beNil())
+                    let expectedData = try? Data(contentsOf: expectedFilePath.url)
+                    expect(expectedData).notTo(beNil())
 
-        let pipe = Pipe()
-        process.standardOutput = pipe
-
-        try process.run()
-        process.waitUntilExit()
-
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        let output = String(data: data, encoding: .utf8)
-
-        XCTAssertEqual(output, "Hello, world!\n")
+                    if let createdData = createdData, let expectedData = expectedData {
+                        do {
+                            let actual = try PropertyListSerialization.propertyList(from: createdData, options: [], format: nil) as? NSDictionary
+                            expect { actual }.notTo(beNil())
+                            let expected = try PropertyListSerialization.propertyList(from: expectedData, options: [], format: nil) as? NSDictionary
+                            expect { actual }.to(equal(expected))
+                        } catch {
+                            fail(error.localizedDescription)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /// Returns path to the built products directory.
@@ -40,8 +66,4 @@ final class ConfigurationPlistTests: XCTestCase {
         return Bundle.main.bundleURL
       #endif
     }
-
-    static var allTests = [
-        ("testExample", testExample),
-    ]
 }
