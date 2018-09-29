@@ -1,5 +1,6 @@
 import Foundation
 import Common
+import Generator
 import Parser
 import PathKit
 
