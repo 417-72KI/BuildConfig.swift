@@ -12,9 +12,9 @@ struct Options {
     )
     static let output = Option(
         "output",
-        default: "./Config.plist",
+        default: "./",
         flag: "o",
-        description: "Directory to output Config.plist"
+        description: "File/Directory to output file, If directory is set, file name will be '\(Constants.defaultOutputFileName)'"
     ) { output in
         return output
     }

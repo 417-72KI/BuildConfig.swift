@@ -19,14 +19,16 @@ public struct Core {
     public func execute() throws {
         guard srcDirectoryPath.isDirectory else { throw CommonError.notDirectory(srcDirectoryPath) }
         let data = try Parser(directoryPath: srcDirectoryPath).run(environment: environment)
-        try dumpPlist(data)
+        let outputFile = output.isDirectory ? (output + Constants.defaultOutputFileName) : output
+        try dumpPlist(data, to: outputFile)
     }
 }
 
 extension Core {
-    func dumpPlist(_ data: Any) throws {
+    func dumpPlist(_ data: Any, to dest: Path) throws {
+        precondition(dest.isFile, "\(dest) is not file.")
         let plist = try PropertyListSerialization.data(fromPropertyList: data, format: .xml, options: 0)
-        try plist.write(to: output.url)
+        try plist.write(to: dest.url)
         print("create \(output)")
     }
 }
