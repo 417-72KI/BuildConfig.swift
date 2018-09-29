@@ -19,6 +19,12 @@ public struct Core {
     public func execute() throws {
         guard srcDirectoryPath.isDirectory else { throw CommonError.notDirectory(srcDirectoryPath) }
         let data = try Parser(directoryPath: srcDirectoryPath).run(environment: environment)
+        try dumpPlist(data)
+    }
+}
+
+extension Core {
+    func dumpPlist(_ data: Any) throws {
         let plist = try PropertyListSerialization.data(fromPropertyList: data, format: .xml, options: 0)
         try plist.write(to: output.url)
         print("create \(output)")
