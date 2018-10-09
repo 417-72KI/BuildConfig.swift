@@ -16,7 +16,7 @@ let package = Package(
         .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", from: "2.6.0"),
         .package(url: "https://github.com/Quick/Nimble.git", from: "7.3.1"),
         .package(url: "https://github.com/Quick/Quick.git", from: "1.3.2"),
-        // .package(url: "https://github.com/Kuniwak/MirrorDiffKit.git", from: "3.1.0"),
+        .package(url: "https://github.com/Kuniwak/MirrorDiffKit.git", from: "3.1.0"),
     ],
     targets: [
         .target(
@@ -75,7 +75,7 @@ let package = Package(
                 "Generator",
                 "Nimble",
                 "Quick",
-                // "MirrorDiffKit"
+                "MirrorDiffKit"
             ])
     ]
 )

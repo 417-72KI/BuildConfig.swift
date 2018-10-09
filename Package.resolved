@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "MirrorDiffKit",
+        "repositoryURL": "https://github.com/Kuniwak/MirrorDiffKit.git",
+        "state": {
+          "branch": null,
+          "revision": "b49d628caa3232890241204a3181849d5ffa6b71",
+          "version": "3.1.0"
+        }
+      },
+      {
         "package": "Nimble",
         "repositoryURL": "https://github.com/Quick/Nimble.git",
         "state": {

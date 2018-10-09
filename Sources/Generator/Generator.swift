@@ -14,7 +14,8 @@ public struct Generator {
 
 public extension Generator {
     func run() throws -> String {
-        print(data)
+        guard let content = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [AnyHashable: Any] else { throw GeneratorError.invalidData }
+        print(content)
         return ""
     }
 }
