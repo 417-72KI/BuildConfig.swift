@@ -8,6 +8,17 @@ clean:
 
 xcodeproj:
 	swift package generate-xcodeproj
+	ruby -e "require 'xcodeproj'" \
+	-e "project_path = './ConfigurationPlist.xcodeproj'" \
+	-e "project = Xcodeproj::Project.open(project_path)" \
+	-e "project.targets.each do |target|" \
+	-e "if target.name == 'ConfigurationPlist' then" \
+	-e "phase = project.new(Xcodeproj::Project::Object::PBXShellScriptBuildPhase)" \
+	-e "phase.shell_script = 'cp -r \"\$$SRCROOT/TestResources\" \"\$$BUILT_PRODUCTS_DIR\"'" \
+	-e "target.build_phases << phase" \
+	-e "end" \
+	-e "end" \
+	-e "project.save"
 
 dependencies:
 	swift package update
