@@ -13,8 +13,9 @@ public struct Generator {
 }
 
 public extension Generator {
-    func run() throws {
+    func run() throws -> String {
         print(data)
+        return ""
     }
 }
 

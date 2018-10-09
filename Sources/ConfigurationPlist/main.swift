@@ -6,15 +6,15 @@ import PathKit
 struct Options {
     static let outputGeneratedSwift = Option(
         "output-generated-swift",
-        default: "./AppConfig.generated.swift",
+        default: "./",
         flag: "s",
-        description: "The path to output generated Swift file."
+        description: "The directory to output generated Swift file."
     )
     static let output = Option(
         "output",
         default: "./",
         flag: "o",
-        description: "File/Directory to output file, If directory is set, file name will be '\(Constants.defaultOutputFileName)'"
+        description: "The file/directory to output file, If directory is set, file name will be '\(Constants.defaultOutputFileName)'"
     ) { output in
         return output
     }
