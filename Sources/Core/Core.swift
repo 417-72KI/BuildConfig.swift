@@ -28,6 +28,6 @@ extension Core {
     func dumpData(_ data: Data, to dest: Path) throws {
         precondition(!dest.isDirectory, "\(dest) is directory.")
         try data.write(to: dest.url)
-        print("create \(output)")
+        print("create \(dest)")
     }
 }
