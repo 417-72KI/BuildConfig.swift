@@ -6,7 +6,7 @@ clean:
 	swift package clean
 	rm -rf .build ./ConfigurationPlist.xcodeproj
 
-xcodeproj:
+xcode:
 	swift package generate-xcodeproj
 	ruby -e "require 'xcodeproj'" \
 	-e "project_path = './ConfigurationPlist.xcodeproj'" \
