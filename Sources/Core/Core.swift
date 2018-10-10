@@ -26,7 +26,7 @@ public struct Core {
 
 extension Core {
     func dumpData(_ data: Data, to dest: Path) throws {
-        precondition(dest.isFile, "\(dest) is not file.")
+        precondition(!dest.isDirectory, "\(dest) is directory.")
         try data.write(to: dest.url)
         print("create \(output)")
     }
