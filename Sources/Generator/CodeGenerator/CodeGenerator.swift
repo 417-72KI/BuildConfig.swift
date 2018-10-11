@@ -21,7 +21,6 @@ extension CodeGenerator {
     }
 
     func generateRoot() throws -> String {
-        print(content)
         return try render(with: .root, dictionary: content.dictionary)
     }
 
