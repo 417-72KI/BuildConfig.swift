@@ -30,6 +30,7 @@ test:
 	swift test
 
 release:
+	rm -f .build/configurationPlist.zip
 	swift build -c release -Xswiftc -static-stdlib
 	zip -j .build/configurationPlist.zip .build/release/configurationPlist LICENSE
 

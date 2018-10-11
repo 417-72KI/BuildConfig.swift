@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "ConfigurationPlist"
-  s.version      = "0.1.0-preview"
+  s.version      = "0.1.1-preview"
   s.summary      = "Generate Config.plist for macOS/iOS"
 
   s.description  = <<-DESC
