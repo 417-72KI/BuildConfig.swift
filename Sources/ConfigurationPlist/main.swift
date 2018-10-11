@@ -4,17 +4,11 @@ import Common
 import PathKit
 
 struct Options {
-    static let outputGeneratedSwift = Option(
-        "output-generated-swift",
-        default: "./",
-        flag: "s",
-        description: "The directory to output generated Swift file."
-    )
-    static let output = Option(
-        "output",
+    static let outputDirectory = Option(
+        "output-directory",
         default: "./",
         flag: "o",
-        description: "The file/directory to output file, If directory is set, file name will be '\(Constants.defaultOutputFileName)'"
+        description: "The directory to output Config.plist and AppConfig.generated.swift."
     ) { output in
         return output
     }
@@ -34,16 +28,14 @@ struct Arguments {
 }
 
 let main = command(
-    Options.output,
-    Options.outputGeneratedSwift,
+    Options.outputDirectory,
     Options.environment,
     Arguments.srcDir
 ) {
-    let output = Path($0)
-    let outputGeneratedSwift = Path($1)
-    let environment = $2.isEmpty ? nil : $2
-    let srcDirPath = Path($3)
-    try Core(output: output, outputGeneratedSwift: outputGeneratedSwift, environment: environment, srcDirectoryPath: srcDirPath).execute()
+    let outputDirectory = Path($0)
+    let environment = $1.isEmpty ? nil : $1
+    let srcDirPath = Path($2)
+    try Core(outputDirectory: outputDirectory, environment: environment, srcDirectoryPath: srcDirPath).execute()
 }
 
 main.run(Version.current)

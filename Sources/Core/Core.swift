@@ -5,26 +5,25 @@ import Parser
 import PathKit
 
 public struct Core {
-    let output: Path
-    let outputGeneratedSwift: Path
+    let outputDirectory: Path
     let environment: String?
     let srcDirectoryPath: Path
 
-    public init(output: Path, outputGeneratedSwift: Path, environment: String?, srcDirectoryPath: Path) {
-        self.output = output
-        self.outputGeneratedSwift = outputGeneratedSwift
+    public init(outputDirectory: Path, environment: String?, srcDirectoryPath: Path) {
+        self.outputDirectory = outputDirectory
         self.environment = environment
         self.srcDirectoryPath = srcDirectoryPath
     }
 
     public func execute() throws {
         guard srcDirectoryPath.isDirectory else { throw CommonError.notDirectory(srcDirectoryPath) }
+        guard outputDirectory.isDirectory else { throw CommonError.notDirectory(outputDirectory) }
         let data = try Parser(directoryPath: srcDirectoryPath).run(environment: environment)
-        let outputFile = output.isDirectory ? (output + Constants.defaultOutputFileName) : output
+        let outputFile = outputDirectory + Constants.defaultOutputFileName
         try dumpData(data, to: outputFile)
 
         let generatedSwift = try Generator(data: data).run()
-        let outputSwiftFile = outputGeneratedSwift.isDirectory ? (outputGeneratedSwift + Constants.generatedSwiftFileName) : outputGeneratedSwift
+        let outputSwiftFile = outputDirectory + Constants.generatedSwiftFileName
         try dumpSwift(generatedSwift, to: outputSwiftFile)
     }
 }
