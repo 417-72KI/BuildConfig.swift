@@ -86,7 +86,8 @@ Also, you can add `-o` option with output path to specify where `Config.plist` w
 
 - Drag the new `Run Script` phase **above** the `Compile Sources` phase and **below** `Check Pods Manifest.lock`  
   If you are using [_R.swift_](https://github.com/mac-cain13/R.swift), drag the new `Run Script` **above** the `Run Script` phase for _R.swift_ and you can load with `R.file.configPlist`.
-- Build your project, in Finder you will now see a `Config.plist` in `$SRCROOT`, drag it into your project.
+- Build your project, in Finder you will now see a `Config.plist` and `AppConfig.generated.swift` in `$SRCROOT` or a path you set with `-o` option in above `Run script` build phase.
+- Drag them into your project.
 
 _Tip:_ Add the `Config.plist` pattern and the `*.generated.swift` pattern to your `.gitignore` file to prevent unnecessary conflicts.
 
