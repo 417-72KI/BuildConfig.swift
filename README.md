@@ -47,7 +47,7 @@ let method = loginPath.method // "POST"
 ```
 #### _Using ConfigurationPlist_
 ```Swift
-// `config` is prepared in AppConfig.generated.swift
+let config = AppConfig.default
 let domain = config.API.domain // "http://localhost"
 let path = config.API.path.login.path // "/login"
 let method = config.API.path.login.method // "POST"

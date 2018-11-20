@@ -16,12 +16,12 @@ extension Template {
             //
 
             import Foundation
-
-            let config: AppConfig = .load()
             """
         case .root:
             return  """
             struct AppConfig: Codable {
+                static let `default`: AppConfig = .load()
+
                 {% for property in properties  %}
                 let {{ property.name }}: {{ property.type }}
                 {% endfor %}
@@ -35,12 +35,14 @@ extension Template {
             """
         case .loadExtension:
             return  """
-            extension AppConfig {
+            private extension AppConfig {
                 static func load() -> AppConfig {
                     guard let filePath = Bundle.main.path(forResource: "Config", ofType: "plist") else { fatalError("Config.plist not found") }
                     return load(from: filePath)
                 }
+            }
 
+            extension AppConfig {
                 static func load(from filePath: String) -> AppConfig {
                     do {
                         let data = try Data(contentsOf: URL(fileURLWithPath: filePath))

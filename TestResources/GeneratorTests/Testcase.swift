@@ -5,9 +5,9 @@
 
 import Foundation
 
-let config: AppConfig = .load()
-
 struct AppConfig: Codable {
+    static let `default`: AppConfig = .load()
+
     let API: API
     let environment: String
     let license: [String]
@@ -21,12 +21,14 @@ struct AppConfig: Codable {
     }
 }
 
-extension AppConfig {
+private extension AppConfig {
     static func load() -> AppConfig {
         guard let filePath = Bundle.main.path(forResource: "Config", ofType: "plist") else { fatalError("Config.plist not found") }
         return load(from: filePath)
     }
+}
 
+extension AppConfig {
     static func load(from filePath: String) -> AppConfig {
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: filePath))
