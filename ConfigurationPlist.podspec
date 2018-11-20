@@ -1,13 +1,11 @@
 Pod::Spec.new do |s|
   s.name         = "ConfigurationPlist"
-  s.version      = "1.0.0"
+  s.version      = "1.1.0"
   s.summary      = "Generate Config.plist for macOS/iOS"
 
   s.description  = <<-DESC
-                  ConfigurationPlist is a tool to generate Config.plist automatically.
-                  Property List is a standard format in macOS/iOS, but also a bother to edit.
-                  ConfigurationPlist can create Config.plist with merging yamls or jsons.
-                   DESC
+                  ConfigurationPlist is a tool to get strong typed configuration from yamls/jsons.
+                  DESC
 
   s.homepage     = "https://github.com/417-72KI/ConfigurationPlist"
   s.license      = { :type => "MIT", :file => "LICENSE" }
