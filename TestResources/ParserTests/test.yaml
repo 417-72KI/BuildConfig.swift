@@ -7,4 +7,6 @@ API:
     getList:
       method: GET
       path: /list
+  timeout: 11.5
 count: 0
+is_debug: true

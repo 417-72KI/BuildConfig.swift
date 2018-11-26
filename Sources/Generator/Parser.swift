@@ -15,14 +15,16 @@ extension Parser {
 private extension Parser {
     func extractProperties(_ value: Any) -> ElementPropertyType? {
         switch value {
+        case let boolValue as Bool:
+            return boolValue
         case let intValue as Int:
             return intValue
+        case let doubleValue as Double:
+            return doubleValue
         case let urlValue as URL:
             return urlValue
         case let stringValue as String:
             return stringValue
-        case let doubleValue as Double:
-            return doubleValue
         case let arrayValue as [Any]:
             return arrayValue.compactMap { extractProperties($0) }
         case let dictionaryValue as [String: Any]:

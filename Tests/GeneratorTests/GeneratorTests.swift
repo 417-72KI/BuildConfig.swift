@@ -23,7 +23,9 @@ final class GeneratorTests: QuickSpec {
                         ],
                         "environment": "development",
                         "token": 123456,
-                        "license": ["Yaml", "PathKit", "StencilSwiftKit"]
+                        "license": ["Yaml", "PathKit", "StencilSwiftKit"],
+                        "isDebug": false,
+                        "pi": 3.14159265358979
                 ] as [AnyHashable: Any]
                 let data = try! PropertyListSerialization.data(fromPropertyList: content, format: .binary, options: 0)
                 it("success") {

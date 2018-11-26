@@ -10,7 +10,9 @@
                 "method": "GET",
                 "path": "/list"
             }
-        }
+        },
+        "timeout": 10.5
     },
-    "count": 0
+    "count": 0,
+    "is_debug": true
 }

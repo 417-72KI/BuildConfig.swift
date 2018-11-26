@@ -60,8 +60,6 @@ struct AnyParsable: Parsable {
             } else {
                 value = stringValue
             }
-        } else if let stringValue = try? container.decode(String.self) {
-            value = stringValue
         } else if let intValue = try? container.decode(Int.self) {
             value = intValue
         } else if let boolValue = try? container.decode(Bool.self) {
@@ -72,6 +70,8 @@ struct AnyParsable: Parsable {
             value = arrayValue
         } else if let dictionaryValue = try? container.decode([String: AnyParsable].self) {
             value = dictionaryValue
+        } else if let stringValue = try? container.decode(String.self) {
+            value = stringValue
         } else {
             throw DecodingError.typeMismatch(AnyParsable.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unsupported Parsable type"))
         }
