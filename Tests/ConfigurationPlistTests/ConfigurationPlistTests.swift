@@ -16,38 +16,76 @@ final class ConfigurationPlistTests: QuickSpec {
 
         describe("binary") {
             let fooBinary = productsDirectory.appendingPathComponent("configurationPlist")
-            context("with environment.") {
-                let process = Process()
-                process.executableURL = fooBinary
-                process.arguments = [
-                    "-e",
-                    "staging",
-                    "-o",
-                    tmpDirectory.path,
-                    srcPath.absolute().string
-                ]
-                print(process.arguments ?? [])
-                let pipe = Pipe()
-                process.standardOutput = pipe
-                it("success") {
-                    expect { try process.run() }.notTo(throwError())
-                    process.waitUntilExit()
-                    let createdFile = tmpDirectory.appendingPathComponent("Config.plist")
-                    expect { FileManager.default.fileExists(atPath: createdFile.path) }.to(beTrue())
+            context("with environment") {
+                context("staging") {
+                    let process = Process()
+                    process.executableURL = fooBinary
+                    process.arguments = [
+                        "-e",
+                        "staging",
+                        "-o",
+                        tmpDirectory.path,
+                        srcPath.absolute().string
+                    ]
+                    print(process.arguments ?? [])
+                    let pipe = Pipe()
+                    process.standardOutput = pipe
+                    it("success") {
+                        expect { try process.run() }.notTo(throwError())
+                        process.waitUntilExit()
+                        let createdFile = tmpDirectory.appendingPathComponent("Config.plist")
+                        expect { FileManager.default.fileExists(atPath: createdFile.path) }.to(beTrue())
 
-                    let createdData = try? Data(contentsOf: createdFile)
-                    expect(createdData).notTo(beNil())
-                    let expectedData = try? Data(contentsOf: expectedFilePath.url)
-                    expect(expectedData).notTo(beNil())
+                        let createdData = try? Data(contentsOf: createdFile)
+                        expect(createdData).notTo(beNil())
+                        let expectedData = try? Data(contentsOf: expectedStagingFilePath.url)
+                        expect(expectedData).notTo(beNil())
 
-                    if let createdData = createdData, let expectedData = expectedData {
-                        do {
-                            let actual = try PropertyListSerialization.propertyList(from: createdData, options: [], format: nil) as? NSDictionary
-                            expect { actual }.notTo(beNil())
-                            let expected = try PropertyListSerialization.propertyList(from: expectedData, options: [], format: nil) as? NSDictionary
-                            expect { actual }.to(equal(expected))
-                        } catch {
-                            fail(error.localizedDescription)
+                        if let createdData = createdData, let expectedData = expectedData {
+                            do {
+                                let actual = try PropertyListSerialization.propertyList(from: createdData, options: [], format: nil) as? NSDictionary
+                                expect { actual }.notTo(beNil())
+                                let expected = try PropertyListSerialization.propertyList(from: expectedData, options: [], format: nil) as? NSDictionary
+                                expect { actual }.to(equal(expected))
+                            } catch {
+                                fail(error.localizedDescription)
+                            }
+                        }
+                    }
+                }
+                context("production") {
+                    let process = Process()
+                    process.executableURL = fooBinary
+                    process.arguments = [
+                        "-e",
+                        "production",
+                        "-o",
+                        tmpDirectory.path,
+                        srcPath.absolute().string
+                    ]
+                    print(process.arguments ?? [])
+                    let pipe = Pipe()
+                    process.standardOutput = pipe
+                    it("success") {
+                        expect { try process.run() }.notTo(throwError())
+                        process.waitUntilExit()
+                        let createdFile = tmpDirectory.appendingPathComponent("Config.plist")
+                        expect { FileManager.default.fileExists(atPath: createdFile.path) }.to(beTrue())
+
+                        let createdData = try? Data(contentsOf: createdFile)
+                        expect(createdData).notTo(beNil())
+                        let expectedData = try? Data(contentsOf: expectedProductionFilePath.url)
+                        expect(expectedData).notTo(beNil())
+
+                        if let createdData = createdData, let expectedData = expectedData {
+                            do {
+                                let actual = try PropertyListSerialization.propertyList(from: createdData, options: [], format: nil) as? NSDictionary
+                                expect { actual }.notTo(beNil())
+                                let expected = try PropertyListSerialization.propertyList(from: expectedData, options: [], format: nil) as? NSDictionary
+                                expect { actual }.to(equal(expected))
+                            } catch {
+                                fail(error.localizedDescription)
+                            }
                         }
                     }
                 }
