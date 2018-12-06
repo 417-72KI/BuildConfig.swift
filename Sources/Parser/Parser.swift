@@ -48,7 +48,7 @@ extension Parser {
         if file.isJson {
             return JSonParser()
         }
-        throw ParserError.invalidFile
+        throw ParserError.invalidFile(file.path ?? "")
     }
 
     func comparePath(_ p1: Path, _ p2: Path) -> Bool {

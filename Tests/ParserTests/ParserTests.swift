@@ -20,7 +20,7 @@ final class ParserTests: QuickSpec {
                 }
                 it("invalid") {
                     let file = File(path: path + "test.txt")!
-                    expect { try parser.detectParser(file) }.to(throwError(ParserError.invalidFile))
+                    expect { try parser.detectParser(file) }.to(throwError(ParserError.invalidFile(file.path!)))
                 }
             }
             describe("getFileList") {
