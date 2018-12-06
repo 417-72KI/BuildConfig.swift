@@ -14,7 +14,7 @@ By splitting the file for each type of setting, it is possible to prevent confli
 Also, by splitting the file for environment configurations, it will be easier to overwrite configurations for each environment.
 
 ## Example
-### Base yaml file
+### Base JSON file
 ```json
 {
     "API": {
