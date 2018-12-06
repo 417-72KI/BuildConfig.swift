@@ -18,9 +18,9 @@ public extension Parser {
         let environmentFiles = filePaths.filter { $0.components.contains(envDirComponent) }.compactMap { File(path: $0) }
         let otherFiles = filePaths.filter { !$0.components.contains(envDirComponent) }.compactMap { File(path: $0) }
         let environmentData = try parse(files: environmentFiles, skipInvalidFile: skipInvalidFile)
-            .reduce(AnyParsable(0)) { $0 + $1 }
+            .reduce(AnyParsable()) { $0 + $1 }
         let defaultData = try parse(files: otherFiles, skipInvalidFile: skipInvalidFile)
-            .reduce(AnyParsable(0)) { $0 + $1 }
+            .reduce(AnyParsable()) { $0 + $1 }
         let result = defaultData + environmentData
         return try PropertyListSerialization.data(fromPropertyList: result.rawValue, format: .binary, options: 0)
     }
@@ -42,15 +42,13 @@ extension Parser {
     }
 
     func detectParser(_ file: File) throws -> FileParser {
-        let ext = (file.path as NSString?)?.pathExtension
-        switch ext {
-        case "yml", "yaml":
+        if file.isYaml {
             return YamlParser()
-        case "json":
-            return JSonParser()
-        default:
-            throw ParserError.invalidFile
         }
+        if file.isJson {
+            return JSonParser()
+        }
+        throw ParserError.invalidFile
     }
 
     func comparePath(_ p1: Path, _ p2: Path) -> Bool {
@@ -67,17 +65,19 @@ extension Parser {
     }
 
     func parse(files: [File], skipInvalidFile: Bool) throws -> [AnyParsable] {
-        return try files.compactMap {
-            if let path = $0.path {
-                print("process: \(path)")
-            }
-            do {
-                let parser = try detectParser($0)
-                return try parser.parse(file: $0)
-            } catch {
-                guard skipInvalidFile else { throw error }
-                return nil
-            }
+        return try files.filter { !$0.isExcludedFile }
+            .compactMap {
+                if let path = $0.path {
+                    print("process: \(path)")
+                }
+                do {
+                    let parser = try detectParser($0)
+                    return try parser.parse(file: $0)
+                } catch {
+                    guard skipInvalidFile else { throw error }
+                    print("Skip file failed to parse: \($0.path ?? "")")
+                    return nil
+                }
         }
     }
 }

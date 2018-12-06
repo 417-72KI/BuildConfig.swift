@@ -51,6 +51,10 @@ struct AnyParsable: Parsable {
         self.value = value
     }
 
+    init() {
+        self.init([String: AnyParsable]())
+    }
+
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if let stringValue = try? container.decode(String.self),
@@ -95,6 +99,21 @@ struct AnyParsable: Parsable {
         }
         if let lhs = lhs.value as? [String: AnyParsable], let rhs = rhs.value as?  [String: AnyParsable] {
             return lhs == rhs
+        }
+        return false
+    }
+}
+
+extension AnyParsable {
+    var isEmpty: Bool {
+        if let value = value as? String {
+            return value.isEmpty
+        }
+        if let value = value as? [AnyParsable] {
+            return value.isEmpty
+        }
+        if let value = value as? [String: AnyParsable] {
+            return value.isEmpty
         }
         return false
     }

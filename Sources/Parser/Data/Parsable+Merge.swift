@@ -15,6 +15,12 @@ func + (lhs: AnyParsable, rhs: AnyParsable) -> AnyParsable {
     if let lhs = lhs.value as? String, let rhs = rhs.value as? String {
         return AnyParsable(lhs + rhs)
     }
+    if lhs.isEmpty, rhs.isEmpty {
+        return AnyParsable([String: AnyParsable]())
+    }
+    if rhs.isEmpty {
+        return lhs
+    }
     return rhs
 }
 
