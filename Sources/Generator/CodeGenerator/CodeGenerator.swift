@@ -11,7 +11,9 @@ extension CodeGenerator {
         let root = try generateRoot()
         let loadExtension = try generateLoadExtension()
         let structs = try generateStruct(from: content)
-        return [header, root, loadExtension, structs].joined(separator: "\n\n") + "\n"
+
+        let array = structs.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? [header, root, loadExtension] : [header, root, loadExtension, structs]
+        return array.joined(separator: "\n\n") + "\n"
     }
 }
 
@@ -33,6 +35,7 @@ extension CodeGenerator {
         let children = try content.properties
             .mapValues { $0 as? Struct }
             .compactMap { $0.value }
+            .sorted(by: { $0.name < $1.name })
             .map { try generateStruct(from: $0) }
         return (root + children).joined(separator: "\n\n")
     }

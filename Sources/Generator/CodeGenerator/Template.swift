@@ -21,16 +21,20 @@ extension Template {
             return  """
             struct AppConfig: Codable {
                 static let `default`: AppConfig = .load()
+                {% if properties %}
 
                 {% for property in properties  %}
                 let {{ property.name }}: {{ property.type }}
                 {% endfor %}
 
+                {% endif %}
+                {% if codingKeys %}
                 enum CodingKeys: String, CodingKey {
                     {% for codingKey in codingKeys %}
                     case {{ codingKey.key }}{% if codingKey.key != codingKey.origin %} = "{{ codingKey.origin }}"{% endif %}
                     {% endfor %}
                 }
+                {% endif %}
             }
             """
         case .loadExtension:
@@ -57,15 +61,19 @@ extension Template {
             return """
             extension {{ parent }} {
                 struct {{ name }}: Codable {
+                    {% if properties %}
                     {% for property in properties  %}
                     let {{ property.name }}: {{ property.type }}
                     {% endfor %}
 
+                    {% endif %}
+                    {% if codingKeys %}
                     enum CodingKeys: String, CodingKey {
                         {% for codingKey in codingKeys %}
                         case {{ codingKey.key }}{% if codingKey.key != codingKey.origin %} = "{{ codingKey.origin }}"{% endif %}
                         {% endfor %}
                     }
+                    {% endif %}
                 }
             }
             """

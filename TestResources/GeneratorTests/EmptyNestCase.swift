@@ -8,22 +8,12 @@ import Foundation
 struct AppConfig: Codable {
     static let `default`: AppConfig = .load()
 
-    let API: API
-    let boot: Boot
-    let environment: String
-    let isDebug: Bool
-    let license: [String]
-    let pi: Double
-    let token: Int
+    let aStruct: AStruct
+    let bStruct: BStruct
 
     enum CodingKeys: String, CodingKey {
-        case API
-        case boot
-        case environment
-        case isDebug
-        case license
-        case pi
-        case token
+        case aStruct = "a_struct"
+        case bStruct = "b_struct"
     }
 }
 
@@ -46,45 +36,16 @@ extension AppConfig {
 }
 
 extension AppConfig {
-    struct API: Codable {
-        let domain: String
-        let path: Path
-
-        enum CodingKeys: String, CodingKey {
-            case domain
-            case path
-        }
-    }
-}
-
-extension AppConfig.API {
-    struct Path: Codable {
-        let login: Login
-
-        enum CodingKeys: String, CodingKey {
-            case login
-        }
-    }
-}
-
-extension AppConfig.API.Path {
-    struct Login: Codable {
-        let method: String
-        let path: String
-
-        enum CodingKeys: String, CodingKey {
-            case method
-            case path
-        }
+    struct AStruct: Codable {
     }
 }
 
 extension AppConfig {
-    struct Boot: Codable {
-        let message: String
+    struct BStruct: Codable {
+        let hoge: String
 
         enum CodingKeys: String, CodingKey {
-            case message
+            case hoge
         }
     }
 }
