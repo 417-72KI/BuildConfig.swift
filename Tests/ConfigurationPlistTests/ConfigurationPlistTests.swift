@@ -28,6 +28,8 @@ final class ConfigurationPlistTests: QuickSpec {
                         srcPath.absolute().string
                     ]
                     print(process.arguments ?? [])
+                    process.setEnvironmentForTest(tmpDirectory: tmpDirectory)
+                    print(process.environment ?? [:])
                     let pipe = Pipe()
                     process.standardOutput = pipe
                     it("success") {
@@ -64,6 +66,8 @@ final class ConfigurationPlistTests: QuickSpec {
                         srcPath.absolute().string
                     ]
                     print(process.arguments ?? [])
+                    process.setEnvironmentForTest(tmpDirectory: tmpDirectory)
+                    print(process.environment ?? [:])
                     let pipe = Pipe()
                     process.standardOutput = pipe
                     it("success") {

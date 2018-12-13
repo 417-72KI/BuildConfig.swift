@@ -8,16 +8,31 @@ public struct Core {
     let outputDirectory: Path
     let environment: String?
     let srcDirectoryPath: Path
+    let tempDirectoryPath: Path
+    let scriptInputFiles: [Path]
+    let scriptOutputFiles: [Path]
 
-    public init(outputDirectory: Path, environment: String?, srcDirectoryPath: Path) {
+    public init(
+        outputDirectory: Path,
+        environment: String?,
+        srcDirectoryPath: Path,
+        tempDirectoryPath: Path,
+        scriptInputFiles: [Path],
+        scriptOutputFiles: [Path]
+        ) {
         self.outputDirectory = outputDirectory
         self.environment = environment
         self.srcDirectoryPath = srcDirectoryPath
+        self.tempDirectoryPath = tempDirectoryPath
+        self.scriptInputFiles = scriptInputFiles
+        self.scriptOutputFiles = scriptOutputFiles
     }
 
     public func execute() throws {
-        guard srcDirectoryPath.isDirectory else { throw CommonError.notDirectory(srcDirectoryPath) }
-        guard outputDirectory.isDirectory else { throw CommonError.notDirectory(outputDirectory) }
+        defer { createLastRunFile() }
+
+        try validate()
+
         let data = try Parser(directoryPath: srcDirectoryPath).run(environment: environment)
         let outputFile = outputDirectory + Constants.defaultOutputFileName
         try dumpData(data, to: outputFile)
@@ -25,6 +40,33 @@ public struct Core {
         let generatedSwift = try Generator(data: data).run()
         let outputSwiftFile = outputDirectory + Constants.generatedSwiftFileName
         try dumpSwift(generatedSwift, to: outputSwiftFile)
+    }
+}
+
+extension Core {
+    func validate() throws {
+        var errors: [String] = []
+        if !srcDirectoryPath.isDirectory {
+            errors.append(CommonError.notDirectory(srcDirectoryPath).description)
+        }
+        if !outputDirectory.isDirectory {
+            errors.append(CommonError.notDirectory(outputDirectory).description)
+        }
+
+        let scriptInputFiles = self.scriptInputFiles.map { $0.lastComponent }
+        if !scriptInputFiles.contains(Constants.lastRunFileName) {
+            errors.append("Build phase Input Files does not contain `$(TEMP_DIR)/\(Constants.lastRunFileName)`")
+        }
+
+        let scriptOutputFiles = self.scriptOutputFiles.map { $0.lastComponent }
+        if !scriptOutputFiles.contains(Constants.defaultOutputFileName) {
+            errors.append("Build phase Output Files does not contain `path/to/\(Constants.defaultOutputFileName)`")
+        }
+        if !scriptOutputFiles.contains(Constants.generatedSwiftFileName) {
+            errors.append("Build phase Output Files does not contain `path/to/\(Constants.generatedSwiftFileName)`")
+        }
+
+        guard errors.isEmpty else { throw ValidationError(errors: errors) }
     }
 }
 
@@ -43,5 +85,17 @@ extension Core {
         }
         try content.write(to: dest.url, atomically: true, encoding: .utf8)
         print("create \(dest)")
+    }
+}
+
+extension Core {
+    func createLastRunFile() {
+        do {
+            let lastRunFile = tempDirectoryPath + Constants.lastRunFileName
+            try "\(Date().timeIntervalSince1970)\n"
+                .write(to: lastRunFile.url, atomically: true, encoding: .utf8)
+        } catch {
+            print("Failed to write out to '\(Constants.lastRunFileName)', this might cause Xcode to not run the build phase for ConfigurationPlist: \(error)")
+        }
     }
 }

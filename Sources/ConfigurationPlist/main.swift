@@ -1,6 +1,7 @@
 import Commander
 import Core
 import Common
+import Darwin
 import PathKit
 
 struct Options {
@@ -35,7 +36,24 @@ let main = command(
     let outputDirectory = Path($0)
     let environment = $1.isEmpty ? nil : $1
     let srcDirPath = Path($2)
-    try Core(outputDirectory: outputDirectory, environment: environment, srcDirectoryPath: srcDirPath).execute()
+
+    let tempDirectoryPath = Path(try Environment.getValue(forKey: .tempDir))
+    let scriptInputFiles = try Environment.getScriptInputFiles().map { Path($0) }
+    let scriptOutputFiles = try Environment.getScriptOutputFiles().map { Path($0) }
+    
+    do {
+        try Core(
+            outputDirectory: outputDirectory,
+            environment: environment,
+            srcDirectoryPath: srcDirPath,
+            tempDirectoryPath: tempDirectoryPath,
+            scriptInputFiles: scriptInputFiles,
+            scriptOutputFiles: scriptOutputFiles
+            ).execute()
+    } catch {
+        fputs("[\(ApplicationInfo.name)(\(ApplicationInfo.version))] \(error)", stderr)
+        exit(1)
+    }
 }
 
-main.run(Version.current)
+main.run(ApplicationInfo.version)
