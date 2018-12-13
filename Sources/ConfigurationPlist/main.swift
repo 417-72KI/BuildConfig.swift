@@ -28,14 +28,29 @@ struct Arguments {
     )
 }
 
+struct Flags {
+    static let version = Flag(
+        "version",
+        flag: "v",
+        description: "Display current version."
+    )
+}
+
 let main = command(
+    Flags.version,
     Options.outputDirectory,
     Options.environment,
     Arguments.srcDir
 ) {
-    let outputDirectory = Path($0)
-    let environment = $1.isEmpty ? nil : $1
-    let srcDirPath = Path($2)
+    let version = $0
+    if version {
+        print(ApplicationInfo.version)
+        return
+    }
+
+    let outputDirectory = Path($1)
+    let environment = $2.isEmpty ? nil : $2
+    let srcDirPath = Path($3)
 
     let tempDirectoryPath = Path(try Environment.getValue(forKey: .tempDir))
     let scriptInputFiles = try Environment.getScriptInputFiles().map { Path($0) }

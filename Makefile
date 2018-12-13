@@ -35,6 +35,7 @@ test:
 release:
 	rm -f .build/$(executable_name).zip
 	swift build -c release -Xswiftc -static-stdlib
+	.build/release/$(executable_name) --version
 	zip -j .build/$(executable_name).zip .build/release/$(executable_name) LICENSE
 
 lint:
