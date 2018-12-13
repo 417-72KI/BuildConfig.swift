@@ -80,9 +80,11 @@ fi
 
 You can replace `"$SRCROOT/$PROJECT/Resources/Config"` to the relative path from project to the directory you created.
 
-Also, you can add `-o` option with output path to specify where `Config.plist` will be created.
+Also, you can add `-o` option with output path to specify where `Config.plist` and `AppConfig.generated.swift` will be created.
 
-- Add `$SRCROOT/Config.plist` or a path you set with `-o` option into `Output Files` in above `Run script` build phase.
+- Add `$(TEMP_DIR)/configurationplist-lastrun` into `Input Files` in above `Run script` build phase.
+- Add `$(SRCROOT)/Config.plist` and `$(SRCROOT)/AppConfig.generated.swift` into `Output Files` in above `Run script` build phase.
+    - If you set a path to output generated files by `-o` option, you have to change `Output Files` to those paths.
 
 - Drag the new `Run Script` phase **above** the `Compile Sources` phase and **below** `Check Pods Manifest.lock`  
   If you are using [_R.swift_](https://github.com/mac-cain13/R.swift), drag the new `Run Script` **above** the `Run Script` phase for _R.swift_ and you can load with `R.file.configPlist`.
