@@ -1,7 +1,7 @@
 import Commander
 import Core
 import Common
-import Darwin
+import Foundation
 import PathKit
 
 struct Options {
@@ -51,7 +51,7 @@ let main = command(
             scriptOutputFiles: scriptOutputFiles
             ).execute()
     } catch {
-        fputs("[\(ApplicationInfo.name)(\(ApplicationInfo.version))] \(error)", stderr)
+        dumpError(error)
         exit(1)
     }
 }

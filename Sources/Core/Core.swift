@@ -74,17 +74,17 @@ extension Core {
     func dumpData(_ data: Data, to dest: Path) throws {
         precondition(!dest.isDirectory, "\(dest) is directory.")
         try data.write(to: dest.url)
-        print("create \(dest)")
+        dumpInfo("create \(dest)")
     }
 
     func dumpSwift(_ content: String, to dest: Path) throws {
         let currentContent = try? String(contentsOf: dest.url)
         if currentContent == content {
-            print("No change.")
+            dumpInfo("No change with \(dest).")
             return
         }
         try content.write(to: dest.url, atomically: true, encoding: .utf8)
-        print("create \(dest)")
+        dumpInfo("create \(dest)")
     }
 }
 
@@ -95,7 +95,7 @@ extension Core {
             try "\(Date().timeIntervalSince1970)\n"
                 .write(to: lastRunFile.url, atomically: true, encoding: .utf8)
         } catch {
-            print("Failed to write out to '\(Constants.lastRunFileName)', this might cause Xcode to not run the build phase for ConfigurationPlist: \(error)")
+            dumpWarn("Failed to write out to '\(Constants.lastRunFileName)', this might cause Xcode to not run the build phase for ConfigurationPlist: \(error)")
         }
     }
 }

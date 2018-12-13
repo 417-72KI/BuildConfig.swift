@@ -68,14 +68,14 @@ extension Parser {
         return try files.filter { !$0.isExcludedFile }
             .compactMap {
                 if let path = $0.path {
-                    print("process: \(path)")
+                    dumpInfo("process: \(path)")
                 }
                 do {
                     let parser = try detectParser($0)
                     return try parser.parse(file: $0)
                 } catch {
                     guard skipInvalidFile else { throw error }
-                    print("Skip file failed to parse: \($0.path ?? "")")
+                    dumpWarn("Skip file failed to parse: \($0.path ?? "")")
                     return nil
                 }
         }
