@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "BuildConfig.swift"
-  s.version      = "1.2.0"
-  s.summary      = "Generate Config.plist for macOS/iOS"
+  s.version      = "2.0.0"
+  s.summary      = "Auto-generated BuildConfig for macOS/iOS"
 
   s.description  = <<-DESC
                   BuildConfig.swift is a tool to get strong typed configuration from yamls/jsons.
