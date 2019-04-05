@@ -20,6 +20,6 @@ Pod::Spec.new do |s|
 
   s.requires_arc = true
   
-  s.source        = { :http => "https://github.com/417-72KI/BuildConfig.swift/releases/download/#{s.version}/buildconfig_swift.zip" }
-  s.preserve_paths = "buildconfig_swift"
+  s.source        = { :http => "https://github.com/417-72KI/BuildConfig.swift/releases/download/#{s.version}/buildconfigswift.zip" }
+  s.preserve_paths = "buildconfigswift"
 end

@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "BuildConfig.swift",
     products: [
-        .executable(name: "buildconfig_swift", targets: ["BuildConfig.swift"])
+        .executable(name: "buildconfigswift", targets: ["BuildConfig.swift"])
     ],
     dependencies: [
         .package(url: "https://github.com/behrang/YamlSwift.git", .upToNextMinor(from: "3.4.3")),

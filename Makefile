@@ -1,5 +1,5 @@
 project_name = BuildConfig.swift
-executable_name = buildconfig_swift
+executable_name = buildconfigswift
 
 .PHONY : clean build test release xcodeproj lint deploy
 
