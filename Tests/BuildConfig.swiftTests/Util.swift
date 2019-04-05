@@ -6,7 +6,7 @@ let resourcePath: Path = {
     if currentDirectoryPath.string.contains("Xcode/DerivedData"),
         let oldPwd = ProcessInfo.processInfo.environment["OLDPWD"] {
         // Run via Xcode
-        return Path(oldPwd) + "ConfigurationPlist/TestResources"
+        return Path(oldPwd) + "BuildConfig.swift/TestResources"
     } else {
         // Run via Terminal
         return Path(FileManager.default.currentDirectoryPath) + "TestResources"
@@ -14,7 +14,7 @@ let resourcePath: Path = {
 }()
 
 var path: Path {
-    return resourcePath + "ConfigurationPlistTests"
+    return resourcePath + "BuildConfig.swiftTests"
 }
 
 var srcPath: Path {
@@ -26,13 +26,13 @@ var outputPath: Path {
 }
 
 var expectedFilePath: Path {
-    return outputPath + "Config.plist"
+    return outputPath + "BuildConfig.plist"
 }
 
 var expectedStagingFilePath: Path {
-    return outputPath + "staging" + "Config.plist"
+    return outputPath + "staging" + "BuildConfig.plist"
 }
 
 var expectedProductionFilePath: Path {
-    return outputPath + "production" + "Config.plist"
+    return outputPath + "production" + "BuildConfig.plist"
 }

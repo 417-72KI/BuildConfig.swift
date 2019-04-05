@@ -6,7 +6,7 @@ let resourcePath: Path = {
     if currentDirectoryPath.string.contains("Xcode/DerivedData"),
         let oldPwd = ProcessInfo.processInfo.environment["OLDPWD"] {
         // Run via Xcode
-        return Path(oldPwd) + "ConfigurationPlist/TestResources"
+        return Path(oldPwd) + "BuildConfig.swift/TestResources"
     } else {
         // Run via Terminal
         return Path(FileManager.default.currentDirectoryPath) + "TestResources"

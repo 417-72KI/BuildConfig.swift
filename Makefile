@@ -1,5 +1,5 @@
-project_name = ConfigurationPlist
-executable_name = configurationPlist
+project_name = BuildConfig.swift
+executable_name = buildconfig_swift
 
 .PHONY : clean build test release xcodeproj lint deploy
 
@@ -34,7 +34,7 @@ test:
 
 release:
 	rm -f .build/$(executable_name).zip
-	swift build -c release -Xswiftc -static-stdlib
+	swift build -c release -Xswiftc -static-stdlib -Xswiftc -suppress-warnings
 	.build/release/$(executable_name) --version
 	zip -j .build/$(executable_name).zip .build/release/$(executable_name) LICENSE
 

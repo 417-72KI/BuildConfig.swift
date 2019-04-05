@@ -2,7 +2,7 @@ import Quick
 import Nimble
 import Foundation
 
-final class ConfigurationPlistTests: QuickSpec {
+final class BuildConfigswiftTests: QuickSpec {
 
     override func spec() {
         let tmpDirectory = productsDirectory.appendingPathComponent("tmp")
@@ -15,7 +15,8 @@ final class ConfigurationPlistTests: QuickSpec {
         guard #available(macOS 10.13, *) else { return }
 
         describe("binary") {
-            let fooBinary = productsDirectory.appendingPathComponent("configurationPlist")
+            let fooBinary = productsDirectory.appendingPathComponent("buildconfig_swift")
+            print(fooBinary)
             context("with environment") {
                 context("staging") {
                     let process = Process()
@@ -35,7 +36,7 @@ final class ConfigurationPlistTests: QuickSpec {
                     it("success") {
                         expect { try process.run() }.notTo(throwError())
                         process.waitUntilExit()
-                        let createdFile = tmpDirectory.appendingPathComponent("Config.plist")
+                        let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.plist")
                         expect { FileManager.default.fileExists(atPath: createdFile.path) }.to(beTrue())
 
                         let createdData = try? Data(contentsOf: createdFile)
@@ -73,7 +74,7 @@ final class ConfigurationPlistTests: QuickSpec {
                     it("success") {
                         expect { try process.run() }.notTo(throwError())
                         process.waitUntilExit()
-                        let createdFile = tmpDirectory.appendingPathComponent("Config.plist")
+                        let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.plist")
                         expect { FileManager.default.fileExists(atPath: createdFile.path) }.to(beTrue())
 
                         let createdData = try? Data(contentsOf: createdFile)

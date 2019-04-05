@@ -90,12 +90,12 @@ extension Core {
 
 extension Core {
     func createLastRunFile() {
+        let lastRunFile = tempDirectoryPath + Constants.lastRunFileName
         do {
-            let lastRunFile = tempDirectoryPath + Constants.lastRunFileName
             try "\(Date().timeIntervalSince1970)\n"
                 .write(to: lastRunFile.url, atomically: true, encoding: .utf8)
         } catch {
-            dumpWarn("Failed to write out to '\(Constants.lastRunFileName)', this might cause Xcode to not run the build phase for ConfigurationPlist: \(error)")
+            dumpWarn("Failed to write out to '\(lastRunFile)', this might cause Xcode to not run the build phase for BuildConfig.swift: \(error)")
         }
     }
 }
