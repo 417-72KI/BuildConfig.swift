@@ -8,7 +8,7 @@ struct Parser {
 extension Parser {
     func run() -> Struct? {
         guard let element = extractProperties(content) as? Element else { return nil }
-        return generateStruct(from: element, name: "AppConfig", parent: [])
+        return generateStruct(from: element, name: "BuildConfig", parent: [])
     }
 }
 

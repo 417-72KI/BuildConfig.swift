@@ -5,22 +5,22 @@
 
 import Foundation
 
-struct AppConfig: Codable {
-    static let `default`: AppConfig = .load()
+struct BuildConfig: Codable {
+    static let `default`: BuildConfig = .load()
 }
 
-private extension AppConfig {
-    static func load() -> AppConfig {
-        guard let filePath = Bundle.main.path(forResource: "Config", ofType: "plist") else { fatalError("Config.plist not found") }
+private extension BuildConfig {
+    static func load() -> BuildConfig {
+        guard let filePath = Bundle.main.path(forResource: "BuildConfig", ofType: "plist") else { fatalError("BuildConfig.plist not found") }
         return load(from: filePath)
     }
 }
 
-extension AppConfig {
-    static func load(from filePath: String) -> AppConfig {
+extension BuildConfig {
+    static func load(from filePath: String) -> BuildConfig {
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: filePath))
-            return try PropertyListDecoder().decode(AppConfig.self, from: data)
+            return try PropertyListDecoder().decode(BuildConfig.self, from: data)
         } catch {
             fatalError("\(filePath) is invalid. cause: \(error)")
         }

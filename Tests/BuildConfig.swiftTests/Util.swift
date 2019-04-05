@@ -26,13 +26,13 @@ var outputPath: Path {
 }
 
 var expectedFilePath: Path {
-    return outputPath + "Config.plist"
+    return outputPath + "BuildConfig.plist"
 }
 
 var expectedStagingFilePath: Path {
-    return outputPath + "staging" + "Config.plist"
+    return outputPath + "staging" + "BuildConfig.plist"
 }
 
 var expectedProductionFilePath: Path {
-    return outputPath + "production" + "Config.plist"
+    return outputPath + "production" + "BuildConfig.plist"
 }
