@@ -1,13 +1,13 @@
 Pod::Spec.new do |s|
-  s.name         = "ConfigurationPlist"
+  s.name         = "BuildConfig.swift"
   s.version      = "1.2.0"
   s.summary      = "Generate Config.plist for macOS/iOS"
 
   s.description  = <<-DESC
-                  ConfigurationPlist is a tool to get strong typed configuration from yamls/jsons.
+                  BuildConfig.swift is a tool to get strong typed configuration from yamls/jsons.
                   DESC
 
-  s.homepage     = "https://github.com/417-72KI/ConfigurationPlist"
+  s.homepage     = "https://github.com/417-72KI/BuildConfig.swift"
   s.license      = { :type => "MIT", :file => "LICENSE" }
 
   s.author       = { "417.72KI" => "417.72ki@gmail.com" }
@@ -20,6 +20,6 @@ Pod::Spec.new do |s|
 
   s.requires_arc = true
   
-  s.source        = { :http => "https://github.com/417-72KI/ConfigurationPlist/releases/download/#{s.version}/configurationPlist.zip" }
-  s.preserve_paths = "configurationPlist"
+  s.source        = { :http => "https://github.com/417-72KI/BuildConfig.swift/releases/download/#{s.version}/buildconfig_swift.zip" }
+  s.preserve_paths = "buildconfig_swift"
 end

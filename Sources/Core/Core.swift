@@ -95,7 +95,7 @@ extension Core {
             try "\(Date().timeIntervalSince1970)\n"
                 .write(to: lastRunFile.url, atomically: true, encoding: .utf8)
         } catch {
-            dumpWarn("Failed to write out to '\(Constants.lastRunFileName)', this might cause Xcode to not run the build phase for ConfigurationPlist: \(error)")
+            dumpWarn("Failed to write out to '\(Constants.lastRunFileName)', this might cause Xcode to not run the build phase for BuildConfig.swift: \(error)")
         }
     }
 }

@@ -1,4 +1,4 @@
 public struct ApplicationInfo {
-    public static let name = "ConfigurationPlist"
-    public static let version = "1.2.0"
+    public static let name = "BuildConfig.swift"
+    public static let version = "2.0.0"
 }

@@ -1,5 +1,5 @@
-project_name = ConfigurationPlist
-executable_name = configurationPlist
+project_name = BuildConfig.swift
+executable_name = buildconfig_swift
 
 .PHONY : clean build test release xcodeproj lint deploy
 

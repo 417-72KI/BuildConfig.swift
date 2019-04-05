@@ -4,9 +4,9 @@
 import PackageDescription
 
 let package = Package(
-    name: "ConfigurationPlist",
+    name: "BuildConfig.swift",
     products: [
-        .executable(name: "configurationPlist", targets: ["ConfigurationPlist"])
+        .executable(name: "buildconfig_swift", targets: ["BuildConfig.swift"])
     ],
     dependencies: [
         .package(url: "https://github.com/behrang/YamlSwift.git", .upToNextMinor(from: "3.4.3")),
@@ -20,7 +20,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "ConfigurationPlist",
+            name: "BuildConfig.swift",
             dependencies: [
                 "Commander", "Core"
             ]),
@@ -54,9 +54,9 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "ConfigurationPlistTests",
+            name: "BuildConfig.swiftTests",
             dependencies: [
-                "ConfigurationPlist",
+                "BuildConfig.swift",
                 "Nimble",
                 "Quick",
                 // "MirrorDiffKit"
