@@ -75,7 +75,7 @@ else
   ENVIRONMENT='staging'
 fi
 
-"${PODS_ROOT}/BuildConfig.swift/buildconfig_swift" -e $ENVIRONMENT "$SRCROOT/$PROJECT/Resources/Config"
+"${PODS_ROOT}/BuildConfig.swift/buildconfigswift" -e $ENVIRONMENT "$SRCROOT/$PROJECT/Resources/Config"
 ```
 
 You can replace `"$SRCROOT/$PROJECT/Resources/Config"` to the relative path from project to the directory you created.
