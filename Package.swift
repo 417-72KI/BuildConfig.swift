@@ -77,5 +77,6 @@ let package = Package(
                 "Quick",
                 "MirrorDiffKit"
             ])
-    ]
+    ],
+    swiftLanguageVersions: [.v4_2]
 )
