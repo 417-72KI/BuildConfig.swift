@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/antitypical/Result.git",
         "state": {
           "branch": null,
-          "revision": "8fc088dcf72802801efeecba76ea8fb041fb773d",
-          "version": "4.0.0"
+          "revision": "2ca499ba456795616fbc471561ff1d963e6ae160",
+          "version": "4.1.0"
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/jpsim/SourceKitten.git",
         "state": {
           "branch": null,
-          "revision": "4be914be6fa49cd30b1e7ef5d32d06c037d8f469",
-          "version": "0.21.2"
+          "revision": "176f04295a09324673245d8ec0afcce21ace8722",
+          "version": "0.22.0"
         }
       },
       {
@@ -96,8 +96,8 @@
         "repositoryURL": "https://github.com/SwiftGen/StencilSwiftKit.git",
         "state": {
           "branch": null,
-          "revision": "cf0f76b3911d4aee0f2496570461095d18d9d784",
-          "version": "2.7.0"
+          "revision": "dbf02bd6afe71b65ead2bd250aaf974abc688094",
+          "version": "2.7.2"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/drmohundro/SWXMLHash.git",
         "state": {
           "branch": null,
-          "revision": "0ce63a93a455adb3cd5e4c55f78f1232a590a5a5",
-          "version": "4.7.2"
+          "revision": "f43166a8e18fdd0857f29e303b1bb79a5428bca0",
+          "version": "4.9.0"
         }
       },
       {
@@ -114,8 +114,8 @@
         "repositoryURL": "https://github.com/behrang/YamlSwift.git",
         "state": {
           "branch": null,
-          "revision": "978901aed4025e36ebf60c040c9000c559d7c3e0",
-          "version": "3.4.3"
+          "revision": "287f5cab7da0d92eb947b5fd8151b203ae04a9a3",
+          "version": "3.4.4"
         }
       },
       {
@@ -123,8 +123,8 @@
         "repositoryURL": "https://github.com/jpsim/Yams.git",
         "state": {
           "branch": null,
-          "revision": "26ab35f50ea891e8edefcc9d975db2f6b67e1d68",
-          "version": "1.0.1"
+          "revision": "b08dba4bcea978bf1ad37703a384097d3efce5af",
+          "version": "1.0.2"
         }
       }
     ]
