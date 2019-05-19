@@ -23,7 +23,8 @@ let package = Package(
             name: "BuildConfig.swift",
             dependencies: [
                 "Commander", "Core"
-            ]),
+            ]
+        ),
         .target(
             name: "Core",
             dependencies: [
@@ -60,7 +61,8 @@ let package = Package(
                 "Nimble",
                 "Quick",
                 // "MirrorDiffKit"
-            ]),
+            ]
+        ),
         .testTarget(
             name: "ParserTests",
             dependencies: [
@@ -68,7 +70,8 @@ let package = Package(
                 "Nimble",
                 "Quick",
                 // "MirrorDiffKit"
-            ]),
+            ]
+        ),
         .testTarget(
             name: "GeneratorTests",
             dependencies: [
@@ -76,7 +79,8 @@ let package = Package(
                 "Nimble",
                 "Quick",
                 "MirrorDiffKit"
-            ])
+            ]
+        )
     ],
     swiftLanguageVersions: [.v4_2]
 )
