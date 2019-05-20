@@ -47,7 +47,7 @@ final class DictionaryExtensionTests: QuickSpec {
                 let json3 = """
 {
     "a": 1,
-    "b": 4,
+    "b": 4.0,
     "c": {
         "d": 3,
         "e": "5"
@@ -115,7 +115,7 @@ final class DictionaryExtensionTests: QuickSpec {
                     }
                     it("dict3") {
                         expect { dict3["a"]?.value as? Int }.to(equal(1))
-                        expect { dict3["b"]?.value as? Int }.to(equal(4))
+                        expect { dict3["b"]?.value as? Double }.to(equal(4.0))
                         expect { dict3["c"]?.value }.to(beAKindOf([String: AnyParsable].self))
                         let c = dict3["c"]?.value as? [String: AnyParsable]
                         expect { c?["d"]?.value as? Int }.to(equal(3))
