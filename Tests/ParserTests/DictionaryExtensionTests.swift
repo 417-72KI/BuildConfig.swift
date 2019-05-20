@@ -44,7 +44,7 @@ final class DictionaryExtensionTests: XCTestCase {
         let json3 = """
             {
                 "a": 1,
-                "b": 4,
+                "b": 4.0,
                 "c": {
                     "d": 3,
                     "e": "5"
@@ -111,7 +111,7 @@ final class DictionaryExtensionTests: XCTestCase {
         }
         try context("dict3") {
             XCTAssertEqual(dict3["a"]?.value as? Int, 1)
-            XCTAssertEqual(dict3["b"]?.value as? Int, 4)
+            XCTAssertEqual(dict3["b"]?.value as? Double, 4.0)
 
             let c = try XCTUnwrap(dict3["c"]?.value as? [String: AnyParsable])
             XCTAssertEqual(c["d"]?.value as? Int, 3)
