@@ -15,7 +15,10 @@ final class BuildConfigswiftTests: QuickSpec {
         guard #available(macOS 10.14, *) else { return }
 
         describe("binary") {
-            let fooBinary = productsDirectory.appendingPathComponent("buildconfigswift")
+            let fm = FileManager()
+            let binaryPath1 = productsDirectory.appendingPathComponent("buildconfigswift")
+            let binaryPath2 = productsDirectory.appendingPathComponent("BuildConfig.swift")
+            let fooBinary = fm.fileExists(atPath: binaryPath1.path) ? binaryPath1 : binaryPath2
             print(fooBinary)
             context("with environment") {
                 context("staging") {
