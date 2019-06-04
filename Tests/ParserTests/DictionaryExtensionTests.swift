@@ -127,8 +127,8 @@ final class DictionaryExtensionTests: QuickSpec {
                     it("dict3") {
                         expect { dict3["a"]?.value }.to(beAKindOf(Int.self))
                         expect { dict3["a"]?.value as? Int }.to(equal(1))
-                        expect { dict3["b"]?.value }.to(beAKindOf(Double.self))
-                        expect { dict3["b"]?.value as? Double }.to(equal(4.0))
+                        expect { dict3["b"]?.value }.to(beAKindOf(Int.self))
+                        expect { dict3["b"]?.value as? Int }.to(equal(4))
                         expect { dict3["c"]?.value }.to(beAKindOf([String: AnyParsable].self))
                         let c = dict3["c"]?.value as? [String: AnyParsable]
                         expect { c?["d"]?.value }.to(beAKindOf(Int.self))
