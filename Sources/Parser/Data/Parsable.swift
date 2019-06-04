@@ -58,18 +58,22 @@ struct AnyParsable: Parsable {
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if let stringValue = try? container.decode(String.self),
-           let intValue = try? container.decode(Int.self) {
-            if Int(stringValue) == intValue {
-                value = intValue
+            let intValue = try? container.decode(Int.self),
+            let doubleValue = try? container.decode(Double.self) {
+            if Double(stringValue) == doubleValue || Int(stringValue) == intValue {
+                value = stringValue.contains(".") ? doubleValue : intValue
             } else {
                 value = stringValue
             }
+        } else if let doubleValue = try? container.decode(Double.self),
+            let intValue = try? container.decode(Int.self) {
+            value = Double(intValue) == doubleValue ? intValue : doubleValue
+        } else if let doubleValue = try? container.decode(Double.self) {
+            value = doubleValue
         } else if let intValue = try? container.decode(Int.self) {
             value = intValue
         } else if let boolValue = try? container.decode(Bool.self) {
             value = boolValue
-        } else if let doubleValue = try? container.decode(Double.self) {
-            value = doubleValue
         } else if let arrayValue = try? container.decode([AnyParsable].self) {
             value = arrayValue
         } else if let dictionaryValue = try? container.decode([String: AnyParsable].self) {
@@ -119,5 +123,19 @@ extension AnyParsable {
             return value.isEmpty
         }
         return false
+    }
+}
+
+// MARK: - CustomStringConvertible
+extension AnyParsable: CustomStringConvertible {
+    var description: String {
+        return "\(value)"
+    }
+}
+
+// MARK: - CustomDebugStringConvertible
+extension AnyParsable: CustomDebugStringConvertible {
+    var debugDescription: String {
+        return "\(type(of: value))(\(value))"
     }
 }

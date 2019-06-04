@@ -1,6 +1,8 @@
 hoge_token: hogehoge
 fuga_token: fugafuga
-number_token: 12345
+int_token: 12345
+number_token: 12345.0
+number_string_token: "12345"
 bool_token1: true
 bool_token2: false
 double_token: 3.14159265358979
