@@ -22,6 +22,7 @@ xcode:
 	-e "end" \
 	-e "end" \
 	-e "project.save"
+	open BuildConfig.swift.xcodeproj
 
 dependencies:
 	swift package update
