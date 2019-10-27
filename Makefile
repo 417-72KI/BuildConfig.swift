@@ -22,3 +22,10 @@ release:
 
 lint:
 	bundle exec pod spec lint --no-clean --allow-warnings
+
+demo_app:
+	cd Demo && \
+	carthage bootstrap --platform iOS --cache-builds && \
+	mint run xcodegen && \
+	pod install
+	open Demo/BuildConfigSwiftDemo.xcworkspace
