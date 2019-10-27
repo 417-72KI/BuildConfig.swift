@@ -12,7 +12,7 @@ final class BuildConfigswiftTests: QuickSpec {
         afterSuite {
             try? FileManager.default.removeItem(at: tmpDirectory)
         }
-        guard #available(macOS 10.13, *) else { return }
+        guard #available(macOS 10.14, *) else { return }
 
         describe("binary") {
             let fooBinary = productsDirectory.appendingPathComponent("buildconfigswift")
