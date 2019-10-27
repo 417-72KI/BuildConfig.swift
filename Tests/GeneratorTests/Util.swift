@@ -1,5 +1,6 @@
 import PathKit
 import Foundation
+import XCTest
 
 let resourcePath: Path = {
     let currentDirectoryPath = Path(FileManager.default.currentDirectoryPath)
@@ -15,4 +16,10 @@ let resourcePath: Path = {
 
 var path: Path {
     return resourcePath + "GeneratorTests"
+}
+
+extension XCTestCase {
+    func context<Result>(_ name: String, block: () throws -> Result) rethrows -> Result {
+        try XCTContext.runActivity(named: name) { _ in try block() }
+    }
 }
