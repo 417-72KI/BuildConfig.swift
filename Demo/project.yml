@@ -1,0 +1,126 @@
+name: BuildConfigSwiftDemo
+attributes:
+  ORGANIZATIONNAME: 417.72KI
+configs:
+  Debug: debug
+  Release: release
+settings:
+  base:
+    IPHONEOS_DEPLOYMENT_TARGET: 10.0
+    SWIFT_VERSION: 5.0
+    ALWAYS_SEARCH_USER_PATHS: false
+    CLANG_ENABLE_OBJC_ARC: true
+options:
+  xcodeVersion: 10.2
+  bundleIdPrefix: io.github.417-72KI
+targets:
+  BuildConfigSwiftDemo:
+    type: application
+    platform: iOS
+    deploymentTarget: 11.0
+    sources: 
+      - BuildConfigSwiftDemo
+      - path: Libs
+      - path: Libs/R_swift/R.generated.swift
+        optional: true
+        createIntermediateGroups: true
+      - path: Libs/BuildConfig_swift/BuildConfig.generated.swift
+        optional: true
+        createIntermediateGroups: true
+      - path: Libs/BuildConfig_swift/BuildConfig.plist
+        optional: true
+        createIntermediateGroups: true
+    info:
+      path: BuildConfigSwiftDemo/Resources/Info.plist
+      properties:
+        CFBundleDevelopmentRegion: $(DEVELOPMENT_LANGUAGE)
+        CFBundleExecutable: $(EXECUTABLE_NAME)
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleInfoDictionaryVersion: 6.0
+        CFBundleName: $(PRODUCT_NAME)
+        CFBundlePackageType: APPL
+        CFBundleShortVersionString: 1.0.0
+        CFBundleVersion: 1
+        LSRequiresIPhoneOS: true
+        UILaunchStoryboardName: LaunchScreen
+        UIMainStoryboardFile: Main
+        UIRequiredDeviceCapabilities: 
+          - armv7
+        UISupportedInterfaceOrientations: 
+          - UIInterfaceOrientationPortrait
+    settings:
+      base:
+        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: ${inherited}
+        PRODUCT_NAME: BuildConfigSwiftDemo
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.417-72KI.BuildConfigSwiftDemo
+        CODE_SIGN_STYLE: Manual
+        TARGETED_DEVICE_FAMILY: 1
+        DEVELOPMENT_TEAM: ""
+        LIBRARY_SEARCH_PATHS: $(inherited)
+      configs:
+        debug: 
+          CODE_SIGN_IDENTITY: iPhone Developer
+          PROVISIONING_PROFILE_SPECIFIER: ""
+        release: 
+          CODE_SIGN_IDENTITY: iPhone Distribution
+          PROVISIONING_PROFILE_SPECIFIER: ""
+          EXCLUDED_SOURCE_FILE_NAMES: Mock*
+    preBuildScripts:
+      - name: Lint
+        script: |
+                if which swiftlint >/dev/null; then
+                swiftlint
+                else
+                echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+                fi
+      - name: BuildConfig.swift
+        script: |
+                if [ "${CONFIGURATION}" = 'Release' ]; then
+                  ENVIRONMENT='production'
+                elif [ "${CONFIGURATION}" = 'Staging' ]; then
+                  ENVIRONMENT='staging'
+                elif [ "${CONFIGURATION}" = 'IntegrationTest' ]; then
+                  ENVIRONMENT='integration_test'
+                else
+                  ENVIRONMENT='development'
+                fi
+                ${PODS_ROOT}/BuildConfig.swift/buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config
+        inputFiles:
+          - $(TEMP_DIR)/buildconfigswift-lastrun
+        outputFiles:
+          - $(SRCROOT)/Libs/BuildConfig_swift/BuildConfig.generated.swift
+          - $(SRCROOT)/Libs/BuildConfig_swift/BuildConfig.plist
+      - name: R.swift
+        script: ${PODS_ROOT}/R.swift/rswift generate ${SRCROOT}/Libs/R_swift/R.generated.swift
+        inputFiles:
+          - $(TEMP_DIR)/rswift-lastrun
+        outputFiles:
+          - $(SRCROOT)/Libs/R_swift/R.generated.swift
+    dependencies:
+      - carthage: ObjcExceptionBridging
+      - carthage: XCGLogger
+  BuildConfigSwiftDemoTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: BuildConfigSwiftDemoTests
+    info:
+      path: BuildConfigSwiftDemoTests/Info.plist
+      properties:
+        CFBundleDevelopmentRegion: $(DEVELOPMENT_LANGUAGE)
+        CFBundleExecutable: $(EXECUTABLE_NAME)
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleInfoDictionaryVersion: 6.0
+        CFBundleName: $(PRODUCT_NAME)
+        CFBundlePackageType: BNDL
+        CFBundleShortVersionString: 1.0
+        CFBundleVersion: 1
+    settings:
+      INFOPLIST_FILE: BuildConfigSwiftDemoTests/info.plist
+      TEST_HOST: $(BUILT_PRODUCTS_DIR)/BuildConfigSwiftDemo.app/BuildConfigSwiftDemo
+      CODE_SIGN_STYLE: Automatic
+      CODE_SIGN_IDENTITY: iPhone Developer
+      DEVELOPMENT_TEAM: ""
+    dependencies:
+      - target: BuildConfigSwiftDemo
+      - carthage: Quick
+      - carthage: Nimble
