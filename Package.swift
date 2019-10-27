@@ -78,8 +78,6 @@ let package = Package(
             name: "GeneratorTests",
             dependencies: [
                 "Generator",
-                "Nimble",
-                "Quick",
                 "MirrorDiffKit"
             ]
         )
