@@ -40,7 +40,8 @@ extension CodeGenerator {
         return (root + children).joined(separator: "\n\n")
     }
 
-    func render(with template: Template, dictionary: [String: Any]? = nil) throws -> String {
-        return try StencilSwiftTemplate(templateString: template.code).render(dictionary)
+    func render(with template: Template, dictionary: [String: Any] = [:]) throws -> String {
+        return try StencilSwiftTemplate(templateString: template.code)
+            .render(dictionary)
     }
 }
