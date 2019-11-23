@@ -1,5 +1,5 @@
-import Foundation
 import Common
+import Foundation
 import PathKit
 import SourceKittenFramework
 
@@ -78,6 +78,6 @@ extension Parser {
                     dumpWarn("Skip file failed to parse: \($0.path ?? "")")
                     return nil
                 }
-        }
+            }
     }
 }

@@ -1,6 +1,6 @@
 import Commander
-import Core
 import Common
+import Core
 import Foundation
 import PathKit
 
@@ -53,7 +53,7 @@ let main = command(
     let tempDirectoryPath = Path(try Environment.getValue(forKey: .tempDir))
     let scriptInputFiles = try Environment.getScriptInputFiles().map { Path($0) }
     let scriptOutputFiles = try Environment.getScriptOutputFiles().map { Path($0) }
-    
+
     do {
         try Core(
             outputDirectory: outputDirectory,

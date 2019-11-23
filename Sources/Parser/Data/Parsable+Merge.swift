@@ -1,4 +1,3 @@
-
 func + (lhs: AnyParsable, rhs: AnyParsable) -> AnyParsable {
     if let lhs = lhs.value as? [String: AnyParsable], let rhs = rhs.value as? [String: AnyParsable] {
         return AnyParsable(lhs + rhs)
@@ -42,4 +41,3 @@ func + (lhs: [String: AnyParsable], rhs: [String: AnyParsable]) -> [String: AnyP
 
     return result
 }
-
