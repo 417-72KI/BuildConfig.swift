@@ -39,7 +39,7 @@ let main = command(
     Options.outputDirectory,
     Options.environment,
     Arguments.srcDir
-) {
+) { // swiftlint:disable:this closure_body_length
     let version = $0
     if version {
         print(ApplicationInfo.version)
