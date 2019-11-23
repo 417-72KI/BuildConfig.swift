@@ -1,18 +1,16 @@
 import Commander
-import Core
 import Common
+import Core
 import Foundation
 import PathKit
 
-struct Options {
+enum Options {
     static let outputDirectory = Option(
         "output-directory",
         default: "./",
         flag: "o",
         description: "The directory to output BuildConfig.plist and BuildConfig.generated.swift."
-    ) { output in
-        return output
-    }
+    )
     static let environment = Option(
         "environment",
         default: "",
@@ -21,14 +19,14 @@ struct Options {
     )
 }
 
-struct Arguments {
+enum Arguments {
     static let srcDir = Argument<String>(
         "srcDir",
         description: "Directory which contains resource files."
     )
 }
 
-struct Flags {
+enum Flags {
     static let version = Flag(
         "version",
         flag: "v",
@@ -41,7 +39,7 @@ let main = command(
     Options.outputDirectory,
     Options.environment,
     Arguments.srcDir
-) {
+) { // swiftlint:disable:this closure_body_length
     let version = $0
     if version {
         print(ApplicationInfo.version)
@@ -55,7 +53,7 @@ let main = command(
     let tempDirectoryPath = Path(try Environment.getValue(forKey: .tempDir))
     let scriptInputFiles = try Environment.getScriptInputFiles().map { Path($0) }
     let scriptOutputFiles = try Environment.getScriptOutputFiles().map { Path($0) }
-    
+
     do {
         try Core(
             outputDirectory: outputDirectory,

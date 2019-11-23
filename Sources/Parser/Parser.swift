@@ -1,5 +1,5 @@
-import Foundation
 import Common
+import Foundation
 import PathKit
 import SourceKittenFramework
 
@@ -15,14 +15,20 @@ public struct Parser {
 public extension Parser {
     func run(environment: String?, skipInvalidFile: Bool = true) throws -> Data {
         let filePaths = try getFileList(at: directoryPath, environment: environment)
-        let environmentFiles = filePaths.filter { $0.components.contains(envDirComponent) }.compactMap { File(path: $0) }
-        let otherFiles = filePaths.filter { !$0.components.contains(envDirComponent) }.compactMap { File(path: $0) }
+        let environmentFiles = filePaths.filter { $0.components.contains(envDirComponent) }
+            .compactMap { File(path: $0) }
+        let otherFiles = filePaths.filter { !$0.components.contains(envDirComponent) }
+            .compactMap { File(path: $0) }
         let environmentData = try parse(files: environmentFiles, skipInvalidFile: skipInvalidFile)
             .reduce(AnyParsable()) { $0 + $1 }
         let defaultData = try parse(files: otherFiles, skipInvalidFile: skipInvalidFile)
             .reduce(AnyParsable()) { $0 + $1 }
         let result = defaultData + environmentData
-        return try PropertyListSerialization.data(fromPropertyList: result.rawValue, format: .binary, options: 0)
+        return try PropertyListSerialization.data(
+            fromPropertyList: result.rawValue,
+            format: .binary,
+            options: 0
+        )
     }
 }
 
@@ -78,6 +84,6 @@ extension Parser {
                     dumpWarn("Skip file failed to parse: \($0.path ?? "")")
                     return nil
                 }
-        }
+            }
     }
 }

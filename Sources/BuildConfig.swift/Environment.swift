@@ -18,7 +18,11 @@ public extension Environment {
     static func getScriptInputFiles() throws -> [String] {
         let scriptInputFileCountString = (try? getValue(forKey: .scriptInputFileCount)) ?? "0"
         guard let scriptInputFileCount = Int(scriptInputFileCountString) else {
-            throw ArgumentError.invalidType(value: scriptInputFileCountString, type: "Int", argument: Key.scriptInputFileCount.rawValue)
+            throw ArgumentError.invalidType(
+                value: scriptInputFileCountString,
+                type: "Int",
+                argument: Key.scriptInputFileCount.rawValue
+            )
         }
         return try (0..<scriptInputFileCount)
             .map(Key.scriptInputFile)
@@ -28,7 +32,11 @@ public extension Environment {
     static func getScriptOutputFiles() throws -> [String] {
         let scriptOutputFileCountString = (try? getValue(forKey: .scriptOutputFileCount)) ?? "0"
         guard let scriptOutputFileCount = Int(scriptOutputFileCountString) else {
-            throw ArgumentError.invalidType(value: scriptOutputFileCountString, type: "Int", argument: Key.scriptOutputFileCount.rawValue)
+            throw ArgumentError.invalidType(
+                value: scriptOutputFileCountString,
+                type: "Int",
+                argument: Key.scriptOutputFileCount.rawValue
+            )
         }
         return try (0..<scriptOutputFileCount)
             .map(Key.scriptOutputFile)

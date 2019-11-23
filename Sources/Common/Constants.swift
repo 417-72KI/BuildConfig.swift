@@ -1,4 +1,4 @@
-public struct Constants {
+public enum Constants {
     public static let defaultOutputFileName = "BuildConfig.plist"
     public static let generatedSwiftFileName = "BuildConfig.generated.swift"
 

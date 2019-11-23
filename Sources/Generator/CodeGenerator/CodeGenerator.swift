@@ -12,7 +12,8 @@ extension CodeGenerator {
         let loadExtension = try generateLoadExtension()
         let structs = try generateStruct(from: content)
 
-        let array = structs.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? [header, root, loadExtension] : [header, root, loadExtension, structs]
+        let array = structs.trimmingCharacters(in: .whitespacesAndNewlines)
+            .isEmpty ? [header, root, loadExtension] : [header, root, loadExtension, structs]
         return array.joined(separator: "\n\n") + "\n"
     }
 }
@@ -40,7 +41,8 @@ extension CodeGenerator {
         return (root + children).joined(separator: "\n\n")
     }
 
-    func render(with template: Template, dictionary: [String: Any]? = nil) throws -> String {
-        return try StencilSwiftTemplate(templateString: template.code).render(dictionary)
+    func render(with template: Template, dictionary: [String: Any] = [:]) throws -> String {
+        return try StencilSwiftTemplate(templateString: template.code)
+            .render(dictionary)
     }
 }
