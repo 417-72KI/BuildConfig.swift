@@ -1,5 +1,6 @@
 import struct Foundation.URL
 
+// swiftlint:disable force_cast
 func convertStruct(from element: ElementPropertyType) -> StructPropertyType {
     precondition(!(element is Element))
     if let arrayValue = element as? [ElementPropertyType] {
