@@ -10,9 +10,7 @@ struct Options {
         default: "./",
         flag: "o",
         description: "The directory to output BuildConfig.plist and BuildConfig.generated.swift."
-    ) { output in
-        return output
-    }
+    )
     static let environment = Option(
         "environment",
         default: "",
