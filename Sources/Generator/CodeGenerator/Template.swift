@@ -6,6 +6,7 @@ enum Template: CaseIterable {
 }
 
 extension Template {
+    // swiftlint:disable line_length
     var code: String {
         switch self {
         case .header:

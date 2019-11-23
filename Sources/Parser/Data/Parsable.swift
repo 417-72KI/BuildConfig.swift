@@ -77,7 +77,10 @@ struct AnyParsable: Parsable {
         } else if let stringValue = try? container.decode(String.self) {
             value = stringValue
         } else {
-            throw DecodingError.typeMismatch(AnyParsable.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unsupported Parsable type"))
+            throw DecodingError.typeMismatch(
+                AnyParsable.self,
+                DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unsupported Parsable type")
+            )
         }
     }
 
