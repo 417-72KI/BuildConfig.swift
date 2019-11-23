@@ -20,6 +20,11 @@ xcode:
 	-e "phase.shell_script = 'cp -r \"\$$SRCROOT/TestResources\" \"\$$BUILT_PRODUCTS_DIR\"'" \
 	-e "target.build_phases << phase" \
 	-e "end" \
+    -e "if target.uuid.start_with?(\"$(project_name)::\") then" \
+	-e "phase = project.new(Xcodeproj::Project::Object::PBXShellScriptBuildPhase)" \
+	-e "phase.shell_script = \"if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \\\"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\\\"\nfi\"" \
+	-e "target.build_phases << phase" \
+	-e "end" \
 	-e "end" \
 	-e "project.save"
 	open BuildConfig.swift.xcodeproj
