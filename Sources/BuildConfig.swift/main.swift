@@ -4,7 +4,7 @@ import Core
 import Foundation
 import PathKit
 
-struct Options {
+enum Options {
     static let outputDirectory = Option(
         "output-directory",
         default: "./",
@@ -19,14 +19,14 @@ struct Options {
     )
 }
 
-struct Arguments {
+enum Arguments {
     static let srcDir = Argument<String>(
         "srcDir",
         description: "Directory which contains resource files."
     )
 }
 
-struct Flags {
+enum Flags {
     static let version = Flag(
         "version",
         flag: "v",
