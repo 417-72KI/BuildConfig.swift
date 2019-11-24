@@ -7,8 +7,8 @@ struct ValidationError: Error {
 
 extension ValidationError: CustomStringConvertible {
     var description: String {
-        return "ValidationError: \n" +
-            errors.map { "\t\($0)\n" }
-                .reduce(into: "") { $0 += $1 }
+        "ValidationError: \n" +
+        errors.map { "\t\($0)\n" }
+            .reduce(into: "") { $0 += $1 }
     }
 }

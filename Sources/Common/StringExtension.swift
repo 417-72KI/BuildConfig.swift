@@ -13,6 +13,6 @@ public extension String {
 
 extension String {
     var capitalized: String {
-        return "\(prefix(1).capitalized)\(suffix(from: index(after: startIndex)))"
+        "\(prefix(1).capitalized)\(suffix(from: index(after: startIndex)))"
     }
 }

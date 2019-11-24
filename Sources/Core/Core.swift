@@ -19,7 +19,7 @@ public struct Core {
         tempDirectoryPath: Path,
         scriptInputFiles: [Path],
         scriptOutputFiles: [Path]
-        ) {
+    ) {
         self.outputDirectory = outputDirectory
         self.environment = environment
         self.srcDirectoryPath = srcDirectoryPath

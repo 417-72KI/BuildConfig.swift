@@ -20,15 +20,15 @@ extension CodeGenerator {
 
 extension CodeGenerator {
     func generateHeader() throws -> String {
-        return try render(with: .header)
+        try render(with: .header)
     }
 
     func generateRoot() throws -> String {
-        return try render(with: .root, dictionary: content.dictionary)
+        try render(with: .root, dictionary: content.dictionary)
     }
 
     func generateLoadExtension() throws -> String {
-        return try render(with: .loadExtension)
+        try render(with: .loadExtension)
     }
 
     func generateStruct(from content: Struct) throws -> String {
@@ -42,7 +42,7 @@ extension CodeGenerator {
     }
 
     func render(with template: Template, dictionary: [String: Any] = [:]) throws -> String {
-        return try StencilSwiftTemplate(templateString: template.code)
+        try StencilSwiftTemplate(templateString: template.code)
             .render(dictionary)
     }
 }

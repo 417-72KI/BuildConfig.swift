@@ -5,31 +5,31 @@ protocol Parsable: Decodable, Equatable {
 }
 
 extension Int: Parsable {
-    var value: Any { return self }
+    var value: Any { self }
 }
 
 extension String: Parsable {
-    var value: Any { return self }
+    var value: Any { self }
 }
 
 extension URL: Parsable {
-    var value: Any { return self }
+    var value: Any { self }
 }
 
 extension Double: Parsable {
-    var value: Any { return self }
+    var value: Any { self }
 }
 
 extension Bool: Parsable {
-    var value: Any { return self }
+    var value: Any { self }
 }
 
 extension Array: Parsable where Element: Parsable {
-    var value: Any { return self }
+    var value: Any { self }
 }
 
 extension Dictionary: Parsable where Key: Parsable, Value: Parsable {
-    var value: Any { return self }
+    var value: Any { self }
 }
 
 extension Parsable {
@@ -58,7 +58,7 @@ struct AnyParsable: Parsable {
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if let stringValue = try? container.decode(String.self),
-            let intValue = try? container.decode(Int.self) {
+           let intValue = try? container.decode(Int.self) {
             if Int(stringValue) == intValue {
                 value = intValue
             } else {
@@ -78,7 +78,7 @@ struct AnyParsable: Parsable {
             value = stringValue
         } else {
             throw DecodingError.typeMismatch(
-                AnyParsable.self,
+                Self.self,
                 DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unsupported Parsable type")
             )
         }

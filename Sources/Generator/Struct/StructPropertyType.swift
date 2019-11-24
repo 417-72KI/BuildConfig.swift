@@ -5,23 +5,23 @@ protocol StructPropertyType {
 }
 
 extension String: StructPropertyType {
-    var typeString: String { return "String" }
+    var typeString: String { "String" }
 }
 
 extension URL: StructPropertyType {
-    var typeString: String { return "URL" }
+    var typeString: String { "URL" }
 }
 
 extension Int: StructPropertyType {
-    var typeString: String { return "Int" }
+    var typeString: String { "Int" }
 }
 
 extension Double: StructPropertyType {
-    var typeString: String { return "Double" }
+    var typeString: String { "Double" }
 }
 
 extension Bool: StructPropertyType {
-    var typeString: String { return "Bool" }
+    var typeString: String { "Bool" }
 }
 
 extension Array: StructPropertyType where Element == StructPropertyType {
