@@ -13,5 +13,14 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_11.3.app/Contents/Developer
     steps:
       - uses: actions/checkout@v1
+      - name: Cache SPM build directory
+        uses: actions/cache@v1
+        with:
+          path: .build
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
       - name: test
         run: set -o pipefail && swift test
