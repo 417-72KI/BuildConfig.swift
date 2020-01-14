@@ -21,8 +21,8 @@ jobs:
         run: |
           matrix=$(cat versions.json | jq -c .)
           echo "::set-output name=matrix::$matrix"
-  test:
-    name: Test
+  test_macos:
+    name: Test on macOS
     needs: generate-matrix
     runs-on: macOS-latest
     strategy:
@@ -59,6 +59,27 @@ jobs:
           show-passed-tests: false
           show-code-coverage: false
         if: success() || failure()
+  test_linux:
+    name: Test on Linux
+    runs-on: ubuntu-latest
+    container: swift:${{ matrix.swift_version }}
+    strategy:
+      matrix:
+       swift_version: [5.5]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache SPM build directory
+        uses: actions/cache@v3
+        with:
+          path: .build
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-${{ env.cache-name }}-
+            ${{ runner.os }}-spm-
+            ${{ runner.os }}-
+      - name: test via SwiftPM
+        run: swift test --enable-test-discovery
   danger:
     name: Danger
     runs-on: ubuntu-latest
