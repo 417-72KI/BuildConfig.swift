@@ -43,4 +43,5 @@ jobs:
           entrypoint: swift
           args: test
       - name: Remove obstacle files for caching
-        run: sudo rm -rf .build/debug/ModuleCache
+        run: |
+          sudo rm -rf .build/debug/ModuleCache .build/debug/index
