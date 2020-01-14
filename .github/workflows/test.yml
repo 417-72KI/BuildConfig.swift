@@ -32,7 +32,7 @@ jobs:
       - name: Cache SPM build directory
         uses: actions/cache@v1
         with:
-          path: .build
+          path: .build/checkouts
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -42,5 +42,3 @@ jobs:
         with:
           entrypoint: swift
           args: test
-      - name: chmod to enable cache
-        run: sudo chmod -R o+r .build
