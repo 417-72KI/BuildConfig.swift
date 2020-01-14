@@ -19,13 +19,7 @@ test:
 	swift test
 
 release:
-	rm -f .build/$(executable_name).zip
-	swift build -c release -Xswiftc -static-stdlib -Xswiftc -suppress-warnings
-	.build/release/$(executable_name) --version
-	zip -j .build/$(executable_name).zip .build/release/$(executable_name) LICENSE
+	@scripts/release.sh $(project_name) $(executable_name)
 
 lint:
 	bundle exec pod spec lint --no-clean --allow-warnings
-
-deploy:
-	bundle exec pod trunk push $(project_name).podspec
