@@ -1,0 +1,24 @@
+PODS:
+  - BuildConfig.swift (2.0.0)
+  - R.swift (5.0.3):
+    - R.swift.Library (~> 5.0.0)
+  - R.swift.Library (5.0.1)
+
+DEPENDENCIES:
+  - BuildConfig.swift
+  - R.swift
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - BuildConfig.swift
+    - R.swift
+    - R.swift.Library
+
+SPEC CHECKSUMS:
+  BuildConfig.swift: 7fc81497b1de65053924da1ca990c8ce7e103506
+  R.swift: f5a87643b91ea569d23d6afb3eee9c743edde239
+  R.swift.Library: cfe85d569d9bae6cb262922db130e7c3a7a5fad1
+
+PODFILE CHECKSUM: a599627cf13b4fd9da8891cbe0d5b836b3902938
+
+COCOAPODS: 1.6.1
