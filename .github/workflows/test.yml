@@ -32,7 +32,7 @@ jobs:
       - name: Cache SPM build directory
         uses: actions/cache@v1
         with:
-          path: .build/checkouts
+          path: .build
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -42,3 +42,5 @@ jobs:
         with:
           entrypoint: swift
           args: test
+      - name: Remove obstacle files for caching
+        run: sudo rm -rf .build/debug/ModuleCache
