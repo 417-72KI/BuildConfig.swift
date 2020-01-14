@@ -17,8 +17,13 @@ if [ `git symbolic-ref --short HEAD` != 'master' ]; then
     exit 1
 fi
 
-if [ "$(git status -s | grep "M  ${APPLICATION_INFO_FILE}")" = '' ]; then
-    echo "\e[31m${APPLICATION_INFO_FILE} is not staged as modified.\e[m"
+if [ "$(git status -s | grep "${APPLICATION_INFO_FILE}")" = '' ]; then
+    echo "\e[31m${APPLICATION_INFO_FILE} is not modified.\e[m"
+    exit 1
+fi
+
+if [ "$(git status -s | grep .swift | grep -v ApplicationInfo.swift)" != '' ]; then
+    echo "\e[31mUnexpected added/modified/deleted file.\e[m"
     exit 1
 fi
 
@@ -42,8 +47,8 @@ zip -j .build/${EXECUTABLE_NAME}.zip .build/release/${EXECUTABLE_NAME} LICENSE
 
 # Version
 TAG=$(cat "${APPLICATION_INFO_FILE}" | grep version | awk '{ print $NF }' | gsed -r 's/\"(.*)\"/\1/g')
-gsed -i -r "s/(s\.version\s*?=\s)\"([0-9]*\.[0-9]*\.[0-9]*?)\"/\1${TAG}/g" ${PROJECT_NAME}.podspec
-git commit -m "Bump version to ${TAG}" ${PROJECT_NAME}.podspec
+gsed -i -r "s/(s\.version\s*?=\s)\"([0-9]*\.[0-9]*\.[0-9]*?)\"/\1\"${TAG}\"/g" ${PROJECT_NAME}.podspec
+git commit -m "Bump version to ${TAG}" "${PROJECT_NAME}.podspec" "${APPLICATION_INFO_FILE}"
 
 # TAG
 git tag "${TAG}"
