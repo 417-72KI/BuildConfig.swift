@@ -43,4 +43,4 @@ jobs:
           entrypoint: swift
           args: test
       - name: chmod to enable cache
-        run: chmod -R o+r .build
+        run: sudo chmod -R o+r .build
