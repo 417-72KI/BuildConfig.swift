@@ -27,9 +27,6 @@ jobs:
   linux:
     name: Linux
     runs-on: ubuntu-18.04
-    strategy:
-      matrix:
-        swift: [latest, 5.1.2, 5.1.1]
     steps:
       - uses: actions/checkout@v1
       - name: Cache SPM build directory
@@ -41,6 +38,7 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - uses: docker://swift:${{ matrix.swift }}
+      - uses: docker://swift:latest
         with:
-          entrypoint: swift test
+          entrypoint: swift
+          args: test
