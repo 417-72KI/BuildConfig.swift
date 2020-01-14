@@ -1,5 +1,10 @@
-import Darwin
 import Foundation
+
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
 
 public func dumpInfo(_ message: @autoclosure () -> String) {
     fputs("\(tag)[Info] \(message())\n", stdout)
@@ -17,6 +22,10 @@ public func dumpWarn(_ message: @autoclosure () -> String) {
     fputs("\(tag)[Warning] \(message())\n", stderr)
 }
 
+public func dumpWarn(_ error: @autoclosure () -> Error) {
+    dumpWarn("\(error())")
+}
+
 private var tag: String {
-    return "[\(ApplicationInfo.name)(\(ApplicationInfo.version))] "
+    "[\(ApplicationInfo.name)(\(ApplicationInfo.version))] "
 }
