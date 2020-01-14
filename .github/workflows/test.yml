@@ -1,8 +1,13 @@
 name: Test
-on: 
+on:
+  push:
+    paths:
+      - '**.swift'
+      - '.github/workflows/test.yml'
   pull_request:
     paths:
       - '**.swift'
+      - '.github/workflows/test.yml'
 jobs:
   macOS:
     name: macOS
