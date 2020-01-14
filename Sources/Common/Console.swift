@@ -1,5 +1,10 @@
-import Darwin
 import Foundation
+
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
 
 public func dumpInfo(_ message: @autoclosure () -> String) {
     fputs("\(tag)[Info] \(message())\n", stdout)
