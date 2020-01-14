@@ -2,6 +2,8 @@
 
 set -eu
 
+APPLICATION_INFO_FILE='Sources/Common/ApplicationInfo.swift'
+
 if [ $# -ne 2 ]; then
     echo -e "\e[31mError\e[m"
     exit 1
@@ -12,6 +14,11 @@ EXECUTABLE_NAME=$2
 
 if [ `git symbolic-ref --short HEAD` != 'master' ]; then
     echo '\e[31mRelease job is enabled only in master.\e[m'
+    exit 1
+fi
+
+if [ "$(git status -s | grep "M  ${APPLICATION_INFO_FILE}")" = '' ]; then
+    echo "\e[31m${APPLICATION_INFO_FILE} is not staged as modified.\e[m"
     exit 1
 fi
 
@@ -34,24 +41,24 @@ swift build -c release -Xswiftc -suppress-warnings
 zip -j .build/${EXECUTABLE_NAME}.zip .build/release/${EXECUTABLE_NAME} LICENSE
 
 # Version
-TAG=$(cat Sources/Common/ApplicationInfo.swift | grep version | awk '{ print $NF }' | sed -E 's/Version\(\"(.*)\"\)/\1/')
+TAG=$(cat "${APPLICATION_INFO_FILE}" | grep version | awk '{ print $NF }' | gsed -r 's/\"(.*)\"/\1/g')
 gsed -i -r "s/(s\.version\s*?=\s)\"([0-9]*\.[0-9]*\.[0-9]*?)\"/\1${TAG}/g" ${PROJECT_NAME}.podspec
-git commit -m "Bump podspec" ${PROJECT_NAME}.podspec
+git commit -m "Bump version to ${TAG}" ${PROJECT_NAME}.podspec
 
 # TAG
-git tag ${TAG}
-git push origin ${TAG}
+git tag "${TAG}"
+git push origin master "${TAG}"
 
 # GitHub Release
 github-release release \
     --user 417-72KI \
     --repo ${PROJECT_NAME} \
-    --tag ${TAG}
+    --tag "${TAG}"
 
 github-release upload \
     --user 417-72KI \
     --repo ${PROJECT_NAME} \
-    --tag ${TAG} \
+    --tag "${TAG}" \
     --name "${EXECUTABLE_NAME}.zip" \
     --file .build/${EXECUTABLE_NAME}.zip
 
