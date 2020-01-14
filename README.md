@@ -1,5 +1,5 @@
 # BuildConfig.swift
-[![Build Status](https://travis-ci.com/417-72KI/BuildConfig.swift.svg?branch=master)](https://travis-ci.com/417-72KI/BuildConfig.swift)
+[![Actions Status](https://github.com/417-72KI/BuildConfig.swift/workflows/Test/badge.svg)](https://github.com/417-72KI/BuildConfig.swift/actions)
 [![Version](http://img.shields.io/cocoapods/v/BuildConfig.swift.svg?style=flat)](http://cocoapods.org/pods/BuildConfig.swift)
 [![Platform](http://img.shields.io/cocoapods/p/BuildConfig.swift.svg?style=flat)](http://cocoapods.org/pods/BuildConfig.swift)
 [![GitHub release](https://img.shields.io/github/release/417-72KI/BuildConfig.swift/all.svg)](https://github.com/417-72KI/BuildConfig.swift/releases)
