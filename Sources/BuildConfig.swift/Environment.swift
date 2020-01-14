@@ -7,7 +7,7 @@ public struct Environment {
 
 public extension Environment {
     static func getValue(forKey key: Key) throws -> String {
-        guard let value = ProcessInfo().environment[key.rawValue] else {
+        guard let value = ProcessInfo.processInfo.environment[key.rawValue] else {
             throw Error.notFound(key)
         }
         return value
