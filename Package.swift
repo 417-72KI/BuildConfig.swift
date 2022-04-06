@@ -60,8 +60,6 @@ let package = Package(
             name: "BuildConfig.swiftTests",
             dependencies: [
                 "BuildConfig.swift",
-                "Nimble",
-                "Quick",
                 // "MirrorDiffKit"
             ]
         ),
