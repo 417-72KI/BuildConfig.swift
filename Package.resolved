@@ -11,15 +11,6 @@
         }
       },
       {
-        "package": "Commander",
-        "repositoryURL": "https://github.com/kylef/Commander.git",
-        "state": {
-          "branch": null,
-          "revision": "4b6133c3071d521489a80c38fb92d7983f19d438",
-          "version": "0.9.1"
-        }
-      },
-      {
         "package": "CwlCatchException",
         "repositoryURL": "https://github.com/mattgallagher/CwlCatchException.git",
         "state": {
