@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+import Common
 
 final class BuildConfigswiftTests: XCTestCase {
     private static let tmpDirectory = productsDirectory.appendingPathComponent("tmp")
@@ -15,7 +16,18 @@ final class BuildConfigswiftTests: XCTestCase {
     func testBinary() throws {
         let tmpDirectory = Self.tmpDirectory
         let fooBinary = productsDirectory.appendingPathComponent("buildconfigswift")
-        print(fooBinary)
+        print("binary: \(fooBinary)")
+        try context("version") {
+            let process = Process()
+            process.executableURL = fooBinary
+            process.arguments = ["--version"]
+            let pipe = Pipe()
+            process.standardOutput = pipe
+            XCTAssertNoThrow(try process.run())
+            process.waitUntilExit()
+            let version = try XCTUnwrap(String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)?.trimmingCharacters(in: .newlines))
+            XCTAssertEqual(version, ApplicationInfo.version)
+        }
         try context("with environment") {
             try context("staging") {
                 let process = Process()
