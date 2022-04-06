@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -10,7 +10,7 @@ let package = Package(
         .executable(name: "buildconfigswift", targets: ["BuildConfig.swift"])
     ],
     dependencies: [
-        .package(url: "https://github.com/behrang/YamlSwift.git", .upToNextMajor(from: "3.4.0")),
+        .package(name: "Yaml", url: "https://github.com/behrang/YamlSwift.git", .upToNextMajor(from: "3.4.0")),
         .package(url: "https://github.com/jpsim/SourceKitten.git", .upToNextMajor(from: "0.26.0")),
         .package(url: "https://github.com/kylef/Commander.git", .upToNextMajor(from: "0.9.0")),
         .package(url: "https://github.com/kylef/PathKit.git", .upToNextMajor(from: "0.9.0")),
@@ -37,7 +37,7 @@ let package = Package(
             name: "Common",
             dependencies: [
                 "PathKit",
-                "SourceKittenFramework"
+                .product(name: "SourceKittenFramework", package: "SourceKitten"),
             ]
         ),
         .target(
