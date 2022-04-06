@@ -1,112 +1,92 @@
-import Quick
-import Nimble
 import Foundation
+import XCTest
 
-final class BuildConfigswiftTests: QuickSpec {
+final class BuildConfigswiftTests: XCTestCase {
+    private static let tmpDirectory = productsDirectory.appendingPathComponent("tmp")
 
-    override func spec() {
-        let tmpDirectory = productsDirectory.appendingPathComponent("tmp")
-        beforeSuite {
-            try? FileManager.default.createDirectory(at: tmpDirectory, withIntermediateDirectories: true, attributes: nil)
-        }
-        afterSuite {
-            try? FileManager.default.removeItem(at: tmpDirectory)
-        }
-        guard #available(macOS 10.14, *) else { return }
+    override class func setUp() {
+        try? FileManager.default.createDirectory(at: tmpDirectory, withIntermediateDirectories: true, attributes: nil)
+    }
 
-        describe("binary") {
-            let fooBinary = productsDirectory.appendingPathComponent("buildconfigswift")
-            print(fooBinary)
-            context("with environment") {
-                context("staging") {
-                    let process = Process()
-                    process.executableURL = fooBinary
-                    process.arguments = [
-                        "-e",
-                        "staging",
-                        "-o",
-                        tmpDirectory.path,
-                        srcPath.absolute().string
-                    ]
-                    print(process.arguments ?? [])
-                    process.setEnvironmentForTest(tmpDirectory: tmpDirectory)
-                    print(process.environment ?? [:])
-                    let pipe = Pipe()
-                    process.standardOutput = pipe
-                    it("success") {
-                        expect { try process.run() }.notTo(throwError())
-                        process.waitUntilExit()
-                        let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.plist")
-                        expect { FileManager.default.fileExists(atPath: createdFile.path) }.to(beTrue())
+    override class func tearDown() {
+        try? FileManager.default.removeItem(at: tmpDirectory)
+    }
 
-                        let createdData = try? Data(contentsOf: createdFile)
-                        expect(createdData).notTo(beNil())
-                        let expectedData = try? Data(contentsOf: expectedStagingFilePath.url)
-                        expect(expectedData).notTo(beNil())
+    func testBinary() throws {
+        let tmpDirectory = Self.tmpDirectory
+        let fooBinary = productsDirectory.appendingPathComponent("buildconfigswift")
+        print(fooBinary)
+        try context("with environment") {
+            try context("staging") {
+                let process = Process()
+                process.executableURL = fooBinary
+                process.arguments = [
+                    "-e",
+                    "staging",
+                    "-o",
+                    tmpDirectory.path,
+                    srcPath.absolute().string
+                ]
+                print(process.arguments ?? [])
+                process.setEnvironmentForTest(tmpDirectory: tmpDirectory)
+                print(process.environment ?? [:])
+                let pipe = Pipe()
+                process.standardOutput = pipe
+                XCTAssertNoThrow(try process.run())
 
-                        if let createdData = createdData, let expectedData = expectedData {
-                            do {
-                                let actual = try PropertyListSerialization.propertyList(from: createdData, options: [], format: nil) as? NSDictionary
-                                expect { actual }.notTo(beNil())
-                                let expected = try PropertyListSerialization.propertyList(from: expectedData, options: [], format: nil) as? NSDictionary
-                                expect { actual }.to(equal(expected))
-                            } catch {
-                                fail(error.localizedDescription)
-                            }
-                        }
-                    }
-                }
-                context("production") {
-                    let process = Process()
-                    process.executableURL = fooBinary
-                    process.arguments = [
-                        "-e",
-                        "production",
-                        "-o",
-                        tmpDirectory.path,
-                        srcPath.absolute().string
-                    ]
-                    print(process.arguments ?? [])
-                    process.setEnvironmentForTest(tmpDirectory: tmpDirectory)
-                    print(process.environment ?? [:])
-                    let pipe = Pipe()
-                    process.standardOutput = pipe
-                    it("success") {
-                        expect { try process.run() }.notTo(throwError())
-                        process.waitUntilExit()
-                        let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.plist")
-                        expect { FileManager.default.fileExists(atPath: createdFile.path) }.to(beTrue())
+                process.waitUntilExit()
+                let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.plist")
+                XCTAssertTrue(FileManager.default.fileExists(atPath: createdFile.path))
 
-                        let createdData = try? Data(contentsOf: createdFile)
-                        expect(createdData).notTo(beNil())
-                        let expectedData = try? Data(contentsOf: expectedProductionFilePath.url)
-                        expect(expectedData).notTo(beNil())
+                let createdData = try XCTUnwrap(try Data(contentsOf: createdFile))
+                let expectedData = try XCTUnwrap(try Data(contentsOf: expectedStagingFilePath.url))
+                let actual = try XCTUnwrap(try PropertyListSerialization.propertyList(from: createdData, options: [], format: nil) as? NSDictionary)
+                let expected = try XCTUnwrap(try PropertyListSerialization.propertyList(from: expectedData, options: [], format: nil) as? NSDictionary)
+                XCTAssertEqual(actual, expected)
+            }
+            try context("production") {
+                let process = Process()
+                process.executableURL = fooBinary
+                process.arguments = [
+                    "-e",
+                    "production",
+                    "-o",
+                    tmpDirectory.path,
+                    srcPath.absolute().string
+                ]
+                print(process.arguments ?? [])
+                process.setEnvironmentForTest(tmpDirectory: tmpDirectory)
+                print(process.environment ?? [:])
+                let pipe = Pipe()
+                process.standardOutput = pipe
+                XCTAssertNoThrow(try process.run())
 
-                        if let createdData = createdData, let expectedData = expectedData {
-                            do {
-                                let actual = try PropertyListSerialization.propertyList(from: createdData, options: [], format: nil) as? NSDictionary
-                                expect { actual }.notTo(beNil())
-                                let expected = try PropertyListSerialization.propertyList(from: expectedData, options: [], format: nil) as? NSDictionary
-                                expect { actual }.to(equal(expected))
-                            } catch {
-                                fail(error.localizedDescription)
-                            }
-                        }
-                    }
-                }
+                process.waitUntilExit()
+                let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.plist")
+                XCTAssertTrue(FileManager.default.fileExists(atPath: createdFile.path))
+                let createdData = try XCTUnwrap(try Data(contentsOf: createdFile))
+                let expectedData = try XCTUnwrap(try Data(contentsOf: expectedProductionFilePath.url))
+                let actual = try XCTUnwrap(try PropertyListSerialization.propertyList(from: createdData, options: [], format: nil) as? NSDictionary)
+                let expected = try XCTUnwrap(try PropertyListSerialization.propertyList(from: expectedData, options: [], format: nil) as? NSDictionary)
+                XCTAssertEqual(actual, expected)
             }
         }
     }
+}
 
+private extension BuildConfigswiftTests {
     /// Returns path to the built products directory.
-    var productsDirectory: URL {
-      #if os(macOS)
+    static var productsDirectory: URL {
+        #if os(macOS)
         for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
             return bundle.bundleURL.deletingLastPathComponent()
         }
         fatalError("couldn't find the products directory")
-      #else
+        #else
         return Bundle.main.bundleURL
-      #endif
+        #endif
     }
+
+    /// Returns path to the built products directory.
+    var productsDirectory: URL { Self.productsDirectory }
 }
