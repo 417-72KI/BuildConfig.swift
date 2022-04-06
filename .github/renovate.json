@@ -1,5 +1,15 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    "github>hatena/renovate-config"
+  ],
+  "timezone": "Asia/Tokyo",
+  "vulnerabilityAlerts": {
+      "labels": ["security"]
+  },
+  "labels": ["dependencies"],
+  "enabledManagers": [
+      "github-actions",
+      "swift"
   ]
 }
