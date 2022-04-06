@@ -2,20 +2,10 @@ import PathKit
 import Foundation
 import XCTest
 
-let resourcePath: Path = {
-    let currentDirectoryPath = Path(FileManager.default.currentDirectoryPath)
-    if currentDirectoryPath.string.contains("Xcode/DerivedData"),
-        let oldPwd = ProcessInfo.processInfo.environment["OLDPWD"] {
-        // Run via Xcode
-        return Path(oldPwd) + "BuildConfig.swift/TestResources"
-    } else {
-        // Run via Terminal
-        return Path(FileManager.default.currentDirectoryPath) + "TestResources"
-    }
-}()
-
 var path: Path {
-    return resourcePath + "BuildConfig.swiftTests"
+    let resourcePath = Bundle.module
+        .url(forResource: "Resources", withExtension: nil)!.path
+    return Path(resourcePath)
 }
 
 var srcPath: Path {
