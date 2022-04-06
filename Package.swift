@@ -60,21 +60,24 @@ let package = Package(
             dependencies: [
                 "BuildConfig.swift",
                 // "MirrorDiffKit"
-            ]
+            ],
+            resources: [.copy("Resources")]
         ),
         .testTarget(
             name: "ParserTests",
             dependencies: [
                 "Parser",
                 // "MirrorDiffKit"
-            ]
+            ],
+            resources: [.copy("Resources")]
         ),
         .testTarget(
             name: "GeneratorTests",
             dependencies: [
                 "Generator",
                 "MirrorDiffKit"
-            ]
+            ],
+            resources: [.copy("Resources")]
         )
     ],
     swiftLanguageVersions: [.v5]
