@@ -12,8 +12,8 @@ fi
 PROJECT_NAME=$1
 EXECUTABLE_NAME=$2
 
-if [ `git symbolic-ref --short HEAD` != 'master' ]; then
-    echo '\e[31mRelease job is enabled only in master.\e[m'
+if [ `git symbolic-ref --short HEAD` != 'main' ]; then
+    echo '\e[31mRelease job is enabled only in main.\e[m'
     exit 1
 fi
 
@@ -46,7 +46,7 @@ git commit -m "Bump version to ${TAG}" "${PROJECT_NAME}.podspec" "${APPLICATION_
 
 # # TAG
 # git tag "${TAG}"
-# git push origin master "${TAG}"
+# git push origin main "${TAG}"
 
 # GitHub Release
 gh release create "$TAG"
