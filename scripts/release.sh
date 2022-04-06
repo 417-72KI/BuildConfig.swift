@@ -44,9 +44,7 @@ TAG="$(swift run $EXECUTABLE_NAME --version 2>/dev/null)"
 gsed -i -r "s/(s\.version\s*?=\s)\"([0-9]*\.[0-9]*\.[0-9]*?)\"/\1\"${TAG}\"/g" ${PROJECT_NAME}.podspec
 git commit -m "Bump version to ${TAG}" "${PROJECT_NAME}.podspec" "${APPLICATION_INFO_FILE}"
 
-# # TAG
-# git tag "${TAG}"
-# git push origin main "${TAG}"
+git push origin main
 
 # GitHub Release
 gh release create "$TAG"
