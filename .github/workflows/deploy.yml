@@ -1,0 +1,15 @@
+name: Deploy
+on:
+  push:
+    tags: '*'
+jobs:
+  podspec:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Lint
+      run: pod spec lint
+    - name: Deploy
+      env:
+        COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+      run: pod trunk push MockUserDefaults.podspec
