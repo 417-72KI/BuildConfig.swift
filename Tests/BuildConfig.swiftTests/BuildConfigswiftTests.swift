@@ -39,13 +39,12 @@ final class BuildConfigswiftTests: XCTestCase {
                     tmpDirectory.path,
                     srcPath.absolute().string
                 ]
-                print(process.arguments ?? [])
+                print("arguments: \(process.arguments ?? [])")
                 process.setEnvironmentForTest(tmpDirectory: tmpDirectory)
-                print(process.environment ?? [:])
+                print("environment: \(process.environment ?? [:])")
                 let pipe = Pipe()
                 process.standardOutput = pipe
                 XCTAssertNoThrow(try process.run())
-
                 process.waitUntilExit()
                 let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.plist")
                 XCTAssertTrue(FileManager.default.fileExists(atPath: createdFile.path))
@@ -66,13 +65,12 @@ final class BuildConfigswiftTests: XCTestCase {
                     tmpDirectory.path,
                     srcPath.absolute().string
                 ]
-                print(process.arguments ?? [])
+                print("arguments: \(process.arguments ?? [])")
                 process.setEnvironmentForTest(tmpDirectory: tmpDirectory)
-                print(process.environment ?? [:])
+                print("environment: \(process.environment ?? [:])")
                 let pipe = Pipe()
                 process.standardOutput = pipe
                 XCTAssertNoThrow(try process.run())
-
                 process.waitUntilExit()
                 let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.plist")
                 XCTAssertTrue(FileManager.default.fileExists(atPath: createdFile.path))
