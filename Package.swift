@@ -16,8 +16,6 @@ let package = Package(
         .package(url: "https://github.com/kylef/PathKit.git", .upToNextMajor(from: "0.9.0")),
         // Waiting for updates appling PathKit:1.0.0
         .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", .upToNextMajor(from: "2.7.0")),
-        .package(url: "https://github.com/Quick/Nimble.git", .upToNextMajor(from: "8.0.0")),
-        .package(url: "https://github.com/Quick/Quick.git", .upToNextMajor(from: "2.2.0")),
         .package(url: "https://github.com/Kuniwak/MirrorDiffKit.git", .upToNextMajor(from: "5.0.0")),
     ],
     targets: [
