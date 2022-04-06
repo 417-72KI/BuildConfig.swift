@@ -3,13 +3,44 @@ on:
   push:
     tags: '*'
 jobs:
+  release-assets:
+    name: Release Assets
+    runs-on: macOS-latest
+    env:
+      PROJECT_NAME: BuildConfig.swift
+      EXECUTABLE_NAME: buildconfigswift
+    steps:
+      - uses: actions/checkout@v3
+      - id: set-xcode-version
+        run: |
+          xcode_version=$(cat versions.json | jq -rc '.xcode_version | max')
+          echo "::set-output name=xcode-version::$xcode_version"
+      - name: Build and zip
+        env:
+          DEVELOPER_DIR: /Applications/Xcode_${{ steps.set-xcode-version.outputs.xcode-version }}.app/Contents/Developer
+        run: |
+          set -e
+          swift build -c release -Xswiftc -suppress-warnings
+          .build/release/${EXECUTABLE_NAME} --version
+          zip -j .build/${EXECUTABLE_NAME}.zip .build/release/${EXECUTABLE_NAME} LICENSE
+      - name: Create release
+        if: success() && startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ github.ref }}
+          files: .build/${{ env.EXECUTABLE_NAME }}.zip
+          draft: false
+          prerelease: false
   podspec:
+    name: Podspec
+    needs: release-assets
     runs-on: macOS-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Lint
-      run: pod spec lint
-    - name: Deploy
-      env:
-        COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
-      run: pod trunk push MockUserDefaults.podspec
+      - uses: actions/checkout@v3
+      - name: Lint
+        run: pod spec lint
+      - name: Deploy
+        if: success() && startsWith(github.ref, 'refs/tags/')
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        run: pod trunk push MockUserDefaults.podspec
