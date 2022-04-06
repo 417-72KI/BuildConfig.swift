@@ -11,15 +11,6 @@
         }
       },
       {
-        "package": "Commander",
-        "repositoryURL": "https://github.com/kylef/Commander.git",
-        "state": {
-          "branch": null,
-          "revision": "4b6133c3071d521489a80c38fb92d7983f19d438",
-          "version": "0.9.1"
-        }
-      },
-      {
         "package": "CwlCatchException",
         "repositoryURL": "https://github.com/mattgallagher/CwlCatchException.git",
         "state": {
@@ -116,6 +107,15 @@
           "branch": null,
           "revision": "dbf02bd6afe71b65ead2bd250aaf974abc688094",
           "version": "2.7.2"
+        }
+      },
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser",
+        "state": {
+          "branch": null,
+          "revision": "82905286cc3f0fa8adc4674bf49437cab65a8373",
+          "version": "1.1.1"
         }
       },
       {
