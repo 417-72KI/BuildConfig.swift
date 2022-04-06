@@ -1,0 +1,45 @@
+name: CI
+on:
+  push:
+    branches: main
+    paths:
+      - '**.swift'
+      - '.github/workflows/ci.yml'
+  pull_request: {}
+concurrency:
+  group: ${{ github.head_ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+jobs:
+  generate-matrix:
+    name: Generate matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: set-matrix
+        run: |
+          matrix=$(cat versions.json | jq -c .)
+          echo "::set-output name=matrix::$matrix"
+  test:
+    name: Test
+    needs: generate-matrix
+    runs-on: macOS-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache SPM build directory
+        uses: actions/cache@v3
+        with:
+          path: .build
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-${{ env.cache-name }}-
+            ${{ runner.os }}-spm-
+            ${{ runner.os }}-
+      - name: test
+        run: set -o pipefail && swift test
