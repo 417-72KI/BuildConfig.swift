@@ -36,7 +36,7 @@ jobs:
         if: success() && startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          name: Release ${{ github.ref }}
+          name: ${{ github.ref_name }}
           files: .build/${{ env.EXECUTABLE_NAME }}.zip
           draft: false
           prerelease: false
@@ -52,4 +52,4 @@ jobs:
         if: success() && startsWith(github.ref, 'refs/tags/')
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
-        run: pod trunk push MockUserDefaults.podspec
+        run: pod trunk push BuildConfig.swift.podspec
