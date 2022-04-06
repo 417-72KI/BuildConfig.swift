@@ -1,5 +1,6 @@
 import PathKit
 import Foundation
+import XCTest
 
 let resourcePath: Path = {
     let currentDirectoryPath = Path(FileManager.default.currentDirectoryPath)
@@ -35,4 +36,15 @@ var expectedStagingFilePath: Path {
 
 var expectedProductionFilePath: Path {
     return outputPath + "production" + "BuildConfig.plist"
+}
+
+extension XCTestCase {
+    func context(_ name: String, block: () throws -> Void) rethrows {
+        if let _ = ProcessInfo().environment["XCTestConfigurationFilePath"] {
+            // FIXME: Run test with `swift test`, it fails with message: `XCTContext.runActivity(named:block:) failed because activities are disallowed in the current configuration.`
+            return try XCTContext.runActivity(named: name) { _ in try block() }
+        } else {
+            return try block()
+        }
+    }
 }
