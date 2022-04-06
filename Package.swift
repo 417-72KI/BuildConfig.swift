@@ -69,8 +69,6 @@ let package = Package(
             name: "ParserTests",
             dependencies: [
                 "Parser",
-                "Nimble",
-                "Quick",
                 // "MirrorDiffKit"
             ]
         ),
