@@ -1,4 +1,4 @@
-import enum Commander.ArgumentError
+import ArgumentParser
 import Foundation
 
 public struct Environment {
@@ -18,11 +18,7 @@ public extension Environment {
     static func getScriptInputFiles() throws -> [String] {
         let scriptInputFileCountString = (try? getValue(forKey: .scriptInputFileCount)) ?? "0"
         guard let scriptInputFileCount = Int(scriptInputFileCountString) else {
-            throw ArgumentError.invalidType(
-                value: scriptInputFileCountString,
-                type: "Int",
-                argument: Key.scriptInputFileCount.rawValue
-            )
+            throw ValidationError("\(Key.scriptInputFileCount.rawValue) must be Int. Invalid value `\(scriptInputFileCountString)`")
         }
         return try (0..<scriptInputFileCount)
             .map(Key.scriptInputFile)
@@ -32,11 +28,7 @@ public extension Environment {
     static func getScriptOutputFiles() throws -> [String] {
         let scriptOutputFileCountString = (try? getValue(forKey: .scriptOutputFileCount)) ?? "0"
         guard let scriptOutputFileCount = Int(scriptOutputFileCountString) else {
-            throw ArgumentError.invalidType(
-                value: scriptOutputFileCountString,
-                type: "Int",
-                argument: Key.scriptOutputFileCount.rawValue
-            )
+            throw ValidationError("\(Key.scriptOutputFileCount.rawValue) must be Int. Invalid value `\(scriptOutputFileCountString)`")
         }
         return try (0..<scriptOutputFileCount)
             .map(Key.scriptOutputFile)

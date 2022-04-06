@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 import Common
+import ArgumentParser
 
 final class BuildConfigswiftTests: XCTestCase {
     private static let tmpDirectory = productsDirectory.appendingPathComponent("tmp")
@@ -25,6 +26,7 @@ final class BuildConfigswiftTests: XCTestCase {
             )
             XCTAssertNoThrow(try process.run())
             process.waitUntilExit()
+            XCTAssertEqual(ExitCode(process.terminationStatus), .success)
             let version = try XCTUnwrap(String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)?.trimmingCharacters(in: .newlines))
             XCTAssertEqual(version, ApplicationInfo.version)
         }
@@ -46,7 +48,7 @@ final class BuildConfigswiftTests: XCTestCase {
                     }
                     XCTAssertNoThrow(try process.run())
                     process.waitUntilExit()
-                    XCTAssertEqual(process.terminationStatus, 0)
+                    XCTAssertEqual(ExitCode(process.terminationStatus), .success)
 
                     let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.plist")
                     XCTAssertTrue(FileManager.default.fileExists(atPath: createdFile.path))
@@ -72,7 +74,7 @@ final class BuildConfigswiftTests: XCTestCase {
                     }
                     XCTAssertNoThrow(try process.run())
                     process.waitUntilExit()
-                    XCTAssertEqual(process.terminationStatus, 0)
+                    XCTAssertEqual(ExitCode(process.terminationStatus), .success)
 
                     let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.plist")
                     XCTAssertTrue(FileManager.default.fileExists(atPath: createdFile.path))
@@ -101,7 +103,7 @@ final class BuildConfigswiftTests: XCTestCase {
                     }
                     XCTAssertNoThrow(try process.run())
                     process.waitUntilExit()
-                    XCTAssertEqual(process.terminationStatus, 1)
+                    XCTAssertEqual(ExitCode(process.terminationStatus), .validationFailure)
                 }
                 try context("SCRIPT_OUTPUT_FILE_COUNT") {
                     let pipe = Pipe()
@@ -121,7 +123,7 @@ final class BuildConfigswiftTests: XCTestCase {
                     }
                     XCTAssertNoThrow(try process.run())
                     process.waitUntilExit()
-                    XCTAssertEqual(process.terminationStatus, 1)
+                    XCTAssertEqual(ExitCode(process.terminationStatus), .validationFailure)
                 }
             }
         }
