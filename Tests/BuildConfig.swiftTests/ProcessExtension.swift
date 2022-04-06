@@ -1,4 +1,9 @@
 import Foundation
+import ArgumentParser
+
+extension Process {
+    var exitCode: ExitCode { .init(terminationStatus) }
+}
 
 extension Process {
     func setEnvironmentForTest(tmpDirectory: URL) {

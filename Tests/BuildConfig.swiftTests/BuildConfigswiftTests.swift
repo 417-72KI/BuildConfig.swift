@@ -103,7 +103,7 @@ final class BuildConfigswiftTests: XCTestCase {
                     }
                     XCTAssertNoThrow(try process.run())
                     process.waitUntilExit()
-                    XCTAssertEqual(ExitCode(process.terminationStatus), .validationFailure)
+                    XCTAssertEqual(process.exitCode, .validationFailure)
                 }
                 try context("SCRIPT_OUTPUT_FILE_COUNT") {
                     let pipe = Pipe()
@@ -123,7 +123,7 @@ final class BuildConfigswiftTests: XCTestCase {
                     }
                     XCTAssertNoThrow(try process.run())
                     process.waitUntilExit()
-                    XCTAssertEqual(ExitCode(process.terminationStatus), .validationFailure)
+                    XCTAssertEqual(process.exitCode, .validationFailure)
                 }
             }
         }
