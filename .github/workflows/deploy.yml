@@ -39,7 +39,6 @@ jobs:
           name: ${{ github.ref_name }}
           files: .build/${{ env.EXECUTABLE_NAME }}.zip
           draft: false
-          prerelease: false
   podspec:
     name: Podspec
     needs: release-assets
