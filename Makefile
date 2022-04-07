@@ -23,9 +23,12 @@ release:
 lint:
 	bundle exec pod spec lint --no-clean --allow-warnings
 
-demo_app:
+demo_app_init:
 	@cd Demo && \
 	bundle install --quiet 2>/dev/null && \
-	mint run xcodegen && \
-	bundle exec pod install && \
-	xed BuildConfigSwiftDemo.xcworkspace
+	xcrun --sdk macosx swift run -c release --package-path Tools xcodegen && \
+	bundle exec pod install
+
+.PHONY: demo
+demo: demo_app_init
+	@xed Demo/BuildConfigSwiftDemo.xcworkspace

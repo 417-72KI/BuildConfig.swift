@@ -73,23 +73,19 @@ targets:
     preBuildScripts:
       - name: Lint
         script: |
-                if which swiftlint >/dev/null; then
-                swiftlint
-                else
-                echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
-                fi
+          xcrun --sdk macosx swift run -c release --package-path ${SRCROOT}/Tools swiftlint
       - name: BuildConfig.swift
         script: |
-                if [ "${CONFIGURATION}" = 'Release' ]; then
-                  ENVIRONMENT='production'
-                elif [ "${CONFIGURATION}" = 'Staging' ]; then
-                  ENVIRONMENT='staging'
-                elif [ "${CONFIGURATION}" = 'IntegrationTest' ]; then
-                  ENVIRONMENT='integration_test'
-                else
-                  ENVIRONMENT='development'
-                fi
-                ${PODS_ROOT}/BuildConfig.swift/buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config
+          if [ "${CONFIGURATION}" = 'Release' ]; then
+            ENVIRONMENT='production'
+          elif [ "${CONFIGURATION}" = 'Staging' ]; then
+            ENVIRONMENT='staging'
+          elif [ "${CONFIGURATION}" = 'IntegrationTest' ]; then
+            ENVIRONMENT='integration_test'
+          else
+            ENVIRONMENT='development'
+          fi
+          ${PODS_ROOT}/BuildConfig.swift/buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config
         inputFiles:
           - $(TEMP_DIR)/buildconfigswift-lastrun
         outputFiles:
