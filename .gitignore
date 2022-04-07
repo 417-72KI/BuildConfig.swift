@@ -88,3 +88,5 @@ xcuserdata
 
 
 # End of https://www.gitignore.io/api/swift,swiftpm
+
+test_output

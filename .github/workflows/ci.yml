@@ -35,11 +35,28 @@ jobs:
       - name: Cache SPM build directory
         uses: actions/cache@v3
         with:
-          path: .build
+          path: |
+            .build
+            DerivedData
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.swift') }}
           restore-keys: |
             ${{ runner.os }}-spm-${{ env.cache-name }}-
             ${{ runner.os }}-spm-
             ${{ runner.os }}-
-      - name: test
+      - name: test via SwiftPM
         run: set -o pipefail && swift test
+      - name: test via xcodebuild
+        run: |
+          set -o pipefail && \
+          xcrun --sdk macosx xcodebuild \
+          -enableCodeCoverage YES \
+          -scheme 'BuildConfig.swift' \
+          -destination "platform=macOS" \
+          -derivedDataPath 'DerivedData' \
+          -resultBundlePath 'test_output/BuildConfig_swift.xcresult' \
+          clean test | xcpretty
+      - uses: kishikawakatsumi/xcresulttool@v1
+        with:
+          path: test_output/BuildConfig_swift.xcresult
+          show-passed-tests: false
+        if: success() || failure()
