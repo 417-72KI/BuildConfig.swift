@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 #if DEBUG
 private extension AppDelegate {
     var isTesting: Bool {
-        return ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
     }
 }
 #endif
