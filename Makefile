@@ -25,7 +25,6 @@ lint:
 
 demo_app:
 	cd Demo && \
-	carthage bootstrap --platform iOS --cache-builds && \
 	mint run xcodegen && \
 	pod install
 	open Demo/BuildConfigSwiftDemo.xcworkspace

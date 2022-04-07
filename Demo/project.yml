@@ -6,13 +6,17 @@ configs:
   Release: release
 settings:
   base:
-    IPHONEOS_DEPLOYMENT_TARGET: 10.0
+    IPHONEOS_DEPLOYMENT_TARGET: 15.0
     SWIFT_VERSION: 5.0
     ALWAYS_SEARCH_USER_PATHS: false
     CLANG_ENABLE_OBJC_ARC: true
 options:
   xcodeVersion: 10.2
   bundleIdPrefix: io.github.417-72KI
+packages:
+  XCGLogger:
+    url: https://github.com/DaveWoodCom/XCGLogger.git
+    from: 7.0.1
 targets:
   BuildConfigSwiftDemo:
     type: application
@@ -97,8 +101,7 @@ targets:
         outputFiles:
           - $(SRCROOT)/Libs/R_swift/R.generated.swift
     dependencies:
-      - carthage: ObjcExceptionBridging
-      - carthage: XCGLogger
+      - package: XCGLogger
   BuildConfigSwiftDemoTests:
     type: bundle.unit-test
     platform: iOS
@@ -122,5 +125,3 @@ targets:
       DEVELOPMENT_TEAM: ""
     dependencies:
       - target: BuildConfigSwiftDemo
-      - carthage: Quick
-      - carthage: Nimble
