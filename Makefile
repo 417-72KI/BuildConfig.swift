@@ -1,6 +1,6 @@
 executable_name = buildconfigswift
 
-.PHONY : clean build test
+.PHONY: clean build test
 
 default: clean build
 
@@ -24,7 +24,8 @@ lint:
 	bundle exec pod spec lint --no-clean --allow-warnings
 
 demo_app:
-	cd Demo && \
+	@cd Demo && \
+	bundle install --quiet 2>/dev/null && \
 	mint run xcodegen && \
-	pod install
-	open Demo/BuildConfigSwiftDemo.xcworkspace
+	bundle exec pod install && \
+	xed BuildConfigSwiftDemo.xcworkspace

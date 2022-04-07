@@ -25,6 +25,7 @@ targets:
     sources: 
       - BuildConfigSwiftDemo
       - path: Libs
+        optional: true
       - path: Libs/R_swift/R.generated.swift
         optional: true
         createIntermediateGroups: true
