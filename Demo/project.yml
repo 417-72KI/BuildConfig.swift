@@ -73,7 +73,7 @@ targets:
     preBuildScripts:
       - name: Lint
         script: |
-          xcrun --sdk macosx swift run -c release --package-path ${SRCROOT}/Tools swiftlint
+          "${PODS_ROOT}/SwiftLint/swiftlint"
       - name: BuildConfig.swift
         script: |
           if [ "${CONFIGURATION}" = 'Release' ]; then
