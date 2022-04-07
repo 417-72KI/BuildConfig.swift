@@ -66,7 +66,7 @@ let package = Package(
             name: "ParserTests",
             dependencies: [
                 "Parser",
-                // "MirrorDiffKit"
+                "MirrorDiffKit"
             ],
             resources: [.copy("Resources")]
         ),
