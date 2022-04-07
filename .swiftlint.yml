@@ -1,9 +1,20 @@
 included:
   - Sources
+excluded:
+  - Tests
+  - Package.swift
+  - Dangerfile.swift
+allow_zero_lintable_files: true
 opt_in_rules:
+  # 一旦全部Opt-Inにする
+  # Command: `swiftlint rules | awk -F "|" '$3 ~ "yes" { print $2 }' | tr -d ' ' | sed 's/^/  - /' | pbcopy`
+  # Ref: https://qiita.com/shtnkgm/items/6dd756aa14926736c6f5#swiftlint%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%82%A2%E3%83%83%E3%83%97%E3%81%B8%E3%81%AE%E8%BF%BD%E5%BE%93
+  - anonymous_argument_in_multiline_closure
   - anyobject_protocol
   - array_init
   - attributes
+  - balanced_xctest_lifecycle
+  - capture_variable
   - closure_body_length
   - closure_end_indentation
   - closure_spacing
@@ -14,6 +25,9 @@ opt_in_rules:
   - contains_over_first_not_nil
   - contains_over_range_nil_comparison
   - convenience_type
+  - discarded_notification_center_observer
+  - discouraged_assert
+  - discouraged_none_name
   - discouraged_object_literal
   - discouraged_optional_boolean
   - discouraged_optional_collection
@@ -21,6 +35,8 @@ opt_in_rules:
   - empty_count
   - empty_string
   - empty_xctest_method
+  - enum_case_associated_values_count
+  - expiring_todo
   - explicit_acl
   - explicit_enum_raw_value
   - explicit_init
@@ -32,18 +48,21 @@ opt_in_rules:
   - fatal_error_message
   - file_header
   - file_name
+  - file_name_no_space
   - file_types_order
   - first_where
   - flatmap_over_map_reduce
   - force_unwrapping
   - function_default_parameter_at_end
+  - ibinspectable_in_extension
   - identical_operands
   - implicit_return
   - implicitly_unwrapped_optional
+  - indentation_width
   - joined_default_parameter
   - last_where
   - legacy_multiple
-  - legacy_random
+  - legacy_objc_type
   - let_var_whitespace
   - literal_expression_end_indentation
   - lower_acl_than_parent
@@ -63,12 +82,18 @@ opt_in_rules:
   - number_separator
   - object_literal
   - operator_usage_whitespace
+  - optional_enum_case_matching
   - overridden_super_call
   - override_in_extension
   - pattern_matching_keywords
+  - prefer_nimble
+  - prefer_self_in_static_references
+  - prefer_self_type_over_type_of_self
+  - prefer_zero_over_explicit_init
   - prefixed_toplevel_constant
   - private_action
   - private_outlet
+  - private_subject
   - prohibited_interface_builder
   - prohibited_super_call
   - quick_discouraged_call
@@ -87,6 +112,7 @@ opt_in_rules:
   - strict_fileprivate
   - strong_iboutlet
   - switch_case_on_newline
+  - test_case_accessibility
   - toggle_bool
   - trailing_closure
   - type_contents_order
@@ -100,6 +126,7 @@ opt_in_rules:
   - vertical_whitespace_between_cases
   - vertical_whitespace_closing_braces
   - vertical_whitespace_opening_braces
+  - weak_delegate
   - xct_specific_matcher
   - yoda_condition
 disabled_rules:
