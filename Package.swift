@@ -12,7 +12,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.1.1"),
         .package(name: "Yaml", url: "https://github.com/behrang/YamlSwift.git", .upToNextMajor(from: "3.4.4")),
-        .package(url: "https://github.com/jpsim/SourceKitten.git", .upToNextMajor(from: "0.26.0")),
+        .package(url: "https://github.com/jpsim/SourceKitten.git", .upToNextMajor(from: "0.32.0")),
         .package(url: "https://github.com/kylef/PathKit.git", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", .upToNextMajor(from: "2.8.0")),
         .package(url: "https://github.com/Kuniwak/MirrorDiffKit.git", .upToNextMajor(from: "5.0.1")),
