@@ -7,8 +7,8 @@ jobs:
     name: Release Assets
     runs-on: macOS-latest
     env:
-      PROJECT_NAME: BuildConfig.swift
       EXECUTABLE_NAME: buildconfigswift
+      EXECUTABLE_VERSION: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v3
       - name: Cache SPM build directory
@@ -31,7 +31,7 @@ jobs:
           set -e
           swift build -c release -Xswiftc -suppress-warnings
           .build/release/${EXECUTABLE_NAME} --version
-          zip -j .build/${EXECUTABLE_NAME}.zip .build/release/${EXECUTABLE_NAME} LICENSE
+          zip -j .build/${EXECUTABLE_NAME}-v${EXECUTABLE_VERSION}.zip .build/release/${EXECUTABLE_NAME} LICENSE
       - name: Create release
         if: success() && startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
@@ -50,5 +50,6 @@ jobs:
       - name: Deploy
         if: success() && startsWith(github.ref, 'refs/tags/')
         env:
+          POD_VERSION: ${{ github.ref_name }}
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: pod trunk push BuildConfig.swift.podspec

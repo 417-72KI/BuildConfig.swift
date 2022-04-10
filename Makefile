@@ -1,4 +1,3 @@
-project_name = BuildConfig.swift
 executable_name = buildconfigswift
 
 .PHONY : clean build test
@@ -19,7 +18,7 @@ test:
 	swift test
 
 release:
-	@scripts/release.sh $(project_name) $(executable_name)
+	@scripts/release.sh $(executable_name)
 
 lint:
 	bundle exec pod spec lint --no-clean --allow-warnings
