@@ -41,5 +41,21 @@ jobs:
             ${{ runner.os }}-spm-${{ env.cache-name }}-
             ${{ runner.os }}-spm-
             ${{ runner.os }}-
-      - name: test
+      - name: test via SwiftPM
         run: set -o pipefail && swift test
+      - name: test via xcodebuild
+        run: |
+          set -o pipefail && \
+          xcrun --sdk macosx xcodebuild \
+          -enableCodeCoverage YES \
+          -scheme "$(xcrun --sdk macosx xcodebuild -list -json | jq -rc '.workspace.schemes[] | select(. | startswith("BuildConfig"))')" \
+          -destination "platform=macOS" \
+          -clonedSourcePackagesDirPath '.build/SourcePackages' \
+          -resultBundlePath 'test_output/BuildConfig.swift.xcresult' \
+          clean test | xcpretty
+      - uses: kishikawakatsumi/xcresulttool@v1
+        with:
+          path: test_output/BuildConfig.swift.xcresult
+          show-passed-tests: false
+          show-code-coverage: false
+        if: success() || failure()
