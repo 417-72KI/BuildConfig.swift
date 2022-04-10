@@ -35,9 +35,7 @@ jobs:
       - name: Cache SPM build directory
         uses: actions/cache@v3
         with:
-          path: |
-            .build
-            DerivedData
+          path: .build
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.swift') }}
           restore-keys: |
             ${{ runner.os }}-spm-${{ env.cache-name }}-
@@ -52,7 +50,7 @@ jobs:
           -enableCodeCoverage YES \
           -scheme "$(xcrun --sdk macosx xcodebuild -list -json | jq -rc '.workspace.schemes[] | select(. | startswith("BuildConfig"))')" \
           -destination "platform=macOS" \
-          -derivedDataPath 'DerivedData' \
+          -clonedSourcePackagesDirPath '.build/SourcePackages' \
           -resultBundlePath 'test_output/BuildConfig.swift.xcresult' \
           clean test | xcpretty
       - uses: kishikawakatsumi/xcresulttool@v1
