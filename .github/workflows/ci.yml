@@ -57,4 +57,5 @@ jobs:
         with:
           path: test_output/BuildConfig.swift.xcresult
           show-passed-tests: false
+          show-code-coverage: false
         if: success() || failure()
