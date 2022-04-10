@@ -59,3 +59,11 @@ jobs:
           show-passed-tests: false
           show-code-coverage: false
         if: success() || failure()
+  danger:
+    name: Danger
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: 417-72KI/danger-swiftlint@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
