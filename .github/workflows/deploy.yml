@@ -37,7 +37,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: ${{ github.ref_name }}
-          files: .build/${{ env.EXECUTABLE_NAME }}.zip
+          files: .build/${{ env.EXECUTABLE_NAME }}-v${{ env.EXECUTABLE_VERSION }}.zip
           draft: false
   podspec:
     name: Podspec
