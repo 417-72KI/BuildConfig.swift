@@ -4,8 +4,8 @@ set -eu
 
 APPLICATION_INFO_FILE='Sources/Common/ApplicationInfo.swift'
 
-if [ $# -ne 2 ]; then
-    echo -e "\e[31mError\e[m"
+if [ $# -ne 1 ]; then
+    echo -e "\e[31m[Error] invalid arguments \`$@\`.\e[m"
     exit 1
 fi
 
