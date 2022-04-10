@@ -50,13 +50,13 @@ jobs:
           set -o pipefail && \
           xcrun --sdk macosx xcodebuild \
           -enableCodeCoverage YES \
-          -scheme 'BuildConfig.swift' \
+          -scheme "$(xcrun --sdk macosx xcodebuild -list -json | jq -rc '.workspace.schemes[] | select(. | startswith("BuildConfig"))')" \
           -destination "platform=macOS" \
           -derivedDataPath 'DerivedData' \
-          -resultBundlePath 'test_output/BuildConfig_swift.xcresult' \
+          -resultBundlePath 'test_output/BuildConfig.swift.xcresult' \
           clean test | xcpretty
       - uses: kishikawakatsumi/xcresulttool@v1
         with:
-          path: test_output/BuildConfig_swift.xcresult
+          path: test_output/BuildConfig.swift.xcresult
           show-passed-tests: false
         if: success() || failure()
