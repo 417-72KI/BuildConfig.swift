@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "BuildConfig.swift"
-  s.version      = "4.0.0-alpha"
+  s.version      = ENV['POD_VERSION']
   s.summary      = "Auto-generated BuildConfig for macOS/iOS"
 
   s.description  = <<-DESC
