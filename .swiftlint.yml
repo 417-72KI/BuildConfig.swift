@@ -130,6 +130,7 @@ opt_in_rules:
   - xct_specific_matcher
   - yoda_condition
 disabled_rules:
+  - anonymous_argument_in_multiline_closure
   - conditional_returns_on_newline
   - explicit_acl
   - explicit_enum_raw_value
@@ -159,3 +160,13 @@ disabled_rules:
   - vertical_whitespace_between_cases
 identifier_name:
   min_length: 2
+line_length:
+  warning: 180
+  ignores_urls: true
+  ignores_function_declarations: true
+  ignores_comments: true
+  ignores_interpolated_strings: true
+file_length:
+  ignore_comment_only_lines: true
+cyclomatic_complexity:
+  ignores_case_statements: true
