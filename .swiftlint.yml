@@ -142,6 +142,8 @@ disabled_rules:
   - file_types_order
   - force_unwrapping
   - function_default_parameter_at_end
+  - indentation_width # https://github.com/realm/SwiftLint/issues/3046
+  - let_var_whitespace # https://github.com/realm/SwiftLint/issues/2980
   - lower_acl_than_parent
   - missing_docs
   - no_extension_access_modifier
