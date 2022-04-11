@@ -24,7 +24,8 @@ lint:
 	bundle exec pod spec lint --no-clean --allow-warnings
 
 demo_app_init:
-	@cd Demo && \
+	@export POD_VERSION="$$(swift run $(executable_name) --version 2>/dev/null)" && \
+	cd Demo && \
 	bundle install --quiet 2>/dev/null && \
 	xcrun --sdk macosx swift run -c release --package-path Tools xcodegen && \
 	bundle exec pod install
