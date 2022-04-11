@@ -30,6 +30,11 @@ demo_app_init:
 	xcrun --sdk macosx swift run -c release --package-path Tools xcodegen && \
 	bundle exec pod install
 
+demo_app_update:
+	@export POD_VERSION="$$(swift run $(executable_name) --version 2>/dev/null)" && \
+	cd Demo && \
+	bundle exec pod update
+
 .PHONY: demo
 demo: demo_app_init
 	@xed Demo/BuildConfigSwiftDemo.xcworkspace
