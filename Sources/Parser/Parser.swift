@@ -71,7 +71,7 @@ extension Parser {
     }
 
     func parse(files: [File], skipInvalidFile: Bool) throws -> [AnyParsable] {
-        return try files.filter { !$0.isExcludedFile }
+        try files.filter { !$0.isExcludedFile }
             .compactMap {
                 if let path = $0.path {
                     dumpInfo("process: \(path)")

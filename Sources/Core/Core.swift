@@ -19,7 +19,7 @@ public struct Core {
         tempDirectoryPath: Path,
         scriptInputFiles: [Path],
         scriptOutputFiles: [Path]
-        ) {
+    ) {
         self.outputDirectory = outputDirectory
         self.environment = environment
         self.srcDirectoryPath = srcDirectoryPath
@@ -95,7 +95,6 @@ extension Core {
             try "\(Date().timeIntervalSince1970)\n"
                 .write(to: lastRunFile.url, atomically: true, encoding: .utf8)
         } catch {
-            // swiftlint:disable:next line_length
             dumpWarn("Failed to write out to '\(lastRunFile)', this might cause Xcode to not run the build phase for BuildConfig.swift: \(error)")
         }
     }

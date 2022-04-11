@@ -9,20 +9,20 @@ public extension File {
 
 public extension File {
     var isYaml: Bool {
-        return ["yml", "yaml"].contains(pathExtension)
+        ["yml", "yaml"].contains(pathExtension)
     }
 
     var isJson: Bool {
-        return ["json"].contains(pathExtension)
+        ["json"].contains(pathExtension)
     }
 
     var isExcludedFile: Bool {
-        return ["xcfilelist"].contains(pathExtension)
+        ["xcfilelist"].contains(pathExtension)
     }
 }
 
 private extension File {
     var pathExtension: String? {
-        return path?.bridge().pathExtension
+        path?.bridge().pathExtension
     }
 }

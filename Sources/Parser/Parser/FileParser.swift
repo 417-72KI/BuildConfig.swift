@@ -6,6 +6,6 @@ protocol FileParser {
 
 extension FileParser {
     func parse(file: File) throws -> AnyParsable {
-        return try parse(AnyParsable.self, file: file)
+        try parse(AnyParsable.self, file: file)
     }
 }

@@ -5,12 +5,12 @@ struct Struct {
 }
 
 extension Struct: StructPropertyType {
-    var typeString: String { return name }
+    var typeString: String { name }
 }
 
 extension Struct {
     var dictionary: [String: Any] {
-        return [
+        [
             "name": name,
             "parent": parent.joined(separator: "."),
             "properties": properties.map { ["name": $0.key.camelized(), "type": $0.value.typeString] }

@@ -18,5 +18,5 @@ public func dumpWarn(_ message: @autoclosure () -> String) {
 }
 
 private var tag: String {
-    return "[\(ApplicationInfo.name)(\(ApplicationInfo.version))] "
+    "[\(ApplicationInfo.name)(\(ApplicationInfo.version))] "
 }
