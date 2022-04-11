@@ -104,3 +104,4 @@ iOSInjectionProject/
 !**/Settings.bundle/Root.plist
 !**/com.mono0926.LicensePlist.plist
 !**/com.mono0926.LicensePlist/*.plist
+.swiftlint.yml

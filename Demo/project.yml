@@ -73,6 +73,12 @@ targets:
     preBuildScripts:
       - name: Lint
         script: |
+          # Copy .swiftlint.yml from root because `parent_config` not working.
+          # https://github.com/realm/SwiftLint/issues/3645
+          cat "${SRCROOT}/../.swiftlint.yml" \
+              | yq '. | .included = ["BuildConfigSwiftDemo"] 
+                      | .excluded = ["Libs", "Pods", "Carthage", "Tools"]' \
+              > "${SRCROOT}/.swiftlint.yml"
           "${PODS_ROOT}/SwiftLint/swiftlint"
       - name: BuildConfig.swift
         script: |

@@ -1,7 +1,0 @@
-included:
-  - BuildConfigSwiftDemo
-excluded:
-  - Libs
-  - Pods
-  - Carthage
-parent_config: ../.swiftlint.yml
