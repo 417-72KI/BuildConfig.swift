@@ -64,6 +64,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Copy .swiftlint.yml for demo app
+        run: sh ./scripts/copy-lint-config.sh
       - uses: 417-72KI/danger-swiftlint@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
