@@ -9,7 +9,7 @@
 import Foundation
 import XCGLogger
 
-let log: XCGLogger = XCGLogger()
+let log = XCGLogger()
 
 func setupLog(isDebugMode: Bool) {
     if isDebugMode {
