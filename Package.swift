@@ -44,7 +44,7 @@ let package = Package(
             name: "Parser",
             dependencies: [
                 "Common",
-                "Yaml"
+                .product(name: "Yaml", package: "YamlSwift"),
             ]
         ),
         .target(
