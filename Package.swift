@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "BuildConfig.swift",
-    platforms: [ .macOS(.v10_14) ],
+    platforms: [ .macOS(.v11) ],
     products: [
         .executable(name: "buildconfigswift", targets: ["BuildConfig.swift"])
     ],
