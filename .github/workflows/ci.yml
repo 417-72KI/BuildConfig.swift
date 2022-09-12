@@ -24,7 +24,7 @@ jobs:
   test:
     name: Test
     needs: generate-matrix
-    runs-on: macOS-latest
+    runs-on: macOS-12
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
