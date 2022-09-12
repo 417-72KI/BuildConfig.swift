@@ -11,8 +11,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.1.4"),
-        .package(name: "Yaml", url: "https://github.com/behrang/YamlSwift.git", from: "3.4.4"),
-        .package(url: "https://github.com/jpsim/SourceKitten.git", .exact("0.32.0")),
+        .package(url: "https://github.com/behrang/YamlSwift.git", from: "3.4.4"),
+        .package(url: "https://github.com/jpsim/SourceKitten.git", from: "0.32.0"),
         .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.1"),
         .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", from: "2.10.1"),
         .package(url: "https://github.com/Kuniwak/MirrorDiffKit.git", from: "5.0.1"),
