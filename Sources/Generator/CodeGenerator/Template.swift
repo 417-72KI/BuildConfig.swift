@@ -31,7 +31,7 @@ extension Template {
                 {% if codingKeys %}
                 enum CodingKeys: String, CodingKey {
                     {% for codingKey in codingKeys %}
-                    case {{ codingKey.key }}{% if codingKey.key != codingKey.origin %} = "{{ codingKey.origin }}"{% endif %}
+                    case {{ codingKey.key }}{% if codingKey.key != codingKey.origin %} = "{{ codingKey.origin }}"{% endif %}\n
                     {% endfor %}
                 }
                 {% endif %}
@@ -70,7 +70,7 @@ extension Template {
                     {% if codingKeys %}
                     enum CodingKeys: String, CodingKey {
                         {% for codingKey in codingKeys %}
-                        case {{ codingKey.key }}{% if codingKey.key != codingKey.origin %} = "{{ codingKey.origin }}"{% endif %}
+                        case {{ codingKey.key }}{% if codingKey.key != codingKey.origin %} = "{{ codingKey.origin }}"{% endif %}\n
                         {% endfor %}
                     }
                     {% endif %}

@@ -1,5 +1,5 @@
 import SourceKittenFramework
-import StencilSwiftKit
+import Stencil
 
 struct CodeGenerator {
     let content: Struct
@@ -42,7 +42,8 @@ extension CodeGenerator {
     }
 
     func render(with template: Template, dictionary: [String: Any] = [:]) throws -> String {
-        try StencilSwiftTemplate(templateString: template.code)
+        try Stencil.Template(templateString: template.code,
+                             environment: .init(trimBehaviour: .smart))
             .render(dictionary)
     }
 }
