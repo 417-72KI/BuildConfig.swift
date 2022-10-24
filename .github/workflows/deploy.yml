@@ -23,7 +23,7 @@ jobs:
       - id: set-xcode-version
         run: |
           xcode_version=$(cat versions.json | jq -rc '.xcode_version | max')
-          echo "::set-output name=xcode-version::$xcode_version"
+          echo "xcode-version=$xcode_version" >> $GITHUB_OUTPUT
       - name: Build and zip
         env:
           DEVELOPER_DIR: /Applications/Xcode_${{ steps.set-xcode-version.outputs.xcode-version }}.app/Contents/Developer
