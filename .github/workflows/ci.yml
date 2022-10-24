@@ -24,7 +24,7 @@ jobs:
   test:
     name: Test
     needs: generate-matrix
-    runs-on: macOS-latest
+    runs-on: macOS-12
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
@@ -58,9 +58,10 @@ jobs:
           path: test_output/BuildConfig.swift.xcresult
           show-passed-tests: false
           show-code-coverage: false
-        if: success() || failure()
+        if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
   danger:
     name: Danger
+    if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
