@@ -58,7 +58,7 @@ jobs:
           path: test_output/BuildConfig.swift.xcresult
           show-passed-tests: false
           show-code-coverage: false
-        if: success() || failure()
+        if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
   danger:
     name: Danger
     if: ${{ github.event_name == 'pull_request' }}
