@@ -26,9 +26,6 @@ targets:
       - BuildConfigSwiftDemo
       - path: Libs
         optional: true
-      - path: Libs/R_swift/R.generated.swift
-        optional: true
-        createIntermediateGroups: true
       - path: Libs/BuildConfig_swift/BuildConfig.generated.swift
         optional: true
         createIntermediateGroups: true
@@ -93,12 +90,6 @@ targets:
         outputFiles:
           - $(SRCROOT)/Libs/BuildConfig_swift/BuildConfig.generated.swift
           - $(SRCROOT)/Libs/BuildConfig_swift/BuildConfig.plist
-      - name: R.swift
-        script: ${PODS_ROOT}/R.swift/rswift generate ${SRCROOT}/Libs/R_swift/R.generated.swift
-        inputFiles:
-          - $(TEMP_DIR)/rswift-lastrun
-        outputFiles:
-          - $(SRCROOT)/Libs/R_swift/R.generated.swift
     dependencies:
       - package: XCGLogger
   BuildConfigSwiftDemoTests:
