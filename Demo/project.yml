@@ -84,7 +84,11 @@ targets:
           else
             ENVIRONMENT='development'
           fi
-          ${PODS_ROOT}/BuildConfig.swift/buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config
+          if [ -e ${PODS_ROOT}/BuildConfig.swift/buildconfigswift ]; then
+            ${PODS_ROOT}/BuildConfig.swift/buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config # For CI Run
+          else
+            xcrun -sdk macosx swift run --package-path "${SRCROOT}/.." buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config # For Development
+          fi
         inputFiles:
           - $(TEMP_DIR)/buildconfigswift-lastrun
         outputFiles:

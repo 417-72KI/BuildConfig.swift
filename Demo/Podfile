@@ -7,7 +7,7 @@ target 'BuildConfigSwiftDemo' do
 
   # Pods for BuildConfigSwiftDemo
   pod 'SwiftLint'
-  pod 'BuildConfig.swift', :path => '../'
+  # pod 'BuildConfig.swift' # For CI build
 
   target 'BuildConfigSwiftDemoTests' do
     inherit! :search_paths
