@@ -71,10 +71,18 @@ targets:
     preBuildScripts:
       - name: Lint
         script: |
+          if [ "$ENABLE_PREVIEWS" == "YES" ]; then
+            exit 0
+          fi
+
           "${SRCROOT}/../scripts/copy-lint-config.sh"
           "${PODS_ROOT}/SwiftLint/swiftlint"
       - name: BuildConfig.swift
         script: |
+          if [ "$ENABLE_PREVIEWS" == "YES" ]; then
+            exit 0
+          fi
+
           if [ "${CONFIGURATION}" = 'Release' ]; then
             ENVIRONMENT='production'
           elif [ "${CONFIGURATION}" = 'Staging' ]; then
