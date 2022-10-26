@@ -1,8 +1,9 @@
-enum Template: CaseIterable {
+enum Template {
     case header
     case root
     case loadExtension
     case `struct`
+    case rawData(asBinary: Bool)
 }
 
 extension Template {
@@ -41,8 +42,7 @@ extension Template {
             return """
             private extension BuildConfig {
                 static func load() -> BuildConfig {
-                    guard let filePath = Bundle.main.path(forResource: "BuildConfig", ofType: "plist") else { fatalError("BuildConfig.plist not found") }
-                    return load(from: filePath)
+                    load(from: rawData)
                 }
             }
 
@@ -50,9 +50,17 @@ extension Template {
                 static func load(from filePath: String) -> BuildConfig {
                     do {
                         let data = try Data(contentsOf: URL(fileURLWithPath: filePath))
-                        return try PropertyListDecoder().decode(BuildConfig.self, from: data)
+                        return load(from: data)
                     } catch {
                         fatalError("\\(filePath) is invalid. cause: \\(error)")
+                    }
+                }
+
+                static func load(from data: Data) -> BuildConfig {
+                    do {
+                        return try PropertyListDecoder().decode(BuildConfig.self, from: data)
+                    } catch {
+                        fatalError("Invalid data (\\(String(data: data, encoding: .utf8) ?? ""). cause: \\(error)")
                     }
                 }
             }
@@ -77,6 +85,16 @@ extension Template {
                 }
             }
             """
+        case let .rawData(asBinary):
+            if asBinary {
+                return #"private let rawData = Data(base64Encoded: "{{ rawData }}")!"#
+            } else {
+                return """
+                    private let rawData = \"\"\"
+                    {{ rawData }}
+                    \"\"\".data(using: .utf8)!
+                    """
+            }
         }
     }
 }
