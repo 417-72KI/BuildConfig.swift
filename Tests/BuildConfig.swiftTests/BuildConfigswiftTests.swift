@@ -50,13 +50,10 @@ final class BuildConfigswiftTests: XCTestCase {
                     process.waitUntilExit()
                     XCTAssertEqual(ExitCode(process.terminationStatus), .success)
 
-                    let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.plist")
+                    let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.generated.swift")
                     XCTAssertTrue(FileManager.default.fileExists(atPath: createdFile.path))
-                    let createdData = try XCTUnwrap(try Data(contentsOf: createdFile))
-                    let expectedData = try XCTUnwrap(try Data(contentsOf: expectedStagingFilePath.url))
-                    let actual = try XCTUnwrap(try PropertyListSerialization.propertyList(from: createdData, options: [], format: nil) as? NSDictionary)
-                    let expected = try XCTUnwrap(try PropertyListSerialization.propertyList(from: expectedData, options: [], format: nil) as? NSDictionary)
-                    XCTAssertEqual(actual, expected)
+
+                    try verifyGeneratedSwift(createdFile)
                 }
                 try context("production") {
                     let pipe = Pipe()
@@ -76,13 +73,9 @@ final class BuildConfigswiftTests: XCTestCase {
                     process.waitUntilExit()
                     XCTAssertEqual(ExitCode(process.terminationStatus), .success)
 
-                    let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.plist")
+                    let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.generated.swift")
                     XCTAssertTrue(FileManager.default.fileExists(atPath: createdFile.path))
-                    let createdData = try XCTUnwrap(try Data(contentsOf: createdFile))
-                    let expectedData = try XCTUnwrap(try Data(contentsOf: expectedProductionFilePath.url))
-                    let actual = try XCTUnwrap(try PropertyListSerialization.propertyList(from: createdData, options: [], format: nil) as? NSDictionary)
-                    let expected = try XCTUnwrap(try PropertyListSerialization.propertyList(from: expectedData, options: [], format: nil) as? NSDictionary)
-                    XCTAssertEqual(actual, expected)
+                    try verifyGeneratedSwift(createdFile)
                 }
             }
             try context("with invalid environments") {
@@ -133,14 +126,14 @@ final class BuildConfigswiftTests: XCTestCase {
 private extension BuildConfigswiftTests {
     /// Returns path to the built products directory.
     static var productsDirectory: URL {
-        #if os(macOS)
+#if os(macOS)
         for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
             return bundle.bundleURL.deletingLastPathComponent()
         }
         fatalError("couldn't find the products directory")
-        #else
+#else
         return Bundle.main.bundleURL
-        #endif
+#endif
     }
 
     /// Returns path to the built products directory.
@@ -163,6 +156,95 @@ private extension BuildConfigswiftTests {
             process.standardOutput = pipe
         }
         return process
+    }
+}
+
+private extension BuildConfigswiftTests {
+    func verifyGeneratedSwift(_ fileURL: URL) throws {
+        let fileName = fileURL.lastPathComponent
+        guard fileName.hasSuffix(".swift"),
+              var content = String(data: try Data(contentsOf: fileURL), encoding: .utf8) else { throw SwiftError.invalidFile(fileURL.path) }
+        content += [
+            "print(BuildConfig.default.API.domain)",
+            "print(BuildConfig.default.API.path.getList.method)",
+            "print(BuildConfig.default.API.path.getList.path)",
+            "print(BuildConfig.default.API.path.login.method)",
+            "print(BuildConfig.default.API.path.login.path)",
+            "print(BuildConfig.default.boolToken1)",
+            "print(BuildConfig.default.boolToken2)",
+            "print(BuildConfig.default.doubleToken)",
+            "print(BuildConfig.default.fugaToken)",
+            "print(BuildConfig.default.hogeToken)",
+            "print(BuildConfig.default.numberToken)"
+        ].reduce(into: "\n") { $0 += $1 + "\n" }
+
+        let tmpSwiftFileURL = fileURL.deletingLastPathComponent()
+            .appendingPathComponent("_\(fileName)")
+        try content.write(to: tmpSwiftFileURL, atomically: true, encoding: .utf8)
+
+        try executeSwiftFile(tmpSwiftFileURL)
+    }
+
+    enum SwiftError: Error {
+        case invalidFile(String)
+        case invalidExitCode(ExitCode)
+    }
+
+    @discardableResult
+    func executeSwiftFile(_ fileURL: URL) throws -> [String] {
+        let fileName = fileURL.lastPathComponent
+        guard fileName.hasSuffix(".swift") else {
+            throw SwiftError.invalidFile(fileURL.path)
+        }
+        let moduleName = String(
+            fileName
+                .split(separator: ".")
+                .first
+            ?? fileName.dropLast(6)
+        )
+
+        let process = Process()
+        process.currentDirectoryURL = fileURL.deletingLastPathComponent()
+        process.executableURL = {
+            let process = Process()
+            process.executableURL = URL(fileURLWithPath: "/bin/sh")
+            process.arguments = ["-c", "xcrun --find swift"]
+            let pipe = Pipe()
+            process.standardOutput = pipe
+            do {
+                try process.run()
+                process.waitUntilExit()
+                let stdout = pipe.fileHandleForReading.readDataToEndOfFile()
+                guard let path = String(data: stdout, encoding: .utf8)?
+                    .trimmingCharacters(in: .whitespacesAndNewlines),
+                      path.hasSuffix("/swift") else { return nil }
+                return URL(fileURLWithPath: path)
+            } catch {
+                print(error)
+                return nil
+            }
+        }()
+        process.arguments = [
+            "-module-name",
+            moduleName,
+            fileURL.lastPathComponent
+        ]
+
+        if let executableURL = process.executableURL,
+           let arguments = process.arguments {
+            print(executableURL.path, arguments.joined(separator: " "))
+        }
+        let pipe = Pipe()
+        process.standardOutput = pipe
+
+        try process.run()
+        process.waitUntilExit()
+        guard case .success = process.exitCode else {
+            throw SwiftError.invalidExitCode(process.exitCode)
+        }
+        return String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)?
+            .split(separator: "\n")
+            .compactMap(String.init) ?? []
     }
 }
 
