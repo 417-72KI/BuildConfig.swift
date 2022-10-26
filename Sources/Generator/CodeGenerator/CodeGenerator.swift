@@ -1,8 +1,10 @@
 import SourceKittenFramework
+import Foundation
 import Stencil
 
 struct CodeGenerator {
     let content: Struct
+    let data: Data
 }
 
 extension CodeGenerator {
@@ -11,9 +13,10 @@ extension CodeGenerator {
         let root = try generateRoot()
         let loadExtension = try generateLoadExtension()
         let structs = try generateStruct(from: content)
+        let rawData = try generateRawData(from: data)
 
         let array = structs.trimmingCharacters(in: .whitespacesAndNewlines)
-            .isEmpty ? [header, root, loadExtension] : [header, root, loadExtension, structs]
+            .isEmpty ? [header, root, loadExtension, rawData] : [header, root, loadExtension, structs, rawData]
         return array.joined(separator: "\n\n") + "\n"
     }
 }
@@ -39,6 +42,18 @@ extension CodeGenerator {
             .sorted(by: { $0.name < $1.name })
             .map { try generateStruct(from: $0) }
         return (root + children).joined(separator: "\n\n")
+    }
+
+    func generateRawData(from data: Data, asBinary: Bool = true) throws -> String {
+        let rawDataString: String
+        if asBinary {
+            rawDataString = data.base64EncodedString()
+        } else {
+            let propertyList = try PropertyListSerialization.propertyList(from: data, format: nil)
+            let rawData = try PropertyListSerialization.data(fromPropertyList: propertyList, format: .xml, options: 0)
+            rawDataString = String(data: rawData, encoding: .utf8) ?? ""
+        }
+        return try render(with: .rawData(asBinary: asBinary), dictionary: ["rawData": rawDataString])
     }
 
     func render(with template: Template, dictionary: [String: Any] = [:]) throws -> String {
