@@ -6,6 +6,8 @@ import ArgumentParser
 final class BuildConfigswiftTests: XCTestCase {
     private static let tmpDirectory = productsDirectory.appendingPathComponent("tmp")
 
+    private let needsDump = false
+
     override class func setUp() {
         try? FileManager.default.createDirectory(at: tmpDirectory, withIntermediateDirectories: true, attributes: nil)
     }
@@ -17,7 +19,7 @@ final class BuildConfigswiftTests: XCTestCase {
     func testBinary() throws {
         let tmpDirectory = Self.tmpDirectory
         let fooBinary = productsDirectory.appendingPathComponent("buildconfigswift")
-        print("binary: \(fooBinary)")
+        dumpLog("binary: \(fooBinary)")
         try context("version") {
             let pipe = Pipe()
             let process = process(
@@ -145,13 +147,13 @@ private extension BuildConfigswiftTests {
                  pipe: Pipe? = nil,
                  handler: ((Process) -> Void)? = nil) -> Process {
         let binary = productsDirectory.appendingPathComponent("buildconfigswift")
-        print("binary: \(binary)")
+        dumpLog("binary: \(binary)")
         let process = Process()
         process.executableURL = binary
         process.arguments = arguments
-        print("arguments: \(process.arguments ?? [])")
+        dumpLog("arguments: \(process.arguments ?? [])")
         handler?(process)
-        print("environment: \(process.environment ?? [:])")
+        dumpLog("environment: \(process.environment ?? [:])")
         if let pipe = pipe {
             process.standardOutput = pipe
         }
@@ -187,7 +189,7 @@ private extension BuildConfigswiftTests {
 
     enum SwiftError: Error {
         case invalidFile(String)
-        case invalidExitCode(ExitCode)
+        case invalidExitCode(ExitCode, stdErr: String?)
     }
 
     @discardableResult
@@ -220,7 +222,7 @@ private extension BuildConfigswiftTests {
                       path.hasSuffix("/swift") else { return nil }
                 return URL(fileURLWithPath: path)
             } catch {
-                print(error)
+                dumpLog(error)
                 return nil
             }
         }()
@@ -232,19 +234,29 @@ private extension BuildConfigswiftTests {
 
         if let executableURL = process.executableURL,
            let arguments = process.arguments {
-            print(executableURL.path, arguments.joined(separator: " "))
+            dumpLog(executableURL.path, arguments.joined(separator: " "))
         }
-        let pipe = Pipe()
-        process.standardOutput = pipe
+        let stdOutPipe = Pipe()
+        let stdErrPipe = Pipe()
+        process.standardOutput = stdOutPipe
+        process.standardError = stdErrPipe
 
         try process.run()
         process.waitUntilExit()
         guard case .success = process.exitCode else {
-            throw SwiftError.invalidExitCode(process.exitCode)
+            throw SwiftError.invalidExitCode(process.exitCode,
+                                             stdErr: String(data: stdErrPipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8))
         }
-        return String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)?
+        return String(data: stdOutPipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)?
             .split(separator: "\n")
             .compactMap(String.init) ?? []
     }
 }
 
+private extension BuildConfigswiftTests {
+    func dumpLog(_ items: Any..., file: StaticString = #file, line: UInt = #line) {
+        if needsDump {
+            print("[\(URL(fileURLWithPath: String(describing: file)).lastPathComponent):L\(line)]", (items as [Any]).map(String.init(describing:)).joined(separator: " "))
+        }
+    }
+}
