@@ -26,9 +26,6 @@ targets:
       - BuildConfigSwiftDemo
       - path: Libs
         optional: true
-      - path: Libs/R_swift/R.generated.swift
-        optional: true
-        createIntermediateGroups: true
       - path: Libs/BuildConfig_swift/BuildConfig.generated.swift
         optional: true
         createIntermediateGroups: true
@@ -74,10 +71,18 @@ targets:
     preBuildScripts:
       - name: Lint
         script: |
+          if [ "$ENABLE_PREVIEWS" == "YES" ]; then
+            exit 0
+          fi
+
           "${SRCROOT}/../scripts/copy-lint-config.sh"
           "${PODS_ROOT}/SwiftLint/swiftlint"
       - name: BuildConfig.swift
         script: |
+          if [ "$ENABLE_PREVIEWS" == "YES" ]; then
+            exit 0
+          fi
+
           if [ "${CONFIGURATION}" = 'Release' ]; then
             ENVIRONMENT='production'
           elif [ "${CONFIGURATION}" = 'Staging' ]; then
@@ -87,18 +92,16 @@ targets:
           else
             ENVIRONMENT='development'
           fi
-          ${PODS_ROOT}/BuildConfig.swift/buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config
+          if [ -e ${PODS_ROOT}/BuildConfig.swift/buildconfigswift ]; then
+            ${PODS_ROOT}/BuildConfig.swift/buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config # For CI Run
+          else
+            xcrun -sdk macosx swift run --package-path "${SRCROOT}/.." buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config # For Development
+          fi
         inputFiles:
           - $(TEMP_DIR)/buildconfigswift-lastrun
         outputFiles:
           - $(SRCROOT)/Libs/BuildConfig_swift/BuildConfig.generated.swift
           - $(SRCROOT)/Libs/BuildConfig_swift/BuildConfig.plist
-      - name: R.swift
-        script: ${PODS_ROOT}/R.swift/rswift generate ${SRCROOT}/Libs/R_swift/R.generated.swift
-        inputFiles:
-          - $(TEMP_DIR)/rswift-lastrun
-        outputFiles:
-          - $(SRCROOT)/Libs/R_swift/R.generated.swift
     dependencies:
       - package: XCGLogger
   BuildConfigSwiftDemoTests:
