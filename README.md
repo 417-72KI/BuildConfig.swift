@@ -67,6 +67,8 @@ pod 'BuildConfig.swift'
 
 - Add the following `Run script` build phase to your test target's `Build Phases`:
 
+#### Example
+
 ```Bash
 if [ "${CONFIGURATION}" = 'Release' ]; then
   ENVIRONMENT='production'
@@ -82,15 +84,14 @@ You can replace `"$SRCROOT/$PROJECT/Resources/Config"` to the relative path from
 Also, you can add `-o` option with output path to specify where `BuildConfig.plist` and `BuildConfig.generated.swift` will be created.
 
 - Add `$(TEMP_DIR)/buildconfigswift-lastrun` into `Input Files` in above `Run script` build phase.
-- Add `$(SRCROOT)/BuildConfig.plist` and `$(SRCROOT)/BuildConfig.generated.swift` into `Output Files` in above `Run script` build phase.
-    - If you set a path to output generated files by `-o` option, you have to change `Output Files` to those paths.
+- Add `$(SRCROOT)/BuildConfig.generated.swift` into `Output Files` in above `Run script` build phase.
+    - If you set a path to output generated files by `-o` option, you have to change `Output Files` to it's path.
 
-- Drag the new `Run Script` phase **above** the `Compile Sources` phase and **below** `Check Pods Manifest.lock`  
-  If you are using [_R.swift_](https://github.com/mac-cain13/R.swift), drag the new `Run Script` **above** the `Run Script` phase for _R.swift_ and you can load with `R.file.configPlist`.
-- Build your project, in Finder you will now see a `BuildConfig.plist` and `BuildConfig.generated.swift` in `$SRCROOT` or a path you set with `-o` option in above `Run script` build phase.
+- Drag the new `Run Script` phase **above** the `Compile Sources` phase and **below** `Check Pods Manifest.lock`.
+- Build your project, in Finder you will now see a `BuildConfig.generated.swift` in `$SRCROOT` or a path you set with `-o` option in above `Run script` build phase.
 - Drag them into your project.
 
-_Tip:_ Add the `BuildConfig.plist` pattern and the `*.generated.swift` pattern to your `.gitignore` file to prevent unnecessary conflicts.
+_Tip:_ Add the `*.generated.swift` pattern to your `.gitignore` file to prevent unnecessary conflicts.
 
 ### Manually
 TODO: Future support.
@@ -108,8 +109,6 @@ TODO: Future support.
 * [SourceKitten](https://github.com/jpsim/SourceKitten)
 * [Commander](https://github.com/kylef/Commander)
 * [PathKit](https://github.com/kylef/PathKit)
-* [Nimble](https://github.com/Quick/Nimble.git)
-* [Quick](https://github.com/Quick/Quick.git)
 
 ## License
 Available under the [MIT License](LICENSE).
