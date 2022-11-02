@@ -78,6 +78,7 @@ extension Core {
     }
 }
 
+@available(*, deprecated, message: "Will be removed soon.")
 extension Core {
     func createLastRunFile() {
         let lastRunFile = tempDirectoryPath + Constants.lastRunFileName
