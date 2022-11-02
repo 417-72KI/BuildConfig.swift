@@ -19,6 +19,6 @@ public extension Generator {
             format: nil
         ) as? [AnyHashable: Any] else { throw GeneratorError.invalidData }
         guard let parsed = Parser(content: content).run() else { throw GeneratorError.parseFailed(content) }
-        return try CodeGenerator(content: parsed).run()
+        return try CodeGenerator(content: parsed, data: data).run()
     }
 }

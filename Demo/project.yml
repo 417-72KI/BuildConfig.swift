@@ -29,9 +29,6 @@ targets:
       - path: Libs/BuildConfig_swift/BuildConfig.generated.swift
         optional: true
         createIntermediateGroups: true
-      - path: Libs/BuildConfig_swift/BuildConfig.plist
-        optional: true
-        createIntermediateGroups: true
     info:
       path: BuildConfigSwiftDemo/Resources/Info.plist
       properties:
@@ -77,6 +74,7 @@ targets:
 
           "${SRCROOT}/../scripts/copy-lint-config.sh"
           "${PODS_ROOT}/SwiftLint/swiftlint"
+        basedOnDependencyAnalysis: false
       - name: BuildConfig.swift
         script: |
           if [ "$ENABLE_PREVIEWS" == "YES" ]; then
@@ -101,7 +99,7 @@ targets:
           - $(TEMP_DIR)/buildconfigswift-lastrun
         outputFiles:
           - $(SRCROOT)/Libs/BuildConfig_swift/BuildConfig.generated.swift
-          - $(SRCROOT)/Libs/BuildConfig_swift/BuildConfig.plist
+        basedOnDependencyAnalysis: false
     dependencies:
       - package: XCGLogger
   BuildConfigSwiftDemoTests:

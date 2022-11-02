@@ -29,8 +29,7 @@ struct BuildConfig: Codable {
 
 private extension BuildConfig {
     static func load() -> BuildConfig {
-        guard let filePath = Bundle.main.path(forResource: "BuildConfig", ofType: "plist") else { fatalError("BuildConfig.plist not found") }
-        return load(from: filePath)
+        load(from: rawData)
     }
 }
 
@@ -38,9 +37,17 @@ extension BuildConfig {
     static func load(from filePath: String) -> BuildConfig {
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: filePath))
-            return try PropertyListDecoder().decode(BuildConfig.self, from: data)
+            return load(from: data)
         } catch {
             fatalError("\(filePath) is invalid. cause: \(error)")
+        }
+    }
+
+    static func load(from data: Data) -> BuildConfig {
+        do {
+            return try PropertyListDecoder().decode(BuildConfig.self, from: data)
+        } catch {
+            fatalError("Invalid data (\(String(data: data, encoding: .utf8) ?? ""). cause: \(error)")
         }
     }
 }
@@ -88,3 +95,5 @@ extension BuildConfig {
         }
     }
 }
+
+private let rawData = Data(base64Encoded: "YnBsaXN0MDDXAQIDBAUGBwgJCg4YGxxVdG9rZW5ScGlXbGljZW5zZVNBUElUYm9vdFtlbnZpcm9ubWVudFdpc0RlYnVnEgAB4kAjQAkh+1RELRGjCwwNVFlhbWxXUGF0aEtpdF8QD1N0ZW5jaWxTd2lmdEtpdNIPEBEXVHBhdGhWZG9tYWlu0RITVWxvZ2lu0g8UFRZWbWV0aG9kVi9sb2dpblRQT1NUXxASaHR0cDovLzE5Mi4xNjguMC4x0RkaV21lc3NhZ2VdSGVsbG8sIFdvcmxkIVtkZXZlbG9wbWVudAgIFx0gKCwxPUVKU1dcZHZ7gIeKkJWco6i9wMjW4gAAAAAAAAEBAAAAAAAAAB0AAAAAAAAAAAAAAAAAAADj")!

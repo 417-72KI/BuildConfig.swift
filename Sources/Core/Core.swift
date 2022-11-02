@@ -33,9 +33,8 @@ public struct Core {
 
         try validate()
 
-        let data = try Parser(directoryPath: srcDirectoryPath).run(environment: environment)
-        let outputFile = outputDirectory + Constants.defaultOutputFileName
-        try dumpData(data, to: outputFile)
+        let data = try Parser(directoryPath: srcDirectoryPath)
+            .run(environment: environment)
 
         let generatedSwift = try Generator(data: data).run()
         let outputSwiftFile = outputDirectory + Constants.generatedSwiftFileName
@@ -59,9 +58,6 @@ extension Core {
         }
 
         let scriptOutputFiles = self.scriptOutputFiles.map { $0.lastComponent }
-        if !scriptOutputFiles.contains(Constants.defaultOutputFileName) {
-            errors.append("Build phase Output Files does not contain `path/to/\(Constants.defaultOutputFileName)`")
-        }
         if !scriptOutputFiles.contains(Constants.generatedSwiftFileName) {
             errors.append("Build phase Output Files does not contain `path/to/\(Constants.generatedSwiftFileName)`")
         }
@@ -71,12 +67,6 @@ extension Core {
 }
 
 extension Core {
-    func dumpData(_ data: Data, to dest: Path) throws {
-        precondition(!dest.isDirectory, "\(dest) is directory.")
-        try data.write(to: dest.url)
-        dumpInfo("create \(dest)")
-    }
-
     func dumpSwift(_ content: String, to dest: Path) throws {
         let currentContent = try? String(contentsOf: dest.url)
         if currentContent == content {
