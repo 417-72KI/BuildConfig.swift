@@ -29,8 +29,6 @@ public struct Core {
     }
 
     public func execute() throws {
-        defer { createLastRunFile() }
-
         do {
             try validate()
         } catch let error as ValidationError {
@@ -82,18 +80,5 @@ extension Core {
         }
         try content.write(to: dest.url, atomically: true, encoding: .utf8)
         dumpInfo("create \(dest)")
-    }
-}
-
-@available(*, deprecated, message: "Will be removed soon.")
-extension Core {
-    func createLastRunFile() {
-        let lastRunFile = tempDirectoryPath + Constants.lastRunFileName
-        do {
-            try "\(Date().timeIntervalSince1970)\n"
-                .write(to: lastRunFile.url, atomically: true, encoding: .utf8)
-        } catch {
-            dumpWarn("Failed to write out to '\(lastRunFile)', this might cause Xcode to not run the build phase for BuildConfig.swift: \(error)")
-        }
     }
 }
