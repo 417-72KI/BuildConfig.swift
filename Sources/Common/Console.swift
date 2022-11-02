@@ -2,11 +2,11 @@ import Darwin
 import Foundation
 
 public func dumpInfo(_ message: @autoclosure () -> String) {
-    fputs("\(tag)[Info] \(message())\n", stdout)
+    fputs("\(tag) \(message())\n", stdout)
 }
 
 public func dumpError(_ message: @autoclosure () -> String) {
-    fputs("\(tag)[Error] \(message())\n", stderr)
+    fputs("error: \(tag) \(message())\n", stderr)
 }
 
 public func dumpError(_ error: @autoclosure () -> Error) {
@@ -14,7 +14,7 @@ public func dumpError(_ error: @autoclosure () -> Error) {
 }
 
 public func dumpWarn(_ message: @autoclosure () -> String) {
-    fputs("\(tag)[Warning] \(message())\n", stderr)
+    fputs("warning: \(tag) \(message())\n", stderr)
 }
 
 private var tag: String {
