@@ -38,3 +38,10 @@ extension XCTestCase {
         }
     }
 }
+
+extension Pipe {
+    var outputString: String {
+        String(data: fileHandleForReading.readDataToEndOfFile(),
+               encoding: .utf8) ?? ""
+    }
+}

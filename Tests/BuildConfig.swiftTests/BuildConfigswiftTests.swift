@@ -29,7 +29,8 @@ final class BuildConfigswiftTests: XCTestCase {
             XCTAssertNoThrow(try process.run())
             process.waitUntilExit()
             XCTAssertEqual(ExitCode(process.terminationStatus), .success)
-            let version = try XCTUnwrap(String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)?.trimmingCharacters(in: .newlines))
+            let version = stdout.outputString
+                .trimmingCharacters(in: .newlines)
             XCTAssertEqual(version, ApplicationInfo.version)
         }
         try context("run") {
