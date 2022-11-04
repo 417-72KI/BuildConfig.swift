@@ -58,8 +58,10 @@ extension Core {
         }
 
         let scriptInputFiles = self.scriptInputFiles.map { $0.lastComponent }
-        if scriptInputFiles.contains(Constants.lastRunFileName) {
-            dumpWarn("`$(TEMP_DIR)/\(Constants.lastRunFileName)` is no longer needed in Build phase Input Files. Remove it from `Input Files` and uncheck `Based on dependency analysis` instead.")
+
+        let lastRunFileName = "buildconfigswift-lastrun"
+        if scriptInputFiles.contains(lastRunFileName) {
+            dumpWarn("`$(TEMP_DIR)/\(lastRunFileName)` is no longer needed in Build phase Input Files and no more updated. Remove it from `Input Files` and uncheck `Based on dependency analysis` instead.")
         }
 
         let scriptOutputFiles = self.scriptOutputFiles.map { $0.lastComponent }
