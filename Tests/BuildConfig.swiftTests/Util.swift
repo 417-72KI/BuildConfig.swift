@@ -49,6 +49,7 @@ extension XCTestCase {
 extension Pipe {
     var outputString: String {
         String(data: fileHandleForReading.readDataToEndOfFile(),
-               encoding: .utf8) ?? ""
+               encoding: .utf8)?
+            .trimmingTrailingCharacters(in: .newlines) ?? ""
     }
 }
