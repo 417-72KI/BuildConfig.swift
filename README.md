@@ -3,7 +3,7 @@
 [![Version](http://img.shields.io/cocoapods/v/BuildConfig.swift.svg?style=flat)](http://cocoapods.org/pods/BuildConfig.swift)
 [![Platform](http://img.shields.io/cocoapods/p/BuildConfig.swift.svg?style=flat)](http://cocoapods.org/pods/BuildConfig.swift)
 [![GitHub release](https://img.shields.io/github/release/417-72KI/BuildConfig.swift/all.svg)](https://github.com/417-72KI/BuildConfig.swift/releases)
-[![Swift Package Manager](https://img.shields.io/badge/Swift%20Package%20Manager-5.5-brightgreen.svg)](https://github.com/apple/swift-package-manager)
+[![Swift Package Manager](https://img.shields.io/badge/Swift%20Package%20Manager-5.6-brightgreen.svg)](https://github.com/apple/swift-package-manager)
 [![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/417-72KI/BuildConfig.swift/master/LICENSE.md)
 
 BuildConfig.swift is a tool to generate configuration files by merging _yamls_ or _jsons_.
@@ -83,7 +83,6 @@ You can replace `"$SRCROOT/$PROJECT/Resources/Config"` to the relative path from
 
 Also, you can add `-o` option with output path to specify where `BuildConfig.plist` and `BuildConfig.generated.swift` will be created.
 
-- Add `$(TEMP_DIR)/buildconfigswift-lastrun` into `Input Files` in above `Run script` build phase.
 - Add `$(SRCROOT)/BuildConfig.generated.swift` into `Output Files` in above `Run script` build phase.
     - If you set a path to output generated files by `-o` option, you have to change `Output Files` to it's path.
 
