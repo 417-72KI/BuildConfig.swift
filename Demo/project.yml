@@ -95,8 +95,6 @@ targets:
           else
             xcrun -sdk macosx swift run --package-path "${SRCROOT}/.." buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config # For Development
           fi
-        inputFiles:
-          - $(TEMP_DIR)/buildconfigswift-lastrun
         outputFiles:
           - $(SRCROOT)/Libs/BuildConfig_swift/BuildConfig.generated.swift
         basedOnDependencyAnalysis: false

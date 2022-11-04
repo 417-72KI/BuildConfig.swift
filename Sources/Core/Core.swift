@@ -29,9 +29,14 @@ public struct Core {
     }
 
     public func execute() throws {
-        defer { createLastRunFile() }
-
-        try validate()
+        do {
+            try validate()
+        } catch let error as ValidationError {
+            dumpError("Validation error:")
+            error.errors
+                .forEach { dumpError($0) }
+            return
+        }
 
         let data = try Parser(directoryPath: srcDirectoryPath)
             .run(environment: environment)
@@ -53,8 +58,10 @@ extension Core {
         }
 
         let scriptInputFiles = self.scriptInputFiles.map { $0.lastComponent }
-        if !scriptInputFiles.contains(Constants.lastRunFileName) {
-            errors.append("Build phase Input Files does not contain `$(TEMP_DIR)/\(Constants.lastRunFileName)`")
+
+        let lastRunFileName = "buildconfigswift-lastrun"
+        if scriptInputFiles.contains(lastRunFileName) {
+            dumpWarn("`$(TEMP_DIR)/\(lastRunFileName)` is no longer needed in Build phase Input Files and no more updated. Remove it from `Input Files` and uncheck `Based on dependency analysis` instead.")
         }
 
         let scriptOutputFiles = self.scriptOutputFiles.map { $0.lastComponent }
@@ -75,17 +82,5 @@ extension Core {
         }
         try content.write(to: dest.url, atomically: true, encoding: .utf8)
         dumpInfo("create \(dest)")
-    }
-}
-
-extension Core {
-    func createLastRunFile() {
-        let lastRunFile = tempDirectoryPath + Constants.lastRunFileName
-        do {
-            try "\(Date().timeIntervalSince1970)\n"
-                .write(to: lastRunFile.url, atomically: true, encoding: .utf8)
-        } catch {
-            dumpWarn("Failed to write out to '\(lastRunFile)', this might cause Xcode to not run the build phase for BuildConfig.swift: \(error)")
-        }
     }
 }
