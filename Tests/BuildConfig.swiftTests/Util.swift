@@ -28,6 +28,13 @@ var expectedProductionFilePath: Path {
     return outputPath + "production" + "BuildConfig.plist"
 }
 
+func XCTAssertEmpty(_ expression: @autoclosure () throws -> String,
+                    _ message: @autoclosure () -> String = "",
+                    file: StaticString = #filePath,
+                    line: UInt = #line) {
+    XCTAssertEqual(try expression(), "", message(), file: file, line: line)
+}
+
 extension XCTestCase {
     func context(_ name: String, block: () throws -> Void) rethrows {
         if let _ = ProcessInfo().environment["XCTestConfigurationFilePath"] {
@@ -36,5 +43,13 @@ extension XCTestCase {
         } else {
             return try block()
         }
+    }
+}
+
+extension Pipe {
+    var outputString: String {
+        String(data: fileHandleForReading.readDataToEndOfFile(),
+               encoding: .utf8)?
+            .trimmingTrailingCharacters(in: .newlines) ?? ""
     }
 }

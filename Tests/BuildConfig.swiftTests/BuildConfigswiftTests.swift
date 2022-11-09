@@ -21,36 +21,43 @@ final class BuildConfigswiftTests: XCTestCase {
         let fooBinary = productsDirectory.appendingPathComponent("buildconfigswift")
         dumpLog("binary: \(fooBinary)")
         try context("version") {
-            let pipe = Pipe()
+            let (stdout, stderr) = (Pipe(), Pipe())
             let process = process(
                 withArguments: ["--version"],
-                pipe: pipe
+                stdout: stdout,
+                stderr: stderr
             )
             XCTAssertNoThrow(try process.run())
             process.waitUntilExit()
             XCTAssertEqual(ExitCode(process.terminationStatus), .success)
-            let version = try XCTUnwrap(String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)?.trimmingCharacters(in: .newlines))
+            XCTAssertEmpty(stderr.outputString)
+
+            let version = stdout.outputString
+                .trimmingCharacters(in: .newlines)
             XCTAssertEqual(version, ApplicationInfo.version)
         }
         try context("run") {
             try context("with environment") {
                 try context("staging") {
-                    let pipe = Pipe()
+                    let arguments = [
+                        "-e",
+                        "staging",
+                        "-o",
+                        tmpDirectory.path,
+                        srcPath.absolute().string
+                    ]
+                    let (stdout, stderr) = (Pipe(), Pipe())
                     let process = process(
-                        withArguments: [
-                            "-e",
-                            "staging",
-                            "-o",
-                            tmpDirectory.path,
-                            srcPath.absolute().string
-                        ],
-                        pipe: pipe
+                        withArguments: arguments,
+                        stdout: stdout,
+                        stderr: stderr
                     ) {
                         $0.setEnvironmentForTest(tmpDirectory: tmpDirectory)
                     }
                     XCTAssertNoThrow(try process.run())
                     process.waitUntilExit()
                     XCTAssertEqual(ExitCode(process.terminationStatus), .success)
+                    XCTAssertEmpty(stderr.outputString)
 
                     let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.generated.swift")
                     XCTAssertTrue(FileManager.default.fileExists(atPath: createdFile.path))
@@ -58,40 +65,74 @@ final class BuildConfigswiftTests: XCTestCase {
                     try verifyGeneratedSwift(createdFile)
                 }
                 try context("production") {
-                    let pipe = Pipe()
+                    let arguments: [String] = [
+                        "-e",
+                        "production",
+                        "-o",
+                        tmpDirectory.path,
+                        srcPath.absolute().string
+                    ]
+                    let (stdout, stderr) = (Pipe(), Pipe())
                     let process = process(
-                        withArguments: [
-                            "-e",
-                            "production",
-                            "-o",
-                            tmpDirectory.path,
-                            srcPath.absolute().string
-                        ],
-                        pipe: pipe
+                        withArguments: arguments,
+                        stdout: stdout,
+                        stderr: stderr
                     ) {
                         $0.setEnvironmentForTest(tmpDirectory: tmpDirectory)
                     }
                     XCTAssertNoThrow(try process.run())
                     process.waitUntilExit()
                     XCTAssertEqual(ExitCode(process.terminationStatus), .success)
+                    XCTAssertEmpty(stderr.outputString)
 
                     let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.generated.swift")
                     XCTAssertTrue(FileManager.default.fileExists(atPath: createdFile.path))
                     try verifyGeneratedSwift(createdFile)
                 }
             }
+
+            try context("contains deprecated lastrun") {
+                let arguments = [
+                    "-e",
+                    "staging",
+                    "-o",
+                    tmpDirectory.path,
+                    srcPath.absolute().string
+                ]
+                let (stdout, stderr) = (Pipe(), Pipe())
+                let process = process(
+                    withArguments: arguments,
+                    stdout: stdout,
+                    stderr: stderr
+                ) {
+                    $0.setEnvironmentForTest(tmpDirectory: tmpDirectory)
+                    $0.addDeprecatedLastrunIntoEnvironment()
+                }
+                XCTAssertNoThrow(try process.run())
+                process.waitUntilExit()
+                XCTAssertEqual(ExitCode(process.terminationStatus), .success)
+
+                XCTAssertEqual(stderr.outputString, "warning: [\(ApplicationInfo.name)(\(ApplicationInfo.version))]  `$(TEMP_DIR)/buildconfigswift-lastrun` is no longer needed in Build phase Input Files and no more updated. Remove it from `Input Files` and uncheck `Based on dependency analysis` instead.")
+
+                let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.generated.swift")
+                XCTAssertTrue(FileManager.default.fileExists(atPath: createdFile.path))
+                try verifyGeneratedSwift(createdFile)
+            }
+
             try context("with invalid environments") {
+                let arguments: [String] = [
+                    "-e",
+                    "staging",
+                    "-o",
+                    tmpDirectory.path,
+                    srcPath.absolute().string
+                ]
                 try context("SCRIPT_INPUT_FILE_COUNT") {
-                    let pipe = Pipe()
+                    let (stdout, stderr) = (Pipe(), Pipe())
                     let process = process(
-                        withArguments: [
-                            "-e",
-                            "staging",
-                            "-o",
-                            tmpDirectory.path,
-                            srcPath.absolute().string
-                        ],
-                        pipe: pipe
+                        withArguments: arguments,
+                        stdout: stdout,
+                        stderr: stderr
                     ) {
                         $0.setEnvironmentForTest(tmpDirectory: tmpDirectory)
                         $0.environment?["SCRIPT_INPUT_FILE_COUNT"] = "foo"
@@ -99,26 +140,30 @@ final class BuildConfigswiftTests: XCTestCase {
                     XCTAssertNoThrow(try process.run())
                     process.waitUntilExit()
                     XCTAssertEqual(process.exitCode, .validationFailure)
+                    XCTAssertEqual(stderr.outputString, """
+                        Error: SCRIPT_INPUT_FILE_COUNT must be Int. Invalid value `foo`
+                        Usage: build-config-swift [--output-directory <output-directory>] [--environment <environment>] <src-dir>
+                          See 'build-config-swift --help' for more information.
+                        """)
                 }
                 try context("SCRIPT_OUTPUT_FILE_COUNT") {
-                    let pipe = Pipe()
+                    let (stdout, stderr) = (Pipe(), Pipe())
                     let process = process(
-                        withArguments: [
-                            "-e",
-                            "staging",
-                            "-o",
-                            tmpDirectory.path,
-                            srcPath.absolute().string
-                        ],
-                        pipe: pipe
+                        withArguments: arguments,
+                        stdout: stdout,
+                        stderr: stderr
                     ) {
                         $0.setEnvironmentForTest(tmpDirectory: tmpDirectory)
                         $0.environment?["SCRIPT_OUTPUT_FILE_COUNT"] = "bar"
-
                     }
                     XCTAssertNoThrow(try process.run())
                     process.waitUntilExit()
                     XCTAssertEqual(process.exitCode, .validationFailure)
+                    XCTAssertEqual(stderr.outputString, """
+                        Error: SCRIPT_OUTPUT_FILE_COUNT must be Int. Invalid value `bar`
+                        Usage: build-config-swift [--output-directory <output-directory>] [--environment <environment>] <src-dir>
+                          See 'build-config-swift --help' for more information.
+                        """)
                 }
             }
         }
@@ -144,7 +189,8 @@ private extension BuildConfigswiftTests {
 
 private extension BuildConfigswiftTests {
     func process(withArguments arguments: [String],
-                 pipe: Pipe? = nil,
+                 stdout: Pipe? = nil,
+                 stderr: Pipe? = nil,
                  handler: ((Process) -> Void)? = nil) -> Process {
         let binary = productsDirectory.appendingPathComponent("buildconfigswift")
         dumpLog("binary: \(binary)")
@@ -154,8 +200,11 @@ private extension BuildConfigswiftTests {
         dumpLog("arguments: \(process.arguments ?? [])")
         handler?(process)
         dumpLog("environment: \(process.environment ?? [:])")
-        if let pipe = pipe {
-            process.standardOutput = pipe
+        if let stdout = stdout {
+            process.standardOutput = stdout
+        }
+        if let stderr = stderr {
+            process.standardError = stderr
         }
         return process
     }
