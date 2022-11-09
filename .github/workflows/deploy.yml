@@ -22,7 +22,7 @@ jobs:
             ${{ runner.os }}-
       - id: set-xcode-version
         run: |
-          xcode_version=$(cat versions.json | jq -rc '.xcode_version | max')
+          xcode_version=$(cat .github/matrix.json | jq -rc '.xcode_version | max')
           echo "xcode-version=$xcode_version" >> $GITHUB_OUTPUT
       - name: Build and zip
         env:
