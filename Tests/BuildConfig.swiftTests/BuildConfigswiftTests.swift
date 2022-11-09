@@ -90,6 +90,35 @@ final class BuildConfigswiftTests: XCTestCase {
                     try verifyGeneratedSwift(createdFile)
                 }
             }
+
+            try context("contains deprecated lastrun") {
+                let arguments = [
+                    "-e",
+                    "staging",
+                    "-o",
+                    tmpDirectory.path,
+                    srcPath.absolute().string
+                ]
+                let (stdout, stderr) = (Pipe(), Pipe())
+                let process = process(
+                    withArguments: arguments,
+                    stdout: stdout,
+                    stderr: stderr
+                ) {
+                    $0.setEnvironmentForTest(tmpDirectory: tmpDirectory)
+                    $0.addDeprecatedLastrunIntoEnvironment()
+                }
+                XCTAssertNoThrow(try process.run())
+                process.waitUntilExit()
+                XCTAssertEqual(ExitCode(process.terminationStatus), .success)
+
+                XCTAssertEqual(stderr.outputString, "warning: [\(ApplicationInfo.name)(\(ApplicationInfo.version))]  `$(TEMP_DIR)/buildconfigswift-lastrun` is no longer needed in Build phase Input Files and no more updated. Remove it from `Input Files` and uncheck `Based on dependency analysis` instead.")
+
+                let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.generated.swift")
+                XCTAssertTrue(FileManager.default.fileExists(atPath: createdFile.path))
+                try verifyGeneratedSwift(createdFile)
+            }
+
             try context("with invalid environments") {
                 let arguments: [String] = [
                     "-e",
