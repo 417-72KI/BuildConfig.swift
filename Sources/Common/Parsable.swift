@@ -4,8 +4,13 @@ public protocol Parsable: Decodable, Equatable {
     var value: Any { get }
 }
 
+@available(*, deprecated, message: "Will be replaced to Decimal")
 extension Int: Parsable {
     public var value: Any { self }
+}
+
+extension Decimal: Parsable {
+    var value: Any { self }
 }
 
 extension String: Parsable {
@@ -16,6 +21,7 @@ extension URL: Parsable {
     public var value: Any { self }
 }
 
+@available(*, deprecated, message: "Will be replaced to Decimal")
 extension Double: Parsable {
     public var value: Any { self }
 }
