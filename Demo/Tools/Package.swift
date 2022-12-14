@@ -8,7 +8,7 @@ let package = Package(
     platforms: [.macOS(.v11)],
     products: [],
     dependencies: [
-        .package(url: "https://github.com/yonaskolb/XcodeGen", from: "2.32.0"),
+        .package(url: "https://github.com/yonaskolb/XcodeGen", from: "2.33.0"),
         // It's too heavy to build everytime😅
         // .package(url: "https://github.com/realm/SwiftLint", from: "0.47.0"),
     ],
