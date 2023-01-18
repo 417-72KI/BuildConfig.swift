@@ -1,2 +1,5 @@
 is_debug: true
 environment: debug
+id: "1234567"
+passcode: 0000
+number: 3.0

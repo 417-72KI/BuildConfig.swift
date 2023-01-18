@@ -66,7 +66,7 @@ struct AnyParsable: Parsable {
                 value = stringValue
             }
         } else if let doubleValue = try? container.decode(Double.self),
-            let intValue = try? container.decode(Int.self) {
+                  let intValue = try? container.decode(Int.self) {
             value = Double(intValue) == doubleValue ? intValue : doubleValue
         } else if let doubleValue = try? container.decode(Double.self) {
             value = doubleValue

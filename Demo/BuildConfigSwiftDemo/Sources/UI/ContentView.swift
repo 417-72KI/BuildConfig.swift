@@ -15,6 +15,8 @@ struct ContentView: View {
         VStack {
             Text("isDebug: \(String(config.isDebug))")
             Text("Environment: \(config.environment)")
+            Text("Passcode: \(config.passcode ? "true" : "false")")
+            Text("Number: \(config.number)")
         }
     }
 }

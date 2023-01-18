@@ -20,13 +20,13 @@ final class DictionaryExtensionTests: XCTestCase {
                         "k": true,
                         "l": [1, 2, 3]
                     },
-                    "n": 0
+                    "n": 0.0
                 }
             }
             """.data(using: .utf8)!
         let json2 = """
             {
-                "b": 4,
+                "b": 4.2,
                 "c": {
                     "e": "5"
                 },
@@ -44,7 +44,7 @@ final class DictionaryExtensionTests: XCTestCase {
         let json3 = """
             {
                 "a": 1,
-                "b": 4.0,
+                "b": 4.2,
                 "c": {
                     "d": 3,
                     "e": "5"
@@ -59,7 +59,7 @@ final class DictionaryExtensionTests: XCTestCase {
                         "l": [1, 2, 3, 4],
                         "m": 7
                     },
-                    "n": 0
+                    "n": 0.0
                 }
             }
             """.data(using: .utf8)!
@@ -89,7 +89,7 @@ final class DictionaryExtensionTests: XCTestCase {
         }
         try context("dict2") {
             XCTAssertNil(dict2["a"]?.value)
-            XCTAssertEqual(dict2["b"]?.value as? Int, 4)
+            XCTAssertEqual(dict2["b"]?.value as? Double, 4.2)
 
             let c = try XCTUnwrap(dict2["c"]?.value as? [String: AnyParsable])
             XCTAssertNil(c["d"]?.value)
@@ -111,7 +111,7 @@ final class DictionaryExtensionTests: XCTestCase {
         }
         try context("dict3") {
             XCTAssertEqual(dict3["a"]?.value as? Int, 1)
-            XCTAssertEqual(dict3["b"]?.value as? Double, 4.0)
+            XCTAssertEqual(dict3["b"]?.value as? Double, 4.2)
 
             let c = try XCTUnwrap(dict3["c"]?.value as? [String: AnyParsable])
             XCTAssertEqual(c["d"]?.value as? Int, 3)
