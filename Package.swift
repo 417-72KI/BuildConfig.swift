@@ -10,7 +10,7 @@ let package = Package(
         .executable(name: "buildconfigswift", targets: ["BuildConfig.swift"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.2"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.3"),
         .package(url: "https://github.com/behrang/YamlSwift.git", from: "3.4.4"),
         .package(url: "https://github.com/jpsim/SourceKitten.git", from: "0.34.1"),
         .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.1"),
