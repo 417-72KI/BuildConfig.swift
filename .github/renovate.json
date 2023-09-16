@@ -1,6 +1,6 @@
 {
   "extends": [
-    "config:base",
+    "config:recommended",
     "github>hatena/renovate-config"
   ],
   "timezone": "Asia/Tokyo",
@@ -11,5 +11,15 @@
   "enabledManagers": [
       "github-actions",
       "swift"
-  ]
+  ],
+  "automergeSchedule": ["daily"],
+  "automerge": true,
+  "major": {
+    "automerge": false
+  },
+  "github-actions": {
+    "major": {
+      "automerge": true
+    }
+  }
 }
