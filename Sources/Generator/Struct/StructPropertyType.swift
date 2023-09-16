@@ -1,4 +1,4 @@
-import struct Foundation.URL
+import Foundation
 
 protocol StructPropertyType {
     var typeString: String { get }
@@ -12,12 +12,8 @@ extension URL: StructPropertyType {
     var typeString: String { "URL" }
 }
 
-extension Int: StructPropertyType {
-    var typeString: String { "Int" }
-}
-
-extension Double: StructPropertyType {
-    var typeString: String { "Double" }
+extension Decimal: StructPropertyType {
+    var typeString: String { "Decimal" }
 }
 
 extension Bool: StructPropertyType {

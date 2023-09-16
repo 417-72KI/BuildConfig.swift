@@ -1,4 +1,4 @@
-import struct Foundation.URL
+import Foundation
 
 protocol ElementPropertyType {
 }
@@ -11,6 +11,9 @@ extension String: ElementPropertyType {
 }
 
 extension URL: ElementPropertyType {
+}
+
+extension Decimal: ElementPropertyType {
 }
 
 extension Int: ElementPropertyType {

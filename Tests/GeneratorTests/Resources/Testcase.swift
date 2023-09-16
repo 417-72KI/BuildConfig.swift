@@ -13,8 +13,8 @@ struct BuildConfig: Codable {
     let environment: String
     let isDebug: Bool
     let license: [String]
-    let pi: Double
-    let token: Int
+    let pi: Decimal
+    let token: Decimal
 
     enum CodingKeys: String, CodingKey {
         case API

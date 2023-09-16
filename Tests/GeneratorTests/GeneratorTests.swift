@@ -18,14 +18,14 @@ final class GeneratorTests: XCTestCase {
                             "path": "/login"
                         ]
                     ]
-                ],
+                ] as [String : Any],
                 "boot": ["message": "Hello, World!"],
                 "environment": "development",
                 "token": 123456,
                 "license": ["Yaml", "PathKit", "StencilSwiftKit"],
                 "isDebug": false,
                 "pi": 3.14159265358979
-            ] as [AnyHashable: Any]
+            ] as [String: Any]
             let data = try JSONSerialization.data(withJSONObject: content, options: .sortedKeys)
             try context("success") {
                 let file = try XCTUnwrap(File(path: path + "Testcase.swift"))
@@ -58,9 +58,9 @@ final class GeneratorTests: XCTestCase {
 
         try context("nested data empty") {
             let content = [
-                "a_struct": [:],
+                "a_struct": [:] as [String: Any],
                 "b_struct": ["hoge": "fuga"]
-                ] as [AnyHashable: Any]
+                ] as [String: Any]
             let data = try JSONSerialization.data(withJSONObject: content, options: .sortedKeys)
             try context("success") {
                 let file = try XCTUnwrap(File(path: path + "EmptyNestCase.swift"))

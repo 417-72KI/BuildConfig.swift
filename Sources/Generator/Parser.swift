@@ -1,5 +1,5 @@
-import struct Foundation.URL
 import Common
+import Foundation
 
 enum Parser {}
 
@@ -45,12 +45,10 @@ private extension Parser {
 private extension Parser {
     static func extractProperties(_ value: Any) -> ElementPropertyType? {
         switch value {
+        case let decimalValue as Decimal:
+            return decimalValue
         case let boolValue as Bool:
             return boolValue
-        case let intValue as Int:
-            return intValue
-        case let doubleValue as Double:
-            return doubleValue
         case let urlValue as URL:
             return urlValue
         case let stringValue as String:
