@@ -4,13 +4,8 @@ public protocol Parsable: Decodable, Equatable {
     var value: Any { get }
 }
 
-@available(*, deprecated, message: "Will be replaced to Decimal")
-extension Int: Parsable {
-    public var value: Any { self }
-}
-
 extension Decimal: Parsable {
-    var value: Any { self }
+    public var value: Any { self }
 }
 
 extension String: Parsable {
@@ -18,11 +13,6 @@ extension String: Parsable {
 }
 
 extension URL: Parsable {
-    public var value: Any { self }
-}
-
-@available(*, deprecated, message: "Will be replaced to Decimal")
-extension Double: Parsable {
     public var value: Any { self }
 }
 
@@ -64,18 +54,16 @@ public struct AnyParsable: Parsable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if let stringValue = try? container.decode(String.self),
-           let intValue = try? container.decode(Int.self) {
-            if Int(stringValue) == intValue {
-                value = intValue
+           let decimalValue = try? container.decode(Decimal.self) {
+            if Decimal(string: stringValue) == decimalValue {
+                value = decimalValue
             } else {
                 value = stringValue
             }
-        } else if let intValue = try? container.decode(Int.self) {
-            value = intValue
+        } else if let decimalValue = try? container.decode(Decimal.self) {
+            value = decimalValue
         } else if let boolValue = try? container.decode(Bool.self) {
             value = boolValue
-        } else if let doubleValue = try? container.decode(Double.self) {
-            value = doubleValue
         } else if let arrayValue = try? container.decode([Self].self) {
             value = arrayValue
         } else if let dictionaryValue = try? container.decode([String: Self].self) {
@@ -91,16 +79,13 @@ public struct AnyParsable: Parsable {
     }
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        if let lhs = lhs.value as? Int, let rhs = rhs.value as? Int {
+        if let lhs = lhs.value as? Decimal, let rhs = rhs.value as? Decimal {
             return lhs == rhs
         }
         if let lhs = lhs.value as? String, let rhs = rhs.value as? String {
             return lhs == rhs
         }
         if let lhs = lhs.value as? Bool, let rhs = rhs.value as? Bool {
-            return lhs == rhs
-        }
-        if let lhs = lhs.value as? Double, let rhs = rhs.value as? Double {
             return lhs == rhs
         }
         if let lhs = lhs.value as? [Self], let rhs = rhs.value as? [Self] {
