@@ -1,25 +1,5 @@
 {
-  "extends": [
-    "config:recommended",
-    "github>hatena/renovate-config"
-  ],
-  "timezone": "Asia/Tokyo",
-  "vulnerabilityAlerts": {
-      "labels": ["security"]
-  },
-  "labels": ["dependencies"],
-  "enabledManagers": [
-      "github-actions",
-      "swift"
-  ],
-  "automergeSchedule": ["at any time"],
-  "automerge": true,
-  "major": {
-    "automerge": false
-  },
-  "github-actions": {
-    "major": {
-      "automerge": true
-    }
-  }
+    "extends": [
+        "github>417-72KI/renovate-config"
+    ]
 }
