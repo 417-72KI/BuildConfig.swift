@@ -13,6 +13,10 @@ By splitting the file for each type of setting, it is possible to prevent confli
 Also, by splitting the file for environment configurations, it will be easier to overwrite configurations for each environment.
 
 ## Example
+> [!IMPORTANT]  
+> There was a problem that parsing `0` or `1` should be `Int`, but `Bool` actually.  
+> Since 5.2.0, keys for `Bool` must have `is` prefix.
+
 ### Base JSON file
 ```json
 {
@@ -27,8 +31,10 @@ Also, by splitting the file for environment configurations, it will be easier to
                 "method": "GET",
                 "path": "/list"
             }
-        }
-    }
+        },
+        "version": 1
+    },
+    "is_debug": true
 }
 ```
 
@@ -43,6 +49,8 @@ let domain = api.domain as! String // "http://localhost"
 let loginPath = (api.path as! [String: Any])["login"] as! [String: Any]
 let path = loginPath.path // "/login"
 let method = loginPath.method // "POST"
+let apiVersion = api["version"] as! Int // 1
+let isDebug = config["is_debug"] as! Bool // true
 ```
 #### _Using BuildConfig.swift_
 ```Swift
@@ -50,6 +58,8 @@ let config = BuildConfig.default
 let domain = config.API.domain // "http://localhost"
 let path = config.API.path.login.path // "/login"
 let method = config.API.path.login.method // "POST"
+let apiVersion = api.version // 1
+let isDebug = config.isDebug // true
 ```
 
 ## Installation
