@@ -5,7 +5,7 @@ import Foundation
 import PathKit
 
 @main
-struct BuildConfigSwift: ParsableCommand {
+struct App: ParsableCommand {
     @Option(name: .shortAndLong, help: "The directory to output BuildConfig.plist and BuildConfig.generated.swift.")
     var outputDirectory: String = "./"
 
@@ -16,13 +16,16 @@ struct BuildConfigSwift: ParsableCommand {
     var srcDir: String
 }
 
-extension BuildConfigSwift {
+extension App {
     static var configuration: CommandConfiguration {
-        CommandConfiguration(version: ApplicationInfo.version)
+        CommandConfiguration(
+            commandName: "buildconfigswift",
+            version: ApplicationInfo.version
+        )
     }
 }
 
-extension BuildConfigSwift {
+extension App {
     func run() throws {
         let outputDirectory = Path(outputDirectory)
         let environment = environment.flatMap { $0.isEmpty ? nil : $0 }
