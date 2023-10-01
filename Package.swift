@@ -3,6 +3,15 @@
 
 import PackageDescription
 
+let isDevelop = true
+
+let devDependencies: [Package.Dependency] = isDevelop ? [
+    .package(url: "https://github.com/realm/SwiftLint.git", from: "0.53.0"),
+] : []
+let devPlugins: [Target.PluginUsage] = isDevelop ? [
+    .plugin(name: "SwiftLintPlugin", package: "SwiftLint")
+] : []
+
 let package = Package(
     name: "BuildConfig.swift",
     platforms: [.macOS(.v12)],
@@ -23,14 +32,15 @@ let package = Package(
         .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.1"),
         .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", from: "2.10.1"),
         .package(url: "https://github.com/Kuniwak/MirrorDiffKit.git", from: "5.0.1"),
-    ],
+    ] + devDependencies,
     targets: [
         .executableTarget(
             name: "buildconfigswift",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 "Core"
-            ]
+            ],
+            plugins: devPlugins
         ),
         .target(
             name: "Core",
@@ -38,28 +48,32 @@ let package = Package(
                 "Common",
                 "Parser",
                 "Generator"
-            ]
+            ],
+            plugins: devPlugins
         ),
         .target(
             name: "Common",
             dependencies: [
                 "PathKit",
                 .product(name: "SourceKittenFramework", package: "SourceKitten"),
-            ]
+            ],
+            plugins: devPlugins
         ),
         .target(
             name: "Parser",
             dependencies: [
                 "Common",
                 .product(name: "Yaml", package: "YamlSwift"),
-            ]
+            ],
+            plugins: devPlugins
         ),
         .target(
             name: "Generator",
             dependencies: [
                 "Common",
                 "StencilSwiftKit"
-            ]
+            ],
+            plugins: devPlugins
         ),
         .testTarget(
             name: "buildconfigswiftTests",
