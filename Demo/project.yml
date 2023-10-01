@@ -111,7 +111,6 @@ targets:
         CFBundleShortVersionString: 1.0
         CFBundleVersion: 1
     settings:
-      INFOPLIST_FILE: BuildConfigSwiftDemoTests/info.plist
       TEST_HOST: $(BUILT_PRODUCTS_DIR)/BuildConfigSwiftDemo.app/BuildConfigSwiftDemo
       CODE_SIGN_STYLE: Automatic
       CODE_SIGN_IDENTITY: iPhone Developer
