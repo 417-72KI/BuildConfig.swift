@@ -64,9 +64,23 @@ let isDebug = config.isDebug // true
 
 ## Installation
 ### Common
-- Create directory for splitted configuration files, e.g. `$PROJECT/Resources/Config`.
+- Create directory for splitted configuration files, e.g. `$PROJECT/Resources/BuildConfig`.
 - If you use different settings for each environment, create `.env` into above directory.
 - You don't have to add above directory into project.
+
+### SwiftPM(6.0.0~)
+> [!IMPORTANT]
+> In this case, there are some constraints.
+> 1. directory name must be `BuildConfig`
+> 1. filename of environment settings must be match with Configuration name with snakenized.  
+> examples:
+>     - "Debug" -> `debug.yml`
+>     - "AdHoc" -> `ad_hoc.yml`
+>     - "Release" -> `release.yml`
+
+1. In Project Settings, on the tab "Package Dependencies", click "+" and add `github.com/417-72KI/BuildConfig.swift`
+1. Select your target, on the tab "Build Phases", in the section "Run Build Tool Plug-ins", click "+" and add `BuildConfigSwiftGenerate`
+1. Build your project, now the `BuildConfig` struct should be available in your code.
 
 ### CocoaPods
 - Add the following line to your test target in your Podfile:
@@ -86,10 +100,10 @@ else
   ENVIRONMENT='staging'
 fi
 
-"${PODS_ROOT}/BuildConfig.swift/buildconfigswift" -e $ENVIRONMENT "$SRCROOT/$PROJECT/Resources/Config"
+"${PODS_ROOT}/BuildConfig.swift/buildconfigswift" -e $ENVIRONMENT "$SRCROOT/$PROJECT/Resources/BuildConfig"
 ```
 
-You can replace `"$SRCROOT/$PROJECT/Resources/Config"` to the relative path from project to the directory you created.
+You can replace `"$SRCROOT/$PROJECT/Resources/BuildConfig"` to the relative path from project to the directory you created.
 
 Also, you can add `-o` option with output path to specify where `BuildConfig.plist` and `BuildConfig.generated.swift` will be created.
 
@@ -102,13 +116,10 @@ Also, you can add `-o` option with output path to specify where `BuildConfig.pli
 
 _Tip:_ Add the `*.generated.swift` pattern to your `.gitignore` file to prevent unnecessary conflicts.
 
-### Manually
-TODO: Future support.
-
 ## What is `BuildConfig.swift` doing?
-- Detect all yml/json files in `$SRCROOT/$PROJECT/Resources/Config`, exclude `.env`.
-- If the `-e` option is set and a file with the same name as that option exists in `$SRCROOT/$PROJECT/Resources/Config/.env`, only that file is read.  
-  For example, `-e staging` option means to read `$SRCROOT/$PROJECT/Resources/Config/.env/staging.{yml/yaml/json}`.
+- Detect all yml/json files in `$SRCROOT/$PROJECT/Resources/BuildConfig`, exclude `.env`.
+- If the `-e` option is set and a file with the same name as that option exists in `$SRCROOT/$PROJECT/Resources/BuildConfig/.env`, only that file is read.  
+  For example, `-e staging` option means to read `$SRCROOT/$PROJECT/Resources/BuildConfig/.env/staging.{yml/yaml/json}`.
 - Parse above files as `Swift.Dictionary`.
 - Deep merge the above dictionaries.
 - Output merged dictionary as a plist file.
