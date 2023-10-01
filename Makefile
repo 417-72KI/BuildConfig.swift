@@ -24,7 +24,8 @@ lint:
 	bundle exec pod spec lint --no-clean --allow-warnings
 
 demo_app_init:
-	@cd Demo && \
+	@scripts/copy-lint-config.sh && \
+	cd Demo && \
 	xcrun --sdk macosx swift run -c release --package-path Tools xcodegen
 
 .PHONY: demo
