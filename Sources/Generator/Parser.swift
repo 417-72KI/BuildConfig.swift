@@ -32,6 +32,7 @@ private extension Parser {
                 guard let extractedValue = extractProperties(value) else { return nil }
                 // FIXME: when value is `0` or `1`, it may parsed as Bool unexpectedly.
                 if extractedValue is Bool, !key.hasPrefix("is") {
+                    // swiftlint:disable:next force_cast
                     return (key, value as! Int)
                 }
                 return (key, extractedValue)
