@@ -29,8 +29,12 @@ private extension Parser {
             return arrayValue.compactMap { extractProperties($0) }
         case let dictionaryValue as [String: Any]:
             let properties = dictionaryValue.compactMap { key, value -> (String, ElementPropertyType)? in
-                guard let value = extractProperties(value) else { return nil }
-                return (key, value)
+                guard let extractedValue = extractProperties(value) else { return nil }
+                // FIXME: when value is `0` or `1`, it may parsed as Bool unexpectedly.
+                if extractedValue is Bool, !key.hasPrefix("is") {
+                    return (key, value as! Int)
+                }
+                return (key, extractedValue)
             }
             return Element(properties: Dictionary(uniqueKeysWithValues: properties))
         default:
