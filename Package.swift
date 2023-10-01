@@ -7,7 +7,10 @@ let package = Package(
     name: "BuildConfig.swift",
     platforms: [ .macOS(.v12) ],
     products: [
-        .executable(name: "buildconfigswift", targets: ["BuildConfig.swift"])
+        .executable(
+            name: "buildconfigswift",
+            targets: ["buildconfigswift"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.3"),
@@ -19,7 +22,7 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "BuildConfig.swift",
+            name: "buildconfigswift",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 "Core"
@@ -55,9 +58,9 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "BuildConfig.swiftTests",
+            name: "buildconfigswiftTests",
             dependencies: [
-                "BuildConfig.swift",
+                "buildconfigswift",
                 // "MirrorDiffKit"
             ],
             resources: [.copy("Resources")]
@@ -77,7 +80,7 @@ let package = Package(
                 "MirrorDiffKit"
             ],
             resources: [.copy("Resources")]
-        )
+        ),
     ],
     swiftLanguageVersions: [.v5]
 )
