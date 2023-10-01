@@ -142,8 +142,8 @@ final class BuildConfigswiftTests: XCTestCase {
                     XCTAssertEqual(process.exitCode, .validationFailure)
                     XCTAssertEqual(stderr.outputString, """
                         Error: SCRIPT_INPUT_FILE_COUNT must be Int. Invalid value `foo`
-                        Usage: build-config-swift [--output-directory <output-directory>] [--environment <environment>] <src-dir>
-                          See 'build-config-swift --help' for more information.
+                        Usage: buildconfigswift [--output-directory <output-directory>] [--environment <environment>] <src-dir>
+                          See 'buildconfigswift --help' for more information.
                         """)
                 }
                 try context("SCRIPT_OUTPUT_FILE_COUNT") {
@@ -161,8 +161,8 @@ final class BuildConfigswiftTests: XCTestCase {
                     XCTAssertEqual(process.exitCode, .validationFailure)
                     XCTAssertEqual(stderr.outputString, """
                         Error: SCRIPT_OUTPUT_FILE_COUNT must be Int. Invalid value `bar`
-                        Usage: build-config-swift [--output-directory <output-directory>] [--environment <environment>] <src-dir>
-                          See 'build-config-swift --help' for more information.
+                        Usage: buildconfigswift [--output-directory <output-directory>] [--environment <environment>] <src-dir>
+                          See 'buildconfigswift --help' for more information.
                         """)
                 }
             }
