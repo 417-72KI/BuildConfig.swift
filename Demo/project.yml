@@ -20,6 +20,8 @@ packages:
   # SwiftLint:
   #   url: https://github.com/realm/SwiftLint
   #   from: 0.53.0
+  BuildConfig.Swift:
+    path: ../
 targets:
   BuildConfigSwiftDemo:
     type: application
@@ -68,7 +70,9 @@ targets:
           CODE_SIGN_IDENTITY: iPhone Distribution
           PROVISIONING_PROFILE_SPECIFIER: ""
           EXCLUDED_SOURCE_FILE_NAMES: Mock*
-    # buildToolPlugins:
+    buildToolPlugins:
+      - plugin: BuildConfigSwiftGenerate
+        package: BuildConfig.Swift
     #   - plugin: SwiftLintPlugin
     #     package: SwiftLint
     preBuildScripts:
