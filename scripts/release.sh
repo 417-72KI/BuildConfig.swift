@@ -36,7 +36,11 @@ if [ "$(git tag | grep "$(swift run "$EXECUTABLE_NAME" --version)")" != '' ]; th
     exit 1
 fi
 
-if [ "$(git status -s | grep .swift | grep -v ApplicationInfo.swift)" != '' ]; then
+if [[ "$(cat Package.swift | grep "let isDevelop =" | awk '{ print $NF }')" == 'true' ]]; then
+    sed -i '' -e 's/let isDevelop = true/let isDevelop = false/g' Package.swift
+fi
+
+if [ "$(git status -s | grep .swift | grep -v ApplicationInfo.swift | grep -v Package.swift)" != '' ]; then
     echo "\e[31mUnexpected added/modified/deleted file.\e[m"
     exit 1
 fi
