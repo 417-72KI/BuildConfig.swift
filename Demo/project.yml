@@ -73,7 +73,6 @@ targets:
           fi
 
           "${SRCROOT}/../scripts/copy-lint-config.sh"
-          "${PODS_ROOT}/SwiftLint/swiftlint"
         basedOnDependencyAnalysis: false
       - name: BuildConfig.swift
         script: |
@@ -90,11 +89,7 @@ targets:
           else
             ENVIRONMENT='development'
           fi
-          if [ -e ${PODS_ROOT}/BuildConfig.swift/buildconfigswift ]; then
-            ${PODS_ROOT}/BuildConfig.swift/buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config # For CI Run
-          else
-            xcrun -sdk macosx swift run --package-path "${SRCROOT}/.." buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config # For Development
-          fi
+          xcrun -sdk macosx swift run --package-path "${SRCROOT}/.." buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config # For Development
         outputFiles:
           - $(SRCROOT)/Libs/BuildConfig_swift/BuildConfig.generated.swift
         basedOnDependencyAnalysis: false
