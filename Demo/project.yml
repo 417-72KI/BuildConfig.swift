@@ -20,6 +20,8 @@ packages:
   # SwiftLint:
   #   url: https://github.com/realm/SwiftLint
   #   from: 0.53.0
+  BuildConfig.Swift:
+    path: ../
 targets:
   BuildConfigSwiftDemo:
     type: application
@@ -27,11 +29,6 @@ targets:
     deploymentTarget: 15.0
     sources: 
       - BuildConfigSwiftDemo
-      - path: Libs
-        optional: true
-      - path: Libs/BuildConfig_swift/BuildConfig.generated.swift
-        optional: true
-        createIntermediateGroups: true
     info:
       path: BuildConfigSwiftDemo/Resources/Info.plist
       properties:
@@ -68,29 +65,11 @@ targets:
           CODE_SIGN_IDENTITY: iPhone Distribution
           PROVISIONING_PROFILE_SPECIFIER: ""
           EXCLUDED_SOURCE_FILE_NAMES: Mock*
-    # buildToolPlugins:
+    buildToolPlugins:
+      - plugin: BuildConfigSwiftGenerate
+        package: BuildConfig.Swift
     #   - plugin: SwiftLintPlugin
     #     package: SwiftLint
-    preBuildScripts:
-      - name: BuildConfig.swift
-        script: |
-          if [ "$ENABLE_PREVIEWS" == "YES" ]; then
-            exit 0
-          fi
-
-          if [ "${CONFIGURATION}" = 'Release' ]; then
-            ENVIRONMENT='production'
-          elif [ "${CONFIGURATION}" = 'Staging' ]; then
-            ENVIRONMENT='staging'
-          elif [ "${CONFIGURATION}" = 'IntegrationTest' ]; then
-            ENVIRONMENT='integration_test'
-          else
-            ENVIRONMENT='development'
-          fi
-          xcrun -sdk macosx swift run --package-path "${SRCROOT}/.." buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config # For Development
-        outputFiles:
-          - $(SRCROOT)/Libs/BuildConfig_swift/BuildConfig.generated.swift
-        basedOnDependencyAnalysis: false
     dependencies:
       - package: XCGLogger
   BuildConfigSwiftDemoTests:

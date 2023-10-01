@@ -29,6 +29,9 @@ extension App {
     func run() throws {
         let outputDirectory = Path(outputDirectory)
         let environment = environment.flatMap { $0.isEmpty ? nil : $0 }
+            ?? ProcessInfo.processInfo.environment["CONFIGURATION"]
+            .flatMap { $0.snakenized() }
+
         let srcDirPath = Path(srcDir)
 
         let tempDirectoryPath = Path(try Environment.getValue(forKey: .tempDir))

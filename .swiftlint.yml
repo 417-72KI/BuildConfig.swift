@@ -147,6 +147,7 @@ disabled_rules:
   - let_var_whitespace # https://github.com/realm/SwiftLint/issues/2980
   - lower_acl_than_parent
   - missing_docs
+  - multiline_arguments_brackets
   - no_extension_access_modifier
   - no_grouping_extension
   - number_separator
