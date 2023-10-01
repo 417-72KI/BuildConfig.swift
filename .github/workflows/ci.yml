@@ -4,6 +4,7 @@ on:
     branches: main
     paths:
       - '**.swift'
+      - '!Sources/Common/ApplicationInfo.swift'
       - '.github/workflows/ci.yml'
   pull_request: {}
 concurrency:
