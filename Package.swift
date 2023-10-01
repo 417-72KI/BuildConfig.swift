@@ -11,6 +11,10 @@ let package = Package(
             name: "buildconfigswift",
             targets: ["buildconfigswift"]
         ),
+        .plugin(
+            name: "BuildConfigSwiftGenerate",
+            targets: ["BuildConfigSwiftGenerate"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.3"),
@@ -80,6 +84,11 @@ let package = Package(
                 "MirrorDiffKit"
             ],
             resources: [.copy("Resources")]
+        ),
+        .plugin(
+            name: "BuildConfigSwiftGenerate",
+            capability: .buildTool(),
+            dependencies: ["buildconfigswift"]
         ),
     ],
     swiftLanguageVersions: [.v5]
