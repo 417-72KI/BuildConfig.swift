@@ -20,10 +20,8 @@ private extension Parser {
         switch value.value {
         case let boolValue as Bool:
             return boolValue
-        case let intValue as Int:
-            return intValue
-        case let doubleValue as Double:
-            return doubleValue
+        case let decimalValue as Decimal:
+            return decimalValue
         case let urlValue as URL:
             return urlValue
         case let stringValue as String:
@@ -45,10 +43,16 @@ private extension Parser {
 private extension Parser {
     static func extractProperties(_ value: Any) -> ElementPropertyType? {
         switch value {
-        case let decimalValue as Decimal:
-            return decimalValue
         case let boolValue as Bool:
             return boolValue
+        case let decimalValue as Decimal:
+            return decimalValue
+        case let intValue as Int:
+            // Workaround 1: `__NSCFNumber` cannot convert to Decimal
+            return Decimal(intValue)
+        case let doubleValue as Double:
+            // Workaround 2: `__NSCFNumber` cannot convert to Decimal
+            return Decimal(doubleValue)
         case let urlValue as URL:
             return urlValue
         case let stringValue as String:
