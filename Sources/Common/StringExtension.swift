@@ -12,7 +12,7 @@ public extension String {
         let camel = lower ? firstWord : firstWord.capitalized
         return words.dropFirst().reduce(into: camel) { $0.append($1.capitalized) }
     }
-    
+
     /// Convert to `snake_case`
     /// - Returns: `snake_cased` string
     func snakenized() -> String {
