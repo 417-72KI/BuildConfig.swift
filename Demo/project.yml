@@ -15,8 +15,11 @@ options:
   bundleIdPrefix: io.github.417-72KI
 packages:
   XCGLogger:
-    url: https://github.com/DaveWoodCom/XCGLogger.git
+    url: https://github.com/DaveWoodCom/XCGLogger
     from: 7.0.1
+  # SwiftLint:
+  #   url: https://github.com/realm/SwiftLint
+  #   from: 0.53.0
 targets:
   BuildConfigSwiftDemo:
     type: application
@@ -65,16 +68,10 @@ targets:
           CODE_SIGN_IDENTITY: iPhone Distribution
           PROVISIONING_PROFILE_SPECIFIER: ""
           EXCLUDED_SOURCE_FILE_NAMES: Mock*
+    # buildToolPlugins:
+    #   - plugin: SwiftLintPlugin
+    #     package: SwiftLint
     preBuildScripts:
-      - name: Lint
-        script: |
-          if [ "$ENABLE_PREVIEWS" == "YES" ]; then
-            exit 0
-          fi
-
-          "${SRCROOT}/../scripts/copy-lint-config.sh"
-          "${PODS_ROOT}/SwiftLint/swiftlint"
-        basedOnDependencyAnalysis: false
       - name: BuildConfig.swift
         script: |
           if [ "$ENABLE_PREVIEWS" == "YES" ]; then
@@ -90,11 +87,7 @@ targets:
           else
             ENVIRONMENT='development'
           fi
-          if [ -e ${PODS_ROOT}/BuildConfig.swift/buildconfigswift ]; then
-            ${PODS_ROOT}/BuildConfig.swift/buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config # For CI Run
-          else
-            xcrun -sdk macosx swift run --package-path "${SRCROOT}/.." buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config # For Development
-          fi
+          xcrun -sdk macosx swift run --package-path "${SRCROOT}/.." buildconfigswift -o ${SRCROOT}/Libs/BuildConfig_swift -e $ENVIRONMENT ${SRCROOT}/Resources/Config # For Development
         outputFiles:
           - $(SRCROOT)/Libs/BuildConfig_swift/BuildConfig.generated.swift
         basedOnDependencyAnalysis: false
@@ -116,7 +109,6 @@ targets:
         CFBundleShortVersionString: 1.0
         CFBundleVersion: 1
     settings:
-      INFOPLIST_FILE: BuildConfigSwiftDemoTests/info.plist
       TEST_HOST: $(BUILT_PRODUCTS_DIR)/BuildConfigSwiftDemo.app/BuildConfigSwiftDemo
       CODE_SIGN_STYLE: Automatic
       CODE_SIGN_IDENTITY: iPhone Developer
