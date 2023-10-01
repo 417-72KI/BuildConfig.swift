@@ -10,8 +10,10 @@ if ! type brew > /dev/null; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
   if [ "$(/usr/bin/uname -m)" = 'arm64' ]; then
-    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    if [ "$(cat ~/.zprofile | grep 'eval "$(/opt/homebrew/bin/brew shellenv)"')" != '' ]; then
+      echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
   fi
 fi
 
