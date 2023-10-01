@@ -17,7 +17,22 @@ if [ `git symbolic-ref --short HEAD` != 'main' ]; then
 fi
 
 if [ "$(git status -s | grep "${APPLICATION_INFO_FILE}")" = '' ]; then
-    echo "\e[31m${APPLICATION_INFO_FILE} is not modified.\e[m"
+    CURRENT_VERSION=$(swift run "$EXECUTABLE_NAME" --version)
+    read "NEXT_VERSION?Next version(current: $(echo "\e[1m${CURRENT_VERSION}\e[m")) > "
+    if [ "${NEXT_VERSION}" = '' ]; then
+        NEXT_VERSION="${CURRENT_VERSION}"
+    fi
+    if [[ ! "${NEXT_VERSION}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)(-.*)?$ ]]; then
+        echo "\e[31m[Error] Invalid version format.\e[m"
+        exit 1
+    fi
+
+    sed -i '' -E "s/let version = \"(.*)\"/let version = \"${NEXT_VERSION}\"/" "${APPLICATION_INFO_FILE}"
+fi
+
+if [ "$(git tag | grep "$(swift run "$EXECUTABLE_NAME" --version)")" != '' ]; then
+    echo "\e[31m${NEXT_VERSION} is already tagged.\e[m"
+    git checkout HEAD -- Sources/Common/ApplicationInfo.swift
     exit 1
 fi
 
