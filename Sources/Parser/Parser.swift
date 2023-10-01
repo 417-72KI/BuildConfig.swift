@@ -17,6 +17,10 @@ public extension Parser {
         let filePaths = try getFileList(at: directoryPath, environment: environment)
         let environmentFiles = filePaths.filter { $0.components.contains(envDirComponent) }
             .compactMap { File(path: $0) }
+        if let environment = environment,
+           environmentFiles.isEmpty {
+            dumpWarn("No file for environment `\(environment)` in `\(directoryPath)`.")
+        }
         let otherFiles = filePaths.filter { !$0.components.contains(envDirComponent) }
             .compactMap { File(path: $0) }
         let environmentData = try parse(files: environmentFiles, skipInvalidFile: skipInvalidFile)

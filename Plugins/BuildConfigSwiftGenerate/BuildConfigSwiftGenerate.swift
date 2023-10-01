@@ -46,8 +46,6 @@ extension BuildConfigSwiftGenerate: XcodeBuildToolPlugin {
                 arguments: [
                     "-o",
                     generatedFileContainerPath.string,
-                    "-e",
-                    "debug",
                     buildConfigDirectoryPath.string
                 ],
                 outputFiles: [generatedFileContainerPath.appending(generatedFileName)]
