@@ -42,6 +42,8 @@ jobs:
             ${{ runner.os }}-spm-${{ env.cache-name }}-
             ${{ runner.os }}-spm-
             ${{ runner.os }}-
+      - name: Disable SwiftLint Plugin
+        run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
       - name: test via SwiftPM
         run: set -o pipefail && swift test
       - name: test via xcodebuild
@@ -66,8 +68,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Disable SwiftLint Plugin
+        run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
       - name: Copy .swiftlint.yml for demo app
         run: sh ./scripts/copy-lint-config.sh
-      - uses: 417-72KI/danger-swiftlint@v5
+      - uses: 417-72KI/danger-swiftlint@v5.7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
