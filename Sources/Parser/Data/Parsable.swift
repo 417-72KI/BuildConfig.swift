@@ -52,7 +52,7 @@ struct AnyParsable: Parsable {
     }
 
     init() {
-        self.init([String: AnyParsable]())
+        self.init([String: Self]())
     }
 
     init(from decoder: Decoder) throws {
@@ -70,9 +70,9 @@ struct AnyParsable: Parsable {
             value = boolValue
         } else if let doubleValue = try? container.decode(Double.self) {
             value = doubleValue
-        } else if let arrayValue = try? container.decode([AnyParsable].self) {
+        } else if let arrayValue = try? container.decode([Self].self) {
             value = arrayValue
-        } else if let dictionaryValue = try? container.decode([String: AnyParsable].self) {
+        } else if let dictionaryValue = try? container.decode([String: Self].self) {
             value = dictionaryValue
         } else if let stringValue = try? container.decode(String.self) {
             value = stringValue
@@ -84,7 +84,7 @@ struct AnyParsable: Parsable {
         }
     }
 
-    static func == (lhs: AnyParsable, rhs: AnyParsable) -> Bool {
+    static func == (lhs: Self, rhs: Self) -> Bool {
         if let lhs = lhs.value as? Int, let rhs = rhs.value as? Int {
             return lhs == rhs
         }
@@ -97,10 +97,10 @@ struct AnyParsable: Parsable {
         if let lhs = lhs.value as? Double, let rhs = rhs.value as? Double {
             return lhs == rhs
         }
-        if let lhs = lhs.value as? [AnyParsable], let rhs = rhs.value as? [AnyParsable] {
+        if let lhs = lhs.value as? [Self], let rhs = rhs.value as? [Self] {
             return lhs == rhs
         }
-        if let lhs = lhs.value as? [String: AnyParsable], let rhs = rhs.value as?  [String: AnyParsable] {
+        if let lhs = lhs.value as? [String: Self], let rhs = rhs.value as?  [String: Self] {
             return lhs == rhs
         }
         return false
