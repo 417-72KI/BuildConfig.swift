@@ -54,21 +54,21 @@ jobs:
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: pod trunk push BuildConfig.swift.podspec
-  revert-to-develop-mode:
-    name: Revert to develop mode
-    needs: podspec
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Revert to develop mode
-        run: |
-          if [[ "$(cat Package.swift | grep "let isDevelop =" | awk '{ print $NF }')" == 'false' ]]; then
-            git config --global user.email "github-actions[bot]@users.noreply.github.com"
-            git config --global user.name "github-actions[bot]"
-            sed -i -e 's/let isDevelop = false/let isDevelop = true/g' Package.swift
-            git commit -m "Revert to develop mode" Package.swift
-            git push origin main
-          fi
+  # revert-to-develop-mode:
+  #   name: Revert to develop mode
+  #   needs: podspec
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         ref: main
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Revert to develop mode
+  #       run: |
+  #         if [[ "$(cat Package.swift | grep "let isDevelop =" | awk '{ print $NF }')" == 'false' ]]; then
+  #           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+  #           git config --global user.name "github-actions[bot]"
+  #           sed -i -e 's/let isDevelop = false/let isDevelop = true/g' Package.swift
+  #           git commit -m "Revert to develop mode" Package.swift
+  #           git push origin main
+  #         fi

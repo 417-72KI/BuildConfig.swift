@@ -61,3 +61,10 @@ git push origin main
 
 # GitHub Release
 gh release create "$TAG"
+
+# Revert to develop mode
+if [[ "$(cat "$PACKAGE_FILE" | grep "let isDevelop =" | awk '{ print $NF }')" == 'false' ]]; then
+    sed -i -e 's/let isDevelop = false/let isDevelop = true/g' "$PACKAGE_FILE"
+    git commit -m "Revert to develop mode" "$PACKAGE_FILE"
+    git push origin main
+fi
