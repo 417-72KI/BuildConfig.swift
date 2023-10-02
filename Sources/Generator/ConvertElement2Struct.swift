@@ -8,3 +8,4 @@ func convertStruct(from element: ElementPropertyType) -> StructPropertyType {
     }
     return element as! StructPropertyType
 }
+// swiftlint:enable force_cast

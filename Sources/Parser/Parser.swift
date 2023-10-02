@@ -17,7 +17,7 @@ public extension Parser {
         let filePaths = try getFileList(at: directoryPath, environment: environment)
         let environmentFiles = filePaths.filter { $0.components.contains(envDirComponent) }
             .compactMap { File(path: $0) }
-        if let environment = environment,
+        if let environment,
            environmentFiles.isEmpty {
             dumpWarn("No file for environment `\(environment)` in `\(directoryPath)`.")
         }
@@ -39,7 +39,7 @@ public extension Parser {
 extension Parser {
     func getFileList(at path: Path, environment: String? = nil) throws -> [Path] {
         if path.lastComponent == envDirComponent {
-            if let environment = environment {
+            if let environment {
                 return try path.children().filter { $0.lastComponentWithoutExtension == environment }
             }
             return []
