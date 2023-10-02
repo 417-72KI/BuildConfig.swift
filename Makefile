@@ -1,6 +1,6 @@
 executable_name = buildconfigswift
 
-.PHONY: clean build test
+.PHONY: clean build test release lint format
 
 default: clean build
 
@@ -21,7 +21,10 @@ release:
 	@scripts/release.sh $(executable_name)
 
 lint:
-	bundle exec pod spec lint --no-clean --allow-warnings
+	@swift run swiftlint
+
+format:
+	@swift run swiftlint --fix
 
 demo_app_init:
 	@scripts/copy-lint-config.sh && \
