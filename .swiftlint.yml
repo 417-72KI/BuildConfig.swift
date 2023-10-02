@@ -37,8 +37,10 @@ disabled_rules:
   - prefixed_toplevel_constant
   - prohibited_interface_builder
   - required_deinit
+  - sorted_enum_cases
   - static_operator
   - strict_fileprivate
+  - superfluous_else
   - switch_case_on_newline
   - trailing_closure
   - unowned_variable_capture
