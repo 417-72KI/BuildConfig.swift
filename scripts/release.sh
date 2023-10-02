@@ -3,6 +3,7 @@
 set -eu
 
 APPLICATION_INFO_FILE='Sources/Common/ApplicationInfo.swift'
+PACKAGE_FILE='Package.swift'
 
 if [ $# -ne 1 ]; then
     echo -e "\e[31m[Error] invalid arguments \`$@\`.\e[m"
@@ -32,15 +33,15 @@ fi
 
 if [ "$(git tag | grep "$(swift run "$EXECUTABLE_NAME" --version)")" != '' ]; then
     echo "\e[31m${NEXT_VERSION} is already tagged.\e[m"
-    git checkout HEAD -- Sources/Common/ApplicationInfo.swift
+    git checkout HEAD -- "$APPLICATION_INFO_FILE"
     exit 1
 fi
 
-if [[ "$(cat Package.swift | grep "let isDevelop =" | awk '{ print $NF }')" == 'true' ]]; then
-    sed -i '' -e 's/let isDevelop = true/let isDevelop = false/g' Package.swift
+if [[ "$(cat "$PACKAGE_FILE" | grep "let isDevelop =" | awk '{ print $NF }')" == 'true' ]]; then
+    sed -i '' -e 's/let isDevelop = true/let isDevelop = false/g' "$PACKAGE_FILE"
 fi
 
-if [ "$(git status -s | grep .swift | grep -v ApplicationInfo.swift | grep -v Package.swift)" != '' ]; then
+if [ "$(git status -s | grep .swift | grep -v "$(basename "$APPLICATION_INFO_FILE")" | grep -v "$(basename "$PACKAGE_FILE")")" != '' ]; then
     echo "\e[31mUnexpected added/modified/deleted file.\e[m"
     exit 1
 fi
@@ -54,7 +55,7 @@ cd $(git rev-parse --show-toplevel)
 
 # Version
 TAG="$(swift run $EXECUTABLE_NAME --version 2>/dev/null)"
-git commit -m "Bump version to ${TAG}" "${APPLICATION_INFO_FILE}"
+git commit -m "Bump version to ${TAG}" "$APPLICATION_INFO_FILE" "$PACKAGE_FILE"
 
 git push origin main
 
