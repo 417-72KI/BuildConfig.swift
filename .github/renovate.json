@@ -1,5 +1,12 @@
 {
     "extends": [
         "github>417-72KI/renovate-config"
+    ],
+    "packageRules": [
+        {
+            "matchManagers": ["github-actions"],
+            "matchPackageNames": ["417-72KI/danger-swiftlint"],
+            "enabled": false
+        }
     ]
 }
