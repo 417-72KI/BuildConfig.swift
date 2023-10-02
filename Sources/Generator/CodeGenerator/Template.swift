@@ -58,7 +58,7 @@ extension Template {
 
                 static func load(from data: Data) -> BuildConfig {
                     do {
-                        return try PropertyListDecoder().decode(BuildConfig.self, from: data)
+                        return try JSONDecoder().decode(BuildConfig.self, from: data)
                     } catch {
                         fatalError("Invalid data (\\(String(data: data, encoding: .utf8) ?? ""). cause: \\(error)")
                     }

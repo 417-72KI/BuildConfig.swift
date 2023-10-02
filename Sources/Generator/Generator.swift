@@ -12,7 +12,7 @@ public struct Generator {
 
 public extension Generator {
     func run() throws -> String {
-        guard let content = try JSONSerialization.jsonObject(
+        guard let content = try? JSONSerialization.jsonObject(
             with: data,
             options: []
         ) as? [AnyHashable: Any] else { throw GeneratorError.invalidData }

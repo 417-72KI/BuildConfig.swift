@@ -26,7 +26,7 @@ final class GeneratorTests: XCTestCase {
                 "isDebug": false,
                 "pi": 3.14159265358979
             ] as [AnyHashable: Any]
-            let data = try PropertyListSerialization.data(fromPropertyList: content, format: .binary, options: 0)
+            let data = try JSONSerialization.data(withJSONObject: content, options: .sortedKeys)
             try context("success") {
                 let file = try XCTUnwrap(File(path: path + "Testcase.swift"))
                 let contents = file.contents
@@ -47,8 +47,10 @@ final class GeneratorTests: XCTestCase {
 
                 try context("rawData") {
                     let (actual, expected) = try XCTUnwrap(zipped.suffix(1).first)
-                    let actualDic = try PropertyListSerialization.propertyList(from: try XCTUnwrap(Data(base64Encoded: String(actual.dropFirst(43).dropLast(3)))), format: nil) as? NSDictionary
-                    let expectedDic = try PropertyListSerialization.propertyList(from: try XCTUnwrap(Data(base64Encoded: String(expected.dropFirst(43).dropLast(3)))), format: nil) as? NSDictionary
+                    let base64String = (actual: String(actual.dropFirst(43).dropLast(3)), expected: String(expected.dropFirst(43).dropLast(3)))
+                    XCTAssertEqual(base64String.actual, base64String.expected)
+                    let actualDic = try JSONSerialization.jsonObject(with: try XCTUnwrap(Data(base64Encoded: base64String.actual))) as? NSDictionary
+                    let expectedDic = try JSONSerialization.jsonObject(with: try XCTUnwrap(Data(base64Encoded: base64String.expected))) as? NSDictionary
                     XCTAssertEqual(actualDic, expectedDic, diff(between: actualDic, and: expectedDic))
                 }
             }
@@ -59,7 +61,7 @@ final class GeneratorTests: XCTestCase {
                 "a_struct": [:],
                 "b_struct": ["hoge": "fuga"]
                 ] as [AnyHashable: Any]
-            let data = try PropertyListSerialization.data(fromPropertyList: content, format: .binary, options: 0)
+            let data = try JSONSerialization.data(withJSONObject: content, options: .sortedKeys)
             try context("success") {
                 let file = try XCTUnwrap(File(path: path + "EmptyNestCase.swift"))
                 let contents = file.contents
@@ -81,8 +83,10 @@ final class GeneratorTests: XCTestCase {
 
                 try context("rawData") {
                     let (actual, expected) = try XCTUnwrap(zipped.suffix(1).first)
-                    let actualDic = try PropertyListSerialization.propertyList(from: try XCTUnwrap(Data(base64Encoded: String(actual.dropFirst(43).dropLast(3)))), format: nil) as? NSDictionary
-                    let expectedDic = try PropertyListSerialization.propertyList(from: try XCTUnwrap(Data(base64Encoded: String(expected.dropFirst(43).dropLast(3)))), format: nil) as? NSDictionary
+                    let base64String = (actual: String(actual.dropFirst(43).dropLast(3)), expected: String(expected.dropFirst(43).dropLast(3)))
+                    XCTAssertEqual(base64String.actual, base64String.expected)
+                    let actualDic = try JSONSerialization.jsonObject(with: try XCTUnwrap(Data(base64Encoded: base64String.actual))) as? NSDictionary
+                    let expectedDic = try JSONSerialization.jsonObject(with: try XCTUnwrap(Data(base64Encoded: base64String.expected))) as? NSDictionary
                     XCTAssertEqual(actualDic, expectedDic, diff(between: actualDic, and: expectedDic))
                 }
             }
@@ -90,7 +94,7 @@ final class GeneratorTests: XCTestCase {
 
         try context("empty data") {
             let content = [:] as [AnyHashable: Any]
-            let data = try PropertyListSerialization.data(fromPropertyList: content, format: .binary, options: 0)
+            let data = try JSONSerialization.data(withJSONObject: content, options: .sortedKeys)
             try context("success") {
                 let file = try XCTUnwrap(File(path: path + "EmptyCase.swift"))
                 let contents = file.contents
@@ -103,7 +107,7 @@ final class GeneratorTests: XCTestCase {
             let data = "string".data(using: .utf8)!
             try context("fail") {
                 XCTAssertThrowsError(try Generator(data: data).run()) {
-                    guard case .invalidData = $0 as? GeneratorError else {
+                    guard case GeneratorError.invalidData = $0 else {
                         XCTFail($0.localizedDescription)
                         return
                     }

@@ -45,7 +45,7 @@ extension BuildConfig {
 
     static func load(from data: Data) -> BuildConfig {
         do {
-            return try PropertyListDecoder().decode(BuildConfig.self, from: data)
+            return try JSONDecoder().decode(BuildConfig.self, from: data)
         } catch {
             fatalError("Invalid data (\(String(data: data, encoding: .utf8) ?? ""). cause: \(error)")
         }
@@ -96,4 +96,4 @@ extension BuildConfig {
     }
 }
 
-private let rawData = Data(base64Encoded: "YnBsaXN0MDDXAQIDBAUGBwgJCg4YGxxVdG9rZW5ScGlXbGljZW5zZVNBUElUYm9vdFtlbnZpcm9ubWVudFdpc0RlYnVnEgAB4kAjQAkh+1RELRGjCwwNVFlhbWxXUGF0aEtpdF8QD1N0ZW5jaWxTd2lmdEtpdNIPEBEXVHBhdGhWZG9tYWlu0RITVWxvZ2lu0g8UFRZWbWV0aG9kVi9sb2dpblRQT1NUXxASaHR0cDovLzE5Mi4xNjguMC4x0RkaV21lc3NhZ2VdSGVsbG8sIFdvcmxkIVtkZXZlbG9wbWVudAgIFx0gKCwxPUVKU1dcZHZ7gIeKkJWco6i9wMjW4gAAAAAAAAEBAAAAAAAAAB0AAAAAAAAAAAAAAAAAAADj")!
+private let rawData = Data(base64Encoded: "eyJBUEkiOnsiZG9tYWluIjoiaHR0cDpcL1wvMTkyLjE2OC4wLjEiLCJwYXRoIjp7ImxvZ2luIjp7Im1ldGhvZCI6IlBPU1QiLCJwYXRoIjoiXC9sb2dpbiJ9fX0sImJvb3QiOnsibWVzc2FnZSI6IkhlbGxvLCBXb3JsZCEifSwiZW52aXJvbm1lbnQiOiJkZXZlbG9wbWVudCIsImlzRGVidWciOmZhbHNlLCJsaWNlbnNlIjpbIllhbWwiLCJQYXRoS2l0IiwiU3RlbmNpbFN3aWZ0S2l0Il0sInBpIjozLjE0MTU5MjY1MzU4OTc5LCJ0b2tlbiI6MTIzNDU2fQ==")!
