@@ -49,8 +49,11 @@ extension CodeGenerator {
         if asBinary {
             rawDataString = data.base64EncodedString()
         } else {
-            let propertyList = try PropertyListSerialization.propertyList(from: data, format: nil)
-            let rawData = try PropertyListSerialization.data(fromPropertyList: propertyList, format: .xml, options: 0)
+            let json = try JSONSerialization.jsonObject(with: data)
+            let rawData = try JSONSerialization.data(
+                withJSONObject: json,
+                options: [.sortedKeys, .prettyPrinted]
+            )
             rawDataString = String(data: rawData, encoding: .utf8) ?? ""
         }
         return try render(with: .rawData(asBinary: asBinary), dictionary: ["rawData": rawDataString])

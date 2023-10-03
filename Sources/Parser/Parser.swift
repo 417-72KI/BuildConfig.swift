@@ -28,10 +28,9 @@ public extension Parser {
         let defaultData = try parse(files: otherFiles, skipInvalidFile: skipInvalidFile)
             .reduce(AnyParsable()) { $0 + $1 }
         let result = defaultData + environmentData
-        return try PropertyListSerialization.data(
-            fromPropertyList: result.rawValue,
-            format: .binary,
-            options: 0
+        return try JSONSerialization.data(
+            withJSONObject: result.rawValue,
+            options: []
         )
     }
 }

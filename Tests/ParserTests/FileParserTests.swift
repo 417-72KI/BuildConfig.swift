@@ -19,7 +19,8 @@ final class FileParserTests: XCTestCase {
                             "login": TestContent.API.Path(method: .post, path: "/login"),
                             "getList": TestContent.API.Path(method: .get, path: "/list")
                         ],
-                        timeout: 11.5
+                        timeout: 11.5,
+                        apiVersion: 1
                     ),
                     count: 0,
                     isDebug: true
@@ -35,6 +36,9 @@ final class FileParserTests: XCTestCase {
 
                 let timeout = try XCTUnwrap(api["timeout"]?.value as? Double)
                 XCTAssertEqual(timeout, 11.5, accuracy: 0.1)
+
+                let apiVersion = try XCTUnwrap(api["api_version"]?.value as? Int)
+                XCTAssertEqual(1, apiVersion)
 
                 let count = try XCTUnwrap(root["count"]?.value as? Int)
                 XCTAssertEqual(count, 0)
@@ -57,7 +61,8 @@ final class FileParserTests: XCTestCase {
                             "login": TestContent.API.Path(method: .post, path: "/login"),
                             "getList": TestContent.API.Path(method: .get, path: "/list")
                         ],
-                        timeout: 10.5
+                        timeout: 10.5,
+                        apiVersion: 1
                     ),
                     count: 0,
                     isDebug: true
@@ -73,7 +78,10 @@ final class FileParserTests: XCTestCase {
                 
                 let timeout = try XCTUnwrap(api["timeout"]?.value as? Double)
                 XCTAssertEqual(timeout, 10.5, accuracy: 0.1)
-                
+
+                let apiVersion = try XCTUnwrap(api["api_version"]?.value as? Int)
+                XCTAssertEqual(1, apiVersion)
+
                 let count = try XCTUnwrap(root["count"]?.value as? Int)
                 XCTAssertEqual(count, 0)
                 
@@ -93,6 +101,7 @@ private struct TestContent: Codable, Equatable {
         let domain: URL
         let api: [String: Path]
         let timeout: Double
+        let apiVersion: Int
 
         struct Path: Codable, Equatable {
             let method: Method
@@ -103,11 +112,13 @@ private struct TestContent: Codable, Equatable {
             case get = "GET"
             case post = "POST"
         }
+
+        enum CodingKeys: String, CodingKey {
+            case domain, api, timeout, apiVersion = "api_version"
+        }
     }
 
     enum CodingKeys: String, CodingKey {
-        case api = "API"
-        case count
-        case isDebug = "is_debug"
+        case api = "API", count, isDebug = "is_debug"
     }
 }

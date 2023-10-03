@@ -35,7 +35,7 @@ extension BuildConfig {
 
     static func load(from data: Data) -> BuildConfig {
         do {
-            return try PropertyListDecoder().decode(BuildConfig.self, from: data)
+            return try JSONDecoder().decode(BuildConfig.self, from: data)
         } catch {
             fatalError("Invalid data (\(String(data: data, encoding: .utf8) ?? ""). cause: \(error)")
         }
@@ -57,4 +57,4 @@ extension BuildConfig {
     }
 }
 
-private let rawData = Data(base64Encoded: "YnBsaXN0MDDSAQIDBlhiX3N0cnVjdFhhX3N0cnVjdNEEBVRob2dlVGZ1Z2HQCA0WHyInLAAAAAAAAAEBAAAAAAAAAAcAAAAAAAAAAAAAAAAAAAAt")!
+private let rawData = Data(base64Encoded: "eyJhX3N0cnVjdCI6e30sImJfc3RydWN0Ijp7ImhvZ2UiOiJmdWdhIn19")!
