@@ -1,19 +1,17 @@
 import struct Foundation.URL
 import Common
 
-struct Parser {
-    let content: [AnyHashable: Any]
-}
+enum Parser {}
 
 extension Parser {
-    func run() -> Struct? {
+    static func parse(_ content: [AnyHashable: Any]) -> Struct? {
         guard let element = extractProperties(content) as? Element else { return nil }
         return generateStruct(from: element, name: "BuildConfig", parent: [])
     }
 }
 
 private extension Parser {
-    func extractProperties(_ value: Any) -> ElementPropertyType? {
+    static func extractProperties(_ value: Any) -> ElementPropertyType? {
         switch value {
         case let boolValue as Bool:
             return boolValue
@@ -43,7 +41,7 @@ private extension Parser {
         }
     }
 
-    func generateStruct(from element: Element, name: String, parent: [String]) -> Struct {
+    static func generateStruct(from element: Element, name: String, parent: [String]) -> Struct {
         let properties = element.properties.map { key, value -> (String, StructPropertyType) in
             if let element = value as? Element {
                 let parent = parent + [name]
