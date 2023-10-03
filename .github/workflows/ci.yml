@@ -76,7 +76,9 @@ jobs:
           clean test | xcpretty
       - uses: kishikawakatsumi/xcresulttool@v1
         with:
-          path: test_output/BuildConfig.swift.xcresult
+          path: |
+            test_output/BuildConfig.swift.xcresult
+            test_output/BuildConfigDemo.xcresult
           show-passed-tests: false
           show-code-coverage: false
         if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
