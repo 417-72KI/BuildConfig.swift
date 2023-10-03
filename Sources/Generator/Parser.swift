@@ -8,6 +8,38 @@ extension Parser {
         guard let element = extractProperties(content) as? Element else { return nil }
         return generateStruct(from: element, name: "BuildConfig", parent: [])
     }
+
+    static func parse(_ parsable: some Parsable) -> Struct? {
+        guard let element = extractProperties(parsable) as? Element else { return nil }
+        return generateStruct(from: element, name: "BuildConfig", parent: [])
+    }
+}
+
+private extension Parser {
+    static func extractProperties(_ value: some Parsable) -> ElementPropertyType? {
+        switch value.value {
+        case let boolValue as Bool:
+            return boolValue
+        case let intValue as Int:
+            return intValue
+        case let doubleValue as Double:
+            return doubleValue
+        case let urlValue as URL:
+            return urlValue
+        case let stringValue as String:
+            return stringValue
+        case let arrayValue as [AnyParsable]:
+            return arrayValue.compactMap { extractProperties($0) }
+        case let dictionaryValue as [String: AnyParsable]:
+            let properties = dictionaryValue.compactMap { key, value -> (String, ElementPropertyType)? in
+                guard let extractedValue = extractProperties(value) else { return nil }
+                return (key, extractedValue)
+            }
+            return Element(properties: Dictionary(uniqueKeysWithValues: properties))
+        default:
+            return nil
+        }
+    }
 }
 
 private extension Parser {
@@ -28,11 +60,6 @@ private extension Parser {
         case let dictionaryValue as [String: Any]:
             let properties = dictionaryValue.compactMap { key, value -> (String, ElementPropertyType)? in
                 guard let extractedValue = extractProperties(value) else { return nil }
-                // FIXME: when value is `0` or `1`, it may parsed as Bool unexpectedly.
-                if extractedValue is Bool, !key.hasPrefix("is") {
-                    // swiftlint:disable:next force_cast
-                    return (key, value as! Int)
-                }
                 return (key, extractedValue)
             }
             return Element(properties: Dictionary(uniqueKeysWithValues: properties))
