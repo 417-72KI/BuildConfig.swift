@@ -63,7 +63,7 @@ jobs:
         if: success() || failure()
         run: |
           set -o pipefail && \
-          xcrun --sdk macosx swift run -c release --package-path Demo/Tools xcodegen --spec Demo/project.yml && \
+          xcrun --sdk macosx swift run --package-path Demo/Tools xcodegen --spec Demo/project.yml && \
           PROJECT_PATH=$(find Demo -depth 1 -name '*.xcodeproj' | head -n 1) && \
           xcrun --sdk macosx xcodebuild \
           -skipPackagePluginValidation \
