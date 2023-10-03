@@ -58,6 +58,17 @@ extension BuildConfigSwiftGenerate: XcodeBuildToolPlugin {
 private extension BuildConfigSwiftGenerate {
     var resourceDirectoryName: String { "BuildConfig" }
     var generatedFileName: String { "BuildConfig.generated.swift" }
+    var ignoreDirectories: [String] {
+        [
+            ".build",
+            ".swiftpm",
+            "build",
+            "Build",
+            "DerivedData",
+            "Packages",
+            "SourcePackages",
+        ]
+    }
 }
 
 private extension BuildConfigSwiftGenerate {
@@ -67,6 +78,9 @@ private extension BuildConfigSwiftGenerate {
         guard fm.fileExists(atPath: targetPath.string,
                             isDirectory: &isDirectory),
               isDirectory.boolValue else { preconditionFailure() }
+        if ignoreDirectories.contains(targetPath.lastComponent) {
+            return nil
+        }
         let files = try fm.contentsOfDirectory(atPath: targetPath.string)
         if files.contains(path) {
             return targetPath.appending(path)
