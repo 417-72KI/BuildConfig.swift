@@ -8,5 +8,6 @@ API:
       method: GET
       path: /list
   timeout: 11.5
+  api_version: 1
 count: 0
 is_debug: true

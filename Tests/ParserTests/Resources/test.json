@@ -11,7 +11,8 @@
                 "path": "/list"
             }
         },
-        "timeout": 10.5
+        "timeout": 10.5,
+        "api_version": 1
     },
     "count": 0,
     "is_debug": true
