@@ -50,8 +50,10 @@ extension CodeGenerator {
             rawDataString = data.base64EncodedString()
         } else {
             let json = try JSONSerialization.jsonObject(with: data)
-            let rawData = try JSONSerialization.data(withJSONObject: json, 
-                                                     options: [.sortedKeys, .prettyPrinted])
+            let rawData = try JSONSerialization.data(
+                withJSONObject: json,
+                options: [.sortedKeys, .prettyPrinted]
+            )
             rawDataString = String(data: rawData, encoding: .utf8) ?? ""
         }
         return try render(with: .rawData(asBinary: asBinary), dictionary: ["rawData": rawDataString])
