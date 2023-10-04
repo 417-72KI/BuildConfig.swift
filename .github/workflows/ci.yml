@@ -45,6 +45,17 @@ jobs:
             ${{ runner.os }}-spm-${{ env.cache-name }}-
             ${{ runner.os }}-spm-
             ${{ runner.os }}-
+      - name: Cache DerivedData
+        uses: actions/cache@v3
+        with:
+          path: |
+            DerivedData
+            Demo/DerivedData
+          key: ${{ runner.os }}-xcode-derived-data-${{ hashFiles('**/Package.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-xcode-derived-data-${{ env.cache-name }}-
+            ${{ runner.os }}-xcode-derived-data-
+            ${{ runner.os }}-
       - name: Disable SwiftLint Plugin
         run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
       - name: test via SwiftPM
@@ -56,6 +67,7 @@ jobs:
           -enableCodeCoverage YES \
           -scheme "$(xcrun --sdk macosx xcodebuild -list -json | jq -rc '.workspace.schemes[] | select(. | startswith("BuildConfig"))')" \
           -destination "platform=macOS" \
+          -derivedDataPath 'DerivedData' \
           -clonedSourcePackagesDirPath '.build/SourcePackages' \
           -resultBundlePath 'test_output/BuildConfig.swift.xcresult' \
           clean test | xcpretty
@@ -71,6 +83,7 @@ jobs:
           -project "${PROJECT_PATH}" \
           -scheme "$(xcrun --sdk macosx xcodebuild -project "${PROJECT_PATH}" -list -json | jq -rc '.project.schemes[] | select(. | contains("Demo"))')" \
           -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
+          -derivedDataPath 'Demo/DerivedData' \
           -clonedSourcePackagesDirPath 'Demo/.build/SourcePackages' \
           -resultBundlePath 'test_output/BuildConfigDemo.xcresult' \
           clean test | xcpretty
