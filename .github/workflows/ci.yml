@@ -31,6 +31,7 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
+      cache-name: 'test'
     steps:
       - uses: actions/checkout@v4
       - name: Cache SPM build directory
@@ -41,15 +42,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-spm-${{ env.cache-name }}-
             ${{ runner.os }}-spm-
-            ${{ runner.os }}-
-      - name: Cache DerivedData
-        uses: actions/cache@v3
-        with:
-          path: DerivedData
-          key: ${{ runner.os }}-xcode-derived-data-${{ hashFiles('**/Package.swift') }}
-          restore-keys: |
-            ${{ runner.os }}-xcode-derived-data-${{ env.cache-name }}-
-            ${{ runner.os }}-xcode-derived-data-
             ${{ runner.os }}-
       - name: Disable SwiftLint Plugin
         run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
@@ -70,6 +62,7 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
+      cache-name: 'test-demo'
     steps:
       - uses: actions/checkout@v4
       - name: Cache SPM build directory

@@ -16,7 +16,6 @@ xcrun --sdk macosx xcodebuild \
     -enableCodeCoverage YES \
     -scheme "${SCHEME}" \
     -destination "platform=macOS" \
-    -derivedDataPath 'DerivedData' \
     -clonedSourcePackagesDirPath '.build/SourcePackages' \
     -resultBundlePath "$XCRESULT_PATH" \
     clean test | xcpretty
