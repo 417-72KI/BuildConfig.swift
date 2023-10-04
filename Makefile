@@ -6,7 +6,7 @@ default: clean build
 
 clean:
 	swift package clean
-	git clean -xdf -e .build
+	git clean -xdf -e .build -e Demo/Tools/.build
 
 dependencies:
 	swift package update
