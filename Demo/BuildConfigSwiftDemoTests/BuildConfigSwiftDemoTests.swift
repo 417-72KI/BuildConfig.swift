@@ -7,27 +7,31 @@
 //
 
 import XCTest
+@testable import BuildConfigSwiftDemo
 
-class BuildConfigSwiftDemoTests: XCTestCase {
-
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+final class BuildConfigTests: XCTestCase {
+    func testDefault() {
+        let buildConfig = BuildConfig.default
+        XCTAssertEqual(1, buildConfig.apiVersion)
+        XCTAssertEqual("develop", buildConfig.environment)
+        XCTAssertFalse(buildConfig.isDebug)
+        XCTAssertEqual(3.14, buildConfig.pi, accuracy: 0.01)
     }
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testLoad() {
+        let buildConfig = BuildConfig.load(
+            from: #"""
+            {
+                "api_version": 100, 
+                "environment": "staging",
+                "is_debug": true,
+                "pi": 3.14
+            }
+            """#.data(using: .utf8)!
+        )
+        XCTAssertEqual(100, buildConfig.apiVersion)
+        XCTAssertEqual("staging", buildConfig.environment)
+        XCTAssertTrue(buildConfig.isDebug)
+        XCTAssertEqual(3.14, buildConfig.pi, accuracy: 0.01)
     }
-
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }
