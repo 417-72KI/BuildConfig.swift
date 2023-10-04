@@ -112,13 +112,13 @@ jobs:
         with:
           path: test_output
       - run: ls -la test_output
-  #     - uses: kishikawakatsumi/xcresulttool@v1
-  #       with:
-  #         path: |
-  #           test_output/BuildConfig.swift.xcresult
-  #           test_output/BuildConfigDemo.xcresult
-  #         show-passed-tests: false
-  #         show-code-coverage: false
+      - uses: kishikawakatsumi/xcresulttool@v1
+        with:
+          path: |
+            test_output/BuildConfig.swift.xcresult
+            test_output/BuildConfigDemo.xcresult
+          show-passed-tests: false
+          show-code-coverage: false
   danger:
     name: Danger
     if: ${{ github.event_name == 'pull_request' }}
