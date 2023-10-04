@@ -36,10 +36,7 @@ jobs:
       - name: Cache SPM build directory
         uses: actions/cache@v3
         with:
-          path: |
-            .build
-            Demo/.build
-            Demo/Tools/.build
+          path: .build
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.swift') }}
           restore-keys: |
             ${{ runner.os }}-spm-${{ env.cache-name }}-
@@ -48,9 +45,7 @@ jobs:
       - name: Cache DerivedData
         uses: actions/cache@v3
         with:
-          path: |
-            DerivedData
-            Demo/DerivedData
+          path: DerivedData
           key: ${{ runner.os }}-xcode-derived-data-${{ hashFiles('**/Package.swift') }}
           restore-keys: |
             ${{ runner.os }}-xcode-derived-data-${{ env.cache-name }}-
@@ -62,17 +57,70 @@ jobs:
         run: set -o pipefail && swift test
       - name: test via xcodebuild
         run: ./scripts/test.sh
-      - name: test DemoApp
-        if: success() || failure()
-        run: ./scripts/test_demo.sh
-      - uses: kishikawakatsumi/xcresulttool@v1
+      - name: upload test results
+        if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: BuildConfig.swift.xcresult
+          path: test_output/BuildConfig.swift.xcresult
+  test_demo:
+    name: Test demo app
+    needs: generate-matrix
+    runs-on: macOS-12
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache SPM build directory
+        uses: actions/cache@v3
         with:
           path: |
-            test_output/BuildConfig.swift.xcresult
-            test_output/BuildConfigDemo.xcresult
-          show-passed-tests: false
-          show-code-coverage: false
+            Demo/.build
+            Demo/Tools/.build
+          key: ${{ runner.os }}-demo-spm-${{ hashFiles('**/Package.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-demo-spm-${{ env.cache-name }}-
+            ${{ runner.os }}-demo-spm-
+            ${{ runner.os }}-demo-
+      - name: Cache DerivedData
+        uses: actions/cache@v3
+        with:
+          path: Demo/DerivedData
+          key: ${{ runner.os }}-demo-xcode-derived-data-${{ hashFiles('**/Package.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-demo-xcode-derived-data-${{ env.cache-name }}-
+            ${{ runner.os }}-demo-xcode-derived-data-
+            ${{ runner.os }}-demo-
+      - name: Disable SwiftLint Plugin
+        run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
+      - name: test
+        run: ./scripts/test_demo.sh
+      - name: upload test results
         if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: BuildConfigDemo.xcresult
+          path: test_output/BuildConfigDemo.xcresult
+  report:
+    name: Report
+    needs: [test, test_demo]
+    runs-on: macOS-12
+    if: ${{ (success() || failure()) }}
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          path: test_output
+      - run: ls -la test_output
+  #     - uses: kishikawakatsumi/xcresulttool@v1
+  #       with:
+  #         path: |
+  #           test_output/BuildConfig.swift.xcresult
+  #           test_output/BuildConfigDemo.xcresult
+  #         show-passed-tests: false
+  #         show-code-coverage: false
   danger:
     name: Danger
     if: ${{ github.event_name == 'pull_request' }}

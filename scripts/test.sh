@@ -10,6 +10,8 @@ fi
 
 SCHEME="$(xcrun --sdk macosx xcodebuild -list -json | jq -rc '.workspace.schemes[] | select(. | startswith("BuildConfig"))')"
 
+echo "Scheme: $SCHEME"
+
 xcrun --sdk macosx xcodebuild \
     -enableCodeCoverage YES \
     -scheme "${SCHEME}" \

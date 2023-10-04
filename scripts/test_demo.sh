@@ -15,6 +15,9 @@ fi
 
 PROJECT_PATH=$(find Demo -depth 1 -name '*.xcodeproj' | head -n 1)
 SCHEME="$(xcrun --sdk macosx xcodebuild -project "${PROJECT_PATH}" -list -json | jq -rc '.project.schemes[] | select(. | contains("Demo"))')"
+
+echo "Scheme: $SCHEME"
+
 xcrun --sdk macosx xcodebuild \
     -skipPackagePluginValidation \
     -enableCodeCoverage YES \
