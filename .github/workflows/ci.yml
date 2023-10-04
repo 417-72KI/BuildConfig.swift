@@ -53,11 +53,9 @@ jobs:
             ${{ runner.os }}-
       - name: Disable SwiftLint Plugin
         run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
-      - name: test via SwiftPM
-        run: set -o pipefail && swift test
-      - name: test via xcodebuild
+      - name: Test
         run: ./scripts/test.sh
-      - name: upload test results
+      - name: Upload test results
         if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
         uses: actions/upload-artifact@v3
         with:
