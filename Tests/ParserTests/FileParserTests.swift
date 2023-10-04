@@ -34,13 +34,13 @@ final class FileParserTests: XCTestCase {
                 let domain = try XCTUnwrap(api["domain"]?.value as? String)
                 XCTAssertEqual(domain, "http://localhost")
 
-                let timeout = try XCTUnwrap(api["timeout"]?.value as? Double)
-                XCTAssertEqual(timeout, 11.5, accuracy: 0.1)
+                let timeout = try XCTUnwrap(api["timeout"]?.value as? Decimal)
+                XCTAssertEqual(timeout, 11.5)
 
-                let apiVersion = try XCTUnwrap(api["api_version"]?.value as? Int)
+                let apiVersion = try XCTUnwrap(api["api_version"]?.value as? Decimal)
                 XCTAssertEqual(1, apiVersion)
 
-                let count = try XCTUnwrap(root["count"]?.value as? Int)
+                let count = try XCTUnwrap(root["count"]?.value as? Decimal)
                 XCTAssertEqual(count, 0)
 
                 let isDebug = try XCTUnwrap(root["is_debug"]?.value as? Bool)
@@ -75,16 +75,16 @@ final class FileParserTests: XCTestCase {
                 let api = try XCTUnwrap(root["API"]?.value as? [String: AnyParsable])
                 let domain = try XCTUnwrap(api["domain"]?.value as? String)
                 XCTAssertEqual(domain, "http://localhost")
-                
-                let timeout = try XCTUnwrap(api["timeout"]?.value as? Double)
-                XCTAssertEqual(timeout, 10.5, accuracy: 0.1)
 
-                let apiVersion = try XCTUnwrap(api["api_version"]?.value as? Int)
+                let timeout = try XCTUnwrap(api["timeout"]?.value as? Decimal)
+                XCTAssertEqual(timeout, 10.5)
+
+                let apiVersion = try XCTUnwrap(api["api_version"]?.value as? Decimal)
                 XCTAssertEqual(1, apiVersion)
 
-                let count = try XCTUnwrap(root["count"]?.value as? Int)
+                let count = try XCTUnwrap(root["count"]?.value as? Decimal)
                 XCTAssertEqual(count, 0)
-                
+
                 let isDebug = try XCTUnwrap(root["is_debug"]?.value as? Bool)
                 XCTAssertTrue(isDebug)
             }
