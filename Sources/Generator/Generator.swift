@@ -12,11 +12,11 @@ public struct Generator {
 
 public extension Generator {
     func run() throws -> String {
-        guard let content = try? JSONSerialization.jsonObject(
-            with: data,
-            options: []
-        ) as? [AnyHashable: Any] else { throw GeneratorError.invalidData }
-        guard let parsed = Parser(content: content).run() else { throw GeneratorError.parseFailed(content) }
+        let decoder = JSONDecoder()
+        guard let content = try? decoder.decode(AnyParsable.self, from: data) else {
+            throw GeneratorError.invalidData
+        }
+        guard let parsed = Parser.parse(content) else { throw GeneratorError.parseFailed(content) }
         return try CodeGenerator(content: parsed, data: data).run()
     }
 }

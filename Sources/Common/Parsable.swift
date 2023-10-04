@@ -1,38 +1,38 @@
 import Foundation
 
-protocol Parsable: Decodable, Equatable {
+public protocol Parsable: Decodable, Equatable {
     var value: Any { get }
 }
 
 extension Int: Parsable {
-    var value: Any { self }
+    public var value: Any { self }
 }
 
 extension String: Parsable {
-    var value: Any { self }
+    public var value: Any { self }
 }
 
 extension URL: Parsable {
-    var value: Any { self }
+    public var value: Any { self }
 }
 
 extension Double: Parsable {
-    var value: Any { self }
+    public var value: Any { self }
 }
 
 extension Bool: Parsable {
-    var value: Any { self }
+    public var value: Any { self }
 }
 
 extension Array: Parsable where Element: Parsable {
-    var value: Any { self }
+    public var value: Any { self }
 }
 
 extension Dictionary: Parsable where Key: Parsable, Value: Parsable {
-    var value: Any { self }
+    public var value: Any { self }
 }
 
-extension Parsable {
+public extension Parsable {
     var rawValue: Any {
         if let array = value as? [AnyParsable] {
             return array.map { $0.rawValue }
@@ -44,18 +44,18 @@ extension Parsable {
     }
 }
 
-struct AnyParsable: Parsable {
-    let value: Any
+public struct AnyParsable: Parsable {
+    public let value: Any
 
-    init(_ value: Any) {
+    public init(_ value: Any) {
         self.value = value
     }
 
-    init() {
+    public init() {
         self.init([String: Self]())
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if let stringValue = try? container.decode(String.self),
            let intValue = try? container.decode(Int.self) {
@@ -84,7 +84,7 @@ struct AnyParsable: Parsable {
         }
     }
 
-    static func == (lhs: Self, rhs: Self) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         if let lhs = lhs.value as? Int, let rhs = rhs.value as? Int {
             return lhs == rhs
         }
@@ -107,7 +107,7 @@ struct AnyParsable: Parsable {
     }
 }
 
-extension AnyParsable {
+public extension AnyParsable {
     var isEmpty: Bool {
         if let value = value as? String {
             return value.isEmpty
