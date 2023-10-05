@@ -3,7 +3,7 @@
 
 import PackageDescription
 
-let isDevelop = false
+let isDevelop = true
 
 let devDependencies: [Package.Dependency] = isDevelop ? [
     .package(url: "https://github.com/realm/SwiftLint.git", from: "0.53.0"),
