@@ -9,12 +9,12 @@
 import Foundation
 
 struct APIClient {
-    var config: BuildConfig
+    var config: BuildConfig.Api
     var session: URLSession
 }
 
 extension APIClient {
-    var host: URL { URL(string: "https://\(config.api.host)")! }
+    var host: URL { URL(string: "https://\(config.host)")! }
 
     var decoder: JSONDecoder {
         let decoder = JSONDecoder()
@@ -31,7 +31,7 @@ extension APIClient {
 
 extension APIClient {
     func endpoint<E>(_ keyPath: KeyPath<BuildConfig.Api.Endpoint, E>) -> E {
-        config.api.endpoint[keyPath: keyPath]
+        config.endpoint[keyPath: keyPath]
     }
 }
 
@@ -49,7 +49,7 @@ extension APIClient {
     @available(iOS 16.0, *)
     func search(_ text: String) async throws -> SearchResponse {
         let endpoint = endpoint(\.search)
-        var url = host.appendingPathComponent(endpoint.path)
+        let url = host.appendingPathComponent(endpoint.path)
             .appending(queryItems: [
                 URLQueryItem(name: "text", value: text)
             ])

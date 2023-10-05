@@ -1,6 +1,6 @@
 api:
   version: 1
-  host: api-dev.example.com
+  host: localhost
   endpoint:
     login:
       method: POST

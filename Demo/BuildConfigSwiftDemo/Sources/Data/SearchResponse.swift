@@ -9,4 +9,11 @@
 import Foundation
 
 struct SearchResponse: Response {
+    var items: [Item]
+}
+
+extension SearchResponse {
+    struct Item: Response {
+        var name: String
+    }
 }
