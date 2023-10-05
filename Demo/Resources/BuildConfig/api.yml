@@ -1,0 +1,13 @@
+api:
+  version: 1
+  host: api-dev.example.com
+  endpoint:
+    login:
+      method: POST
+      path: /login
+    profile:
+      method: GET
+      path: /profile
+    search:
+      method: GET
+      path: /search

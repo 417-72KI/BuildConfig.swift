@@ -1,4 +1,3 @@
 is_debug: true
 environment: debug
-api_version: 1
 pi: 3.14
