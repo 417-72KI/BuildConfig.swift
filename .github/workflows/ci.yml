@@ -35,45 +35,80 @@ jobs:
       - uses: actions/checkout@v4
       - name: Cache SPM build directory
         uses: actions/cache@v3
+        env:
+          cache-name: swiftpm
         with:
-          path: |
-            .build
-            Demo/.build
-            Demo/Tools/.build
-          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.swift') }}
+          path: .build
+          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
           restore-keys: |
-            ${{ runner.os }}-spm-${{ env.cache-name }}-
-            ${{ runner.os }}-spm-
+            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-
             ${{ runner.os }}-
       - name: Disable SwiftLint Plugin
         run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
-      - name: test via SwiftPM
-        run: set -o pipefail && swift test
-      - name: test via xcodebuild
-        run: |
-          set -o pipefail && \
-          xcrun --sdk macosx xcodebuild \
-          -enableCodeCoverage YES \
-          -scheme "$(xcrun --sdk macosx xcodebuild -list -json | jq -rc '.workspace.schemes[] | select(. | startswith("BuildConfig"))')" \
-          -destination "platform=macOS" \
-          -clonedSourcePackagesDirPath '.build/SourcePackages' \
-          -resultBundlePath 'test_output/BuildConfig.swift.xcresult' \
-          clean test | xcpretty
-      - name: test DemoApp
-        if: success() || failure()
-        run: |
-          set -o pipefail && \
-          xcrun --sdk macosx swift run --package-path Demo/Tools xcodegen --spec Demo/project.yml && \
-          PROJECT_PATH=$(find Demo -depth 1 -name '*.xcodeproj' | head -n 1) && \
-          xcrun --sdk macosx xcodebuild \
-          -skipPackagePluginValidation \
-          -enableCodeCoverage YES \
-          -project "${PROJECT_PATH}" \
-          -scheme "$(xcrun --sdk macosx xcodebuild -project "${PROJECT_PATH}" -list -json | jq -rc '.project.schemes[] | select(. | contains("Demo"))')" \
-          -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
-          -clonedSourcePackagesDirPath 'Demo/.build/SourcePackages' \
-          -resultBundlePath 'test_output/BuildConfigDemo.xcresult' \
-          clean test | xcpretty
+      - name: Test
+        run: ./scripts/test.sh
+      - name: Upload test results
+        if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: BuildConfig.swift.xcresult
+          path: test_output/BuildConfig.swift.xcresult
+  test_demo:
+    name: Test demo app
+    needs: generate-matrix
+    runs-on: macOS-12
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache SPM build directory
+        uses: actions/cache@v3
+        env:
+          cache-name: swiftpm
+        with:
+          path: |
+            Demo/.build
+            Demo/Tools/.build
+          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-
+            ${{ runner.os }}-
+      - name: Cache DerivedData
+        uses: actions/cache@v3
+        env:
+          cache-name: derived-data
+        with:
+          path: Demo/DerivedData
+          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-
+            ${{ runner.os }}-
+      - name: Disable SwiftLint Plugin
+        run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
+      - name: test
+        run: ./scripts/test_demo.sh
+      - name: upload test results
+        if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: BuildConfigDemo.xcresult
+          path: test_output/BuildConfigDemo.xcresult
+  report:
+    name: Report
+    needs: [test, test_demo]
+    runs-on: macOS-12
+    if: ${{ (success() || failure()) }}
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          path: test_output
+      - run: ls -la test_output
       - uses: kishikawakatsumi/xcresulttool@v1
         with:
           path: |
@@ -81,7 +116,6 @@ jobs:
             test_output/BuildConfigDemo.xcresult
           show-passed-tests: false
           show-code-coverage: false
-        if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
   danger:
     name: Danger
     if: ${{ github.event_name == 'pull_request' }}
