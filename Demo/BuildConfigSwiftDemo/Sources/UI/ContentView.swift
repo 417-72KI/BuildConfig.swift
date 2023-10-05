@@ -15,8 +15,8 @@ struct ContentView: View {
         VStack {
             Text("isDebug: \(String(config.isDebug))")
             Text("Environment: \(config.environment)")
-            Text("API version: \(config.apiVersion.description)")
-            Text("PI: \(config.pi.description)")
+            Text("API version: \(config.apiVersion, format: .number)")
+            Text("PI: \(config.pi, format: .number)")
         }
     }
 }
