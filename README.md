@@ -16,6 +16,8 @@ Also, by splitting the file for environment configurations, it will be easier to
 > [!IMPORTANT]  
 > There was a problem that parsing `0` or `1` should be `Int`, but `Bool` actually.  
 > Since 5.2.0, keys for `Bool` must have `is` prefix.
+> 
+> This restriction will be fully resolved since 6.0.0.
 
 ### Base JSON file
 ```json
