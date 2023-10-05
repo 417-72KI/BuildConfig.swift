@@ -31,17 +31,18 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
-      cache-name: 'test'
     steps:
       - uses: actions/checkout@v4
       - name: Cache SPM build directory
         uses: actions/cache@v3
+        env:
+          cache-name: swiftpm
         with:
           path: .build
-          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.swift') }}
+          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
           restore-keys: |
-            ${{ runner.os }}-spm-${{ env.cache-name }}-
-            ${{ runner.os }}-spm-
+            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-
             ${{ runner.os }}-
       - name: Disable SwiftLint Plugin
         run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
@@ -62,29 +63,32 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
-      cache-name: 'test-demo'
     steps:
       - uses: actions/checkout@v4
       - name: Cache SPM build directory
         uses: actions/cache@v3
+        env:
+          cache-name: swiftpm
         with:
           path: |
             Demo/.build
             Demo/Tools/.build
-          key: ${{ runner.os }}-demo-spm-${{ hashFiles('**/Package.swift') }}
+          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
           restore-keys: |
-            ${{ runner.os }}-demo-spm-${{ env.cache-name }}-
-            ${{ runner.os }}-demo-spm-
-            ${{ runner.os }}-demo-
+            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-
+            ${{ runner.os }}-
       - name: Cache DerivedData
         uses: actions/cache@v3
+        env:
+          cache-name: derived-data
         with:
           path: Demo/DerivedData
-          key: ${{ runner.os }}-demo-xcode-derived-data-${{ hashFiles('**/Package.swift') }}
+          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
           restore-keys: |
-            ${{ runner.os }}-demo-xcode-derived-data-${{ env.cache-name }}-
-            ${{ runner.os }}-demo-xcode-derived-data-
-            ${{ runner.os }}-demo-
+            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-
+            ${{ runner.os }}-
       - name: Disable SwiftLint Plugin
         run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
       - name: test
