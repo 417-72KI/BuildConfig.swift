@@ -8,20 +8,13 @@
 
 import SwiftUI
 
-@main
 struct DemoApp: App {
+    static var buildConfig: BuildConfig = .default
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(\.buildConfig, Self.buildConfig)
         }
     }
 }
-
-// MARK: - For Debug
-#if DEBUG
-private extension DemoApp {
-    var isTesting: Bool {
-        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
-    }
-}
-#endif

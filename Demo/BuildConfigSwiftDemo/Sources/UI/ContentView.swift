@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    var config: BuildConfig = .default
+    @Environment(\.buildConfig) var config: BuildConfig
 
     var body: some View {
         VStack {
