@@ -91,7 +91,7 @@ final class BuildConfigswiftTests: XCTestCase {
                 }
             }
 
-            try context("contains deprecated lastrun") {
+            try context("contains obsoleted lastrun") {
                 let arguments = [
                     "-e",
                     "staging",
@@ -112,7 +112,10 @@ final class BuildConfigswiftTests: XCTestCase {
                 process.waitUntilExit()
                 XCTAssertEqual(ExitCode(process.terminationStatus), .success)
 
-                XCTAssertEqual(stderr.outputString, "warning: [\(ApplicationInfo.name)(\(ApplicationInfo.version))]  `$(TEMP_DIR)/buildconfigswift-lastrun` is no longer needed in Build phase Input Files and no more updated. Remove it from `Input Files` and uncheck `Based on dependency analysis` instead.")
+                XCTAssertEqual([
+                    "error: [\(ApplicationInfo.name)(\(ApplicationInfo.version))] Validation error:",
+                    "error: [\(ApplicationInfo.name)(\(ApplicationInfo.version))] `$(TEMP_DIR)/buildconfigswift-lastrun` is now obsoleted. Remove it from `Input Files` and uncheck `Based on dependency analysis` instead."
+                ].joined(separator: "\n"), stderr.outputString)
 
                 let createdFile = tmpDirectory.appendingPathComponent("BuildConfig.generated.swift")
                 XCTAssertTrue(FileManager.default.fileExists(atPath: createdFile.path))
