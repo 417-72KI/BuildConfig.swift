@@ -34,14 +34,12 @@ extension App {
 
         let srcDirPath = Path(srcDir)
 
-        let tempDirectoryPath = Path(try Environment.getValue(forKey: .tempDir))
         let scriptInputFiles = try Environment.getScriptInputFiles().map { Path($0) }
         let scriptOutputFiles = try Environment.getScriptOutputFiles().map { Path($0) }
         try Core(
             outputDirectory: outputDirectory,
             environment: environment,
             srcDirectoryPath: srcDirPath,
-            tempDirectoryPath: tempDirectoryPath,
             scriptInputFiles: scriptInputFiles,
             scriptOutputFiles: scriptOutputFiles
         ).execute()

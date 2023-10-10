@@ -36,7 +36,6 @@ public extension Environment {
 
 extension Environment {
     public enum Key {
-        case tempDir
         case scriptInputFileCount
         case scriptOutputFileCount
         case scriptInputFile(Int)
@@ -44,7 +43,6 @@ extension Environment {
 
         public var rawValue: String {
             switch self {
-            case .tempDir: return "TEMP_DIR"
             case .scriptInputFileCount: return "SCRIPT_INPUT_FILE_COUNT"
             case .scriptOutputFileCount: return "SCRIPT_OUTPUT_FILE_COUNT"
             case .scriptInputFile(let num): return "SCRIPT_INPUT_FILE_\(num)"
