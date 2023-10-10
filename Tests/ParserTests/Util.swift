@@ -8,6 +8,12 @@ var path: Path {
     return Path(resourcePath)
 }
 
+extension Path {
+    func appending(_ path: String) -> Path {
+        self + path
+    }
+}
+
 extension XCTestCase {
     func context(_ name: String, block: () throws -> Void) rethrows {
         if let _ = ProcessInfo().environment["XCTestConfigurationFilePath"] {

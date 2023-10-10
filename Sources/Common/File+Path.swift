@@ -16,6 +16,10 @@ public extension File {
         ["json"].contains(pathExtension)
     }
 
+    var isYamlOrJson: Bool {
+        isYaml || isJson
+    }
+
     var isExcludedFile: Bool {
         ["xcfilelist"].contains(pathExtension)
     }

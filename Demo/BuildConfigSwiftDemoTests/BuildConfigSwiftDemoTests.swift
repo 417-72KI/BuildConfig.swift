@@ -12,26 +12,19 @@ import XCTest
 final class BuildConfigTests: XCTestCase {
     func testDefault() {
         let buildConfig = BuildConfig.default
-        XCTAssertEqual(1, buildConfig.apiVersion)
-        XCTAssertEqual("develop", buildConfig.environment)
-        XCTAssertFalse(buildConfig.isDebug)
+        XCTAssertEqual(1, buildConfig.api.version)
+        XCTAssertEqual("api-dev.example.com", buildConfig.api.host)
+        XCTAssertEqual("debug", buildConfig.environment)
+        XCTAssertTrue(buildConfig.isDebug)
         XCTAssertEqual(3.14, buildConfig.pi, accuracy: 0.01)
     }
 
-    func testLoad() {
-        let buildConfig = BuildConfig.load(
-            from: #"""
-            {
-                "api_version": 100, 
-                "environment": "staging",
-                "is_debug": true,
-                "pi": 3.14
-            }
-            """#.data(using: .utf8)!
-        )
-        XCTAssertEqual(100, buildConfig.apiVersion)
+    func testLoad() throws {
+        let buildConfig = BuildConfig.fake
+        XCTAssertEqual(100, buildConfig.api.version)
+        XCTAssertEqual("localhost", buildConfig.api.host)
         XCTAssertEqual("staging", buildConfig.environment)
-        XCTAssertTrue(buildConfig.isDebug)
+        XCTAssertFalse(buildConfig.isDebug)
         XCTAssertEqual(3.14, buildConfig.pi, accuracy: 0.01)
     }
 }

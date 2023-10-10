@@ -14,20 +14,18 @@ public struct Parser {
 
 public extension Parser {
     func run(environment: String?, skipInvalidFile: Bool = true) throws -> Data {
-        let filePaths = try getFileList(at: directoryPath, environment: environment)
-        let environmentFiles = filePaths.filter { $0.components.contains(envDirComponent) }
-            .compactMap { File(path: $0) }
-        if let environment,
-           environmentFiles.isEmpty {
+        let files = try getFileList(at: directoryPath,
+                                    environment: environment)
+        if let environment, files.env.isEmpty {
             dumpWarn("No file for environment `\(environment)` in `\(directoryPath)`.")
         }
-        let otherFiles = filePaths.filter { !$0.components.contains(envDirComponent) }
-            .compactMap { File(path: $0) }
-        let environmentData = try parse(files: environmentFiles, skipInvalidFile: skipInvalidFile)
+        let baseData = try parse(files: files.base,
+                                 skipInvalidFile: skipInvalidFile)
             .reduce(AnyParsable()) { $0 + $1 }
-        let defaultData = try parse(files: otherFiles, skipInvalidFile: skipInvalidFile)
+        let environmentData = try parse(files: files.env,
+                                        skipInvalidFile: skipInvalidFile)
             .reduce(AnyParsable()) { $0 + $1 }
-        let result = defaultData + environmentData
+        let result = baseData + environmentData
         return try JSONSerialization.data(
             withJSONObject: result.rawValue,
             options: []
@@ -36,18 +34,17 @@ public extension Parser {
 }
 
 extension Parser {
-    func getFileList(at path: Path, environment: String? = nil) throws -> [Path] {
-        if path.lastComponent == envDirComponent {
-            if let environment {
-                return try path.children().filter { $0.lastComponentWithoutExtension == environment }
-            }
-            return []
-        }
-        return try path.children()
+    func getFileList(at path: Path, environment: String? = nil) throws -> (base: [File], env: [File]) {
+        let files = try path.children()
             .lazy
-            .filter { $0.lastComponent != dsStoreFileName }
-            .compactMap { $0.isDirectory ? try getFileList(at: $0, environment: environment) : [$0] }
-            .flatMap { $0 }
+            .filter(\.isValidFile)
+            .compactMap(File.init(path:))
+            .filter(\.isYamlOrJson) as [File]
+        guard let environment else { return (files, []) }
+        let envFiles = (path + environment).lazy
+            .compactMap(File.init(path:))
+            .filter(\.isYamlOrJson) as [File]
+        return (files, envFiles)
     }
 
     func detectParser(_ file: File) throws -> FileParser {
