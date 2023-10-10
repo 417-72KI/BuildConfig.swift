@@ -1,9 +1,7 @@
 import ArgumentParser
 import Foundation
 
-public struct Environment {
-    private init() {}
-}
+public enum Environment {}
 
 public extension Environment {
     static func getValue(forKey key: Key) throws -> String {
