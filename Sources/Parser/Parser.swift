@@ -37,6 +37,7 @@ extension Parser {
     func getFileList(at path: Path, environment: String? = nil) throws -> (base: [File], env: [File]) {
         let files = try path.children()
             .lazy
+            .filter(\.isValidFile)
             .compactMap(File.init(path:))
             .filter(\.isYamlOrJson) as [File]
         guard let environment else { return (files, []) }
