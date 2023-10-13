@@ -8,7 +8,6 @@ public struct Core {
     let outputDirectory: Path
     let environment: String?
     let srcDirectoryPath: Path
-    let tempDirectoryPath: Path
     let scriptInputFiles: [Path]
     let scriptOutputFiles: [Path]
 
@@ -16,14 +15,12 @@ public struct Core {
         outputDirectory: Path,
         environment: String?,
         srcDirectoryPath: Path,
-        tempDirectoryPath: Path,
         scriptInputFiles: [Path],
         scriptOutputFiles: [Path]
     ) {
         self.outputDirectory = outputDirectory
         self.environment = environment
         self.srcDirectoryPath = srcDirectoryPath
-        self.tempDirectoryPath = tempDirectoryPath
         self.scriptInputFiles = scriptInputFiles
         self.scriptOutputFiles = scriptOutputFiles
     }
@@ -33,8 +30,7 @@ public struct Core {
             try validate()
         } catch let error as ValidationError {
             dumpError("Validation error:")
-            error.errors
-                .forEach { dumpError($0) }
+            error.errors.forEach { dumpError($0) }
             return
         }
 
@@ -57,14 +53,14 @@ extension Core {
             errors.append(CommonError.notDirectory(outputDirectory).description)
         }
 
-        let scriptInputFiles = self.scriptInputFiles.map { $0.lastComponent }
+        let scriptInputFiles = scriptInputFiles.map(\.lastComponent)
 
         let lastRunFileName = "buildconfigswift-lastrun"
         if scriptInputFiles.contains(lastRunFileName) {
-            dumpWarn("`$(TEMP_DIR)/\(lastRunFileName)` is no longer needed in Build phase Input Files and no more updated. Remove it from `Input Files` and uncheck `Based on dependency analysis` instead.")
+            errors.append("`$(TEMP_DIR)/\(lastRunFileName)` is now obsoleted. Remove it from `Input Files` and uncheck `Based on dependency analysis` instead.")
         }
 
-        let scriptOutputFiles = self.scriptOutputFiles.map { $0.lastComponent }
+        let scriptOutputFiles = scriptOutputFiles.map(\.lastComponent)
         if !scriptOutputFiles.contains(Constants.generatedSwiftFileName) {
             errors.append("Build phase Output Files does not contain `path/to/\(Constants.generatedSwiftFileName)`")
         }

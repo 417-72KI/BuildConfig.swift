@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  BuildConfig.swiftDemo
+//  BuildConfigSwiftDemo
 //
 //  Created by 417.72KI on 2022/04/11.
 //  Copyright © 2019 417.72KI. All rights reserved.

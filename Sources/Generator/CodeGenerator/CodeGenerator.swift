@@ -39,7 +39,7 @@ extension CodeGenerator {
         let children = try content.properties
             .mapValues { $0 as? Struct }
             .compactMap { $0.value }
-            .sorted(by: { $0.name < $1.name })
+            .sorted { $0.name < $1.name }
             .map { try generateStruct(from: $0) }
         return (root + children).joined(separator: "\n\n")
     }

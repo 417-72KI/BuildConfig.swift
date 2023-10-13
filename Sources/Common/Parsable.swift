@@ -43,7 +43,7 @@ public extension Parsable {
 public struct AnyParsable: Parsable {
     public let value: Any
 
-    public init(_ value: Any) {
+    public init(_ value: any Parsable) {
         self.value = value
     }
 
