@@ -67,8 +67,23 @@ let isDebug = config.isDebug // true
 ## Installation
 ### Common
 - Create directory for splitted configuration files, e.g. `$PROJECT/Resources/BuildConfig`.
-- If you use different settings for each environment, create `.env` into above directory.
+- If you use different settings for each environment, create folders with the name for each environments into above directory.
 - You don't have to add above directory into project.
+
+#### Example
+```
+BuildConfig
+│ ├ debug
+│ │ └ c.yml
+│ ├ adhoc
+│ │ └ c.yml
+│ └ release
+│   ├ a.yml
+│   └ c.yml
+├ a.yml
+├ b.yml
+└ c.yml
+```
 
 ### SwiftPM(6.0.0~)
 > [!IMPORTANT]
@@ -119,12 +134,13 @@ Also, you can add `-o` option with output path to specify where `BuildConfig.pli
 _Tip:_ Add the `*.generated.swift` pattern to your `.gitignore` file to prevent unnecessary conflicts.
 
 ## What is `BuildConfig.swift` doing?
-- Detect all yml/json files in `$SRCROOT/$PROJECT/Resources/BuildConfig`, exclude `.env`.
-- If the `-e` option is set and a file with the same name as that option exists in `$SRCROOT/$PROJECT/Resources/BuildConfig/.env`, only that file is read.  
-  For example, `-e staging` option means to read `$SRCROOT/$PROJECT/Resources/BuildConfig/.env/staging.{yml/yaml/json}`.
+- Detect all yml/json files in `$SRCROOT/$PROJECT/Resources/BuildConfig` (exclude in child directories).
+- If the `-e` option is set and a directory with the same name as that option exists in `$SRCROOT/$PROJECT/Resources/BuildConfig`, all yml/json files in the directory are read.  
+  For example, `-e staging` option means to read `$SRCROOT/$PROJECT/Resources/BuildConfig/staging/*.{yml/yaml/json}`.
 - Parse above files as `Swift.Dictionary`.
 - Deep merge the above dictionaries.
-- Output merged dictionary as a plist file.
+- Output merged dictionary as a JSON data.
+- Generate struct from merged dictionary and enable to decode JSON data in above.
 
 ## Libraries
 * [YamlSwift](https://github.com/behrang/YamlSwift.git)
