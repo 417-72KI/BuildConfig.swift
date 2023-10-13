@@ -18,6 +18,7 @@ disabled_rules:
   - explicit_enum_raw_value
   - explicit_top_level_acl
   - explicit_type_interface
+  - file_header
   - file_name
   - file_types_order
   - force_unwrapping
@@ -33,6 +34,9 @@ disabled_rules:
   - strict_fileprivate
   - switch_case_on_newline
   - vertical_whitespace_between_cases
+attributes:
+  always_on_same_line:
+    - '@Environment'
 conditional_returns_on_newline:
   if_only: true
 identifier_name:
