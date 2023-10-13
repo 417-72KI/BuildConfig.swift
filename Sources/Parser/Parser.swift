@@ -14,17 +14,21 @@ public struct Parser {
 
 public extension Parser {
     func run(environment: String?, skipInvalidFile: Bool = true) throws -> Data {
-        let files = try getFileList(at: directoryPath,
-                                    environment: environment)
+        let files = try getFileList(
+            at: directoryPath,
+            environment: environment
+        )
         if let environment, files.env.isEmpty {
             dumpWarn("No file for environment `\(environment)` in `\(directoryPath)`.")
         }
-        let baseData = try parse(files: files.base,
-                                 skipInvalidFile: skipInvalidFile)
-            .reduce(AnyParsable()) { $0 + $1 }
-        let environmentData = try parse(files: files.env,
-                                        skipInvalidFile: skipInvalidFile)
-            .reduce(AnyParsable()) { $0 + $1 }
+        let baseData = try parse(
+            files: files.base,
+            skipInvalidFile: skipInvalidFile
+        ).reduce(AnyParsable()) { $0 + $1 }
+        let environmentData = try parse(
+            files: files.env,
+            skipInvalidFile: skipInvalidFile
+        ).reduce(AnyParsable()) { $0 + $1 }
         let result = baseData + environmentData
         return try JSONSerialization.data(
             withJSONObject: result.rawValue,

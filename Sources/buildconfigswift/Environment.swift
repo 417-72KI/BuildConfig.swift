@@ -34,8 +34,8 @@ public extension Environment {
     }
 }
 
-extension Environment {
-    public enum Key {
+public extension Environment {
+    enum Key {
         case scriptInputFileCount
         case scriptOutputFileCount
         case scriptInputFile(Int)
@@ -52,8 +52,8 @@ extension Environment {
     }
 }
 
-extension Environment {
-    public enum Error: Swift.Error {
+public extension Environment {
+    enum Error: Swift.Error {
         case notFound(Key)
     }
 }

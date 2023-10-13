@@ -88,13 +88,12 @@ extension Template {
         case let .rawData(asBinary):
             if asBinary {
                 return #"private let rawData = Data(base64Encoded: "{{ rawData }}")!"#
-            } else {
-                return """
-                    private let rawData = \"\"\"
-                    {{ rawData }}
-                    \"\"\".data(using: .utf8)!
-                    """
             }
+            return """
+                private let rawData = \"\"\"
+                {{ rawData }}
+                \"\"\".data(using: .utf8)!
+                """
         }
     }
 }
