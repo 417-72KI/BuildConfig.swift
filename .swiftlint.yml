@@ -14,38 +14,27 @@ analyzer_rules:
   - unused_import
 disabled_rules:
   - anonymous_argument_in_multiline_closure
-  - conditional_returns_on_newline
   - explicit_acl
   - explicit_enum_raw_value
   - explicit_top_level_acl
   - explicit_type_interface
-  - extension_access_modifier
-  - file_header
   - file_name
   - file_types_order
   - force_unwrapping
   - function_default_parameter_at_end
   - indentation_width # https://github.com/realm/SwiftLint/issues/3046
   - let_var_whitespace # https://github.com/realm/SwiftLint/issues/2980
-  - lower_acl_than_parent
   - missing_docs
-  - multiline_arguments_brackets
   - no_extension_access_modifier
   - no_grouping_extension
-  - number_separator
-  - object_literal
   - prefixed_toplevel_constant
-  - prohibited_interface_builder
   - required_deinit
   - sorted_enum_cases
-  - static_operator
   - strict_fileprivate
-  - superfluous_else
   - switch_case_on_newline
-  - trailing_closure
-  - unowned_variable_capture
-  - unused_optional_binding
   - vertical_whitespace_between_cases
+conditional_returns_on_newline:
+  if_only: true
 identifier_name:
   min_length: 2
 line_length:
