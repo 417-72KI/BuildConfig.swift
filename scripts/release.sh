@@ -69,4 +69,4 @@ fi
 git push --atomic origin main "$TAG"
 
 # GitHub Release
-# gh release create "$TAG"
+gh release create "$TAG"
