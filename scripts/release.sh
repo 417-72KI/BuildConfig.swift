@@ -53,8 +53,17 @@ fi
 
 cd $(git rev-parse --show-toplevel)
 
-# Version
 TAG="$(swift run $EXECUTABLE_NAME --version 2>/dev/null)"
+
+# Draft GitHub Release
+gh release create -d "$TAG"
+
+if [ $? -ne 0 ]; then
+    echo "\e[31m[Error] Failed to create GitHub Release.\e[m"
+    exit 1
+fi
+
+# Version
 git commit -m "Bump version to ${TAG}" "$APPLICATION_INFO_FILE" "$PACKAGE_FILE"
 
 # Tag
@@ -66,7 +75,8 @@ if [[ "$(cat "$PACKAGE_FILE" | grep "let isDevelop =" | awk '{ print $NF }')" ==
     git commit -m "Revert to develop mode" "$PACKAGE_FILE"
 fi
 
+# Push commits and tag
 git push --atomic origin main "$TAG"
 
-# GitHub Release
-gh release create "$TAG"
+# Publish GitHub Release
+gh release edit "$TAG" --draft=false
