@@ -31,7 +31,7 @@ if [ "$(git status -s | grep "${APPLICATION_INFO_FILE}")" = '' ]; then
     sed -i '' -E "s/let version = \"(.*)\"/let version = \"${NEXT_VERSION}\"/" "${APPLICATION_INFO_FILE}"
 fi
 
-if [ "$(git tag | grep "$(swift run "$EXECUTABLE_NAME" --version)")" != '' ]; then
+if [ "$(git tag | grep -e "^$(swift run "$EXECUTABLE_NAME" --version)$")" != '' ]; then
     echo "\e[31m${NEXT_VERSION} is already tagged.\e[m"
     git checkout HEAD -- "$APPLICATION_INFO_FILE"
     exit 1
