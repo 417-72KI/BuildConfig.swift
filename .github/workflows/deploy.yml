@@ -1,7 +1,7 @@
 name: Deploy
 on:
-  push:
-    tags: '*'
+  release:
+    types: [published]
 jobs:
   release-assets:
     name: Release Assets
