@@ -66,7 +66,7 @@ if [[ "$(cat "$PACKAGE_FILE" | grep "let isDevelop =" | awk '{ print $NF }')" ==
     git commit -m "Revert to develop mode" "$PACKAGE_FILE"
 fi
 
-git push --follow-tags
+git push --atomic origin main "$TAG"
 
 # GitHub Release
 # gh release create "$TAG"
