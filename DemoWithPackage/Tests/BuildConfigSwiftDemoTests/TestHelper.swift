@@ -14,7 +14,7 @@ final class TestHelper {
 }
 
 extension TestHelper {
-    static var bundle: Bundle { Bundle(for: self.self) }
+    static var bundle: Bundle { .module }
 }
 
 extension TestHelper {

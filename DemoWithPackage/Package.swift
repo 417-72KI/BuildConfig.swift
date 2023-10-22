@@ -30,7 +30,8 @@ let package = Package(
         ),
         .testTarget(
             name: "BuildConfigSwiftDemoTests",
-            dependencies: ["BuildConfigSwiftDemo"]
+            dependencies: ["BuildConfigSwiftDemo"],
+            resources: [.copy("test_config.json")]
         ),
     ]
 )
