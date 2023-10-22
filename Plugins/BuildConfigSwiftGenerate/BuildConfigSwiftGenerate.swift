@@ -7,8 +7,38 @@ struct BuildConfigSwiftGenerate: BuildToolPlugin {
         context: PackagePlugin.PluginContext,
         target: PackagePlugin.Target
     ) async throws -> [PackagePlugin.Command] {
-        Diagnostics.warning("Command only supported as Xcode build tool plugin")
-        return []
+        guard let target = target as? SourceModuleTarget else { return [] }
+
+        guard let buildConfigDirectoryPath = try find(
+            resourceDirectoryName,
+            in: target.directory
+                .removingLastComponent()
+                .removingLastComponent()
+        ) else {
+            throw Error.directoryNotFound(in: target.directory)
+        }
+        let generatedFileContainerPath = context.pluginWorkDirectory
+            .appending(subpath: target.name)
+            .appending(subpath: resourceDirectoryName)
+
+        try FileManager.default.createDirectory(
+            atPath: generatedFileContainerPath.string,
+            withIntermediateDirectories: true
+        )
+
+        let description = "\(target.kind) \(target.name)"
+        return [
+            .buildCommand(
+                displayName: "BuildConfig.swift generate for \(description)",
+                executable: try context.tool(named: "buildconfigswift").path,
+                arguments: [
+                    "-o",
+                    generatedFileContainerPath.string,
+                    buildConfigDirectoryPath.string
+                ],
+                outputFiles: [generatedFileContainerPath.appending(generatedFileName)]
+            )
+        ]
     }
 }
 
