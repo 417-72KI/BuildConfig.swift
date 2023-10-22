@@ -1,23 +1,36 @@
 // swift-tools-version: 5.9
-// The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
+import CompilerPluginSupport
 
 let package = Package(
     name: "BuildConfigSwiftDemo",
+    platforms: [.macOS(.v12), .iOS(.v15)],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "BuildConfigSwiftDemo",
-            targets: ["BuildConfigSwiftDemo"]),
+            targets: ["BuildConfigSwiftDemo"]
+        ),
+    ],
+    dependencies: [
+        .package(path: "../"),
+        .package(url: "https://github.com/DaveWoodCom/XCGLogger", from: "7.0.1"),
+        .package(url: "https://github.com/417-72KI/StubNetworkKit", from: "0.3.0"),
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "BuildConfigSwiftDemo"),
+            name: "BuildConfigSwiftDemo",
+            dependencies: [
+                "XCGLogger",
+                "StubNetworkKit",
+            ],
+            plugins: [
+                .plugin(name: "BuildConfigSwiftGenerate", package: "BuildConfig.swift"),
+            ]
+        ),
         .testTarget(
             name: "BuildConfigSwiftDemoTests",
-            dependencies: ["BuildConfigSwiftDemo"]),
+            dependencies: ["BuildConfigSwiftDemo"]
+        ),
     ]
 )
