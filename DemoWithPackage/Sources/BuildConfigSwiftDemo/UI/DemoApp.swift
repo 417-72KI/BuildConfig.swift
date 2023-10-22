@@ -8,10 +8,13 @@
 
 import SwiftUI
 
-struct DemoApp: App {
+public struct DemoApp: App {
     static var buildConfig: BuildConfig = .default
 
-    var body: some Scene {
+    public init() {
+    }
+
+    public var body: some Scene {
         WindowGroup {
             ContentView()
                 .environment(\.buildConfig, Self.buildConfig)
