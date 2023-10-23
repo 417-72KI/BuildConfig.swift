@@ -30,11 +30,14 @@ format:
 
 demo_app_init:
 	scripts/copy-lint-config.sh && \
-	cd Demo && \
-	xcrun --sdk macosx swift run -c release --package-path Tools xcodegen
+	xcrun --sdk macosx swift run -c release --package-path Tools xcodegen --spec Demo/project.yml && \
+	xcrun --sdk macosx swift run -c release --package-path Tools xcodegen --spec DemoWithPackage/App/project.yml
 
 demo: demo_app_init
 	xed Demo/BuildConfigSwiftDemo.xcodeproj
+
+demo_package: demo_app_init
+	xed DemoWithPackage/App/BuildConfigSwiftDemoApp.xcodeproj
 
 demo_test:
 	./scripts/test_demo.sh
