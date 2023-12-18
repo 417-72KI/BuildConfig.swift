@@ -25,7 +25,7 @@ jobs:
   test:
     name: Test
     needs: generate-matrix
-    runs-on: macOS-12
+    runs-on: macOS-13
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
@@ -57,7 +57,7 @@ jobs:
   test_demo:
     name: Test demo app
     needs: generate-matrix
-    runs-on: macOS-12
+    runs-on: macOS-13
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
@@ -102,7 +102,7 @@ jobs:
   report:
     name: Report
     needs: [test, test_demo]
-    runs-on: macOS-12
+    runs-on: macOS-13
     if: ${{ (success() || failure()) }}
     steps:
       - uses: actions/download-artifact@v4
