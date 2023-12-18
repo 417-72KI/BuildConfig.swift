@@ -9,14 +9,16 @@ if [[ -e "$XCRESULT_PATH" ]]; then
 fi
 
 if [[ "$(find Demo -depth 1 -name '*.xcodeproj')" == '' ]]; then
+    echo '\e[33m`xcodeproj` in `Demo` not found, generating...\e[0m'
     $(dirname $0)/copy-lint-config.sh
     xcrun --sdk macosx swift run --package-path Demo/Tools xcodegen --spec Demo/project.yml 
 fi
 
 PROJECT_PATH=$(find Demo -depth 1 -name '*.xcodeproj' | head -n 1)
+echo "\e[32mProject path: $PROJECT_PATH\e[0m"
 SCHEME="$(xcrun --sdk macosx xcodebuild -project "${PROJECT_PATH}" -list -json | jq -rc '.project.schemes[] | select(. | contains("Demo"))')"
 
-echo "Scheme: $SCHEME"
+echo "\e[32mScheme: $SCHEME\e[0m"
 
 xcrun --sdk macosx xcodebuild \
     -skipPackagePluginValidation \
