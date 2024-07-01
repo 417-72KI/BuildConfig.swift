@@ -1,20 +1,13 @@
-// swift-tools-version:5.7
+// swift-tools-version:5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let isDevelop = true
 
-let devDependencies: [Package.Dependency] = isDevelop ? [
-    .package(url: "https://github.com/realm/SwiftLint.git", from: "0.53.0"),
-] : []
-let devPlugins: [Target.PluginUsage] = isDevelop ? [
-    .plugin(name: "SwiftLintPlugin", package: "SwiftLint")
-] : []
-
 let package = Package(
     name: "BuildConfig.swift",
-    platforms: [.macOS(.v12)],
+    platforms: [.macOS(.v14)],
     products: [
         .executable(
             name: "buildconfigswift",
@@ -32,15 +25,14 @@ let package = Package(
         .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.1"),
         .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", from: "2.10.1"),
         .package(url: "https://github.com/Kuniwak/MirrorDiffKit.git", from: "5.0.1"),
-    ] + devDependencies,
+    ],
     targets: [
         .executableTarget(
             name: "buildconfigswift",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 "Core"
-            ],
-            plugins: devPlugins
+            ]
         ),
         .target(
             name: "Core",
@@ -48,32 +40,28 @@ let package = Package(
                 "Common",
                 "Parser",
                 "Generator"
-            ],
-            plugins: devPlugins
+            ]
         ),
         .target(
             name: "Common",
             dependencies: [
                 "PathKit",
                 .product(name: "SourceKittenFramework", package: "SourceKitten"),
-            ],
-            plugins: devPlugins
+            ]
         ),
         .target(
             name: "Parser",
             dependencies: [
                 "Common",
                 .product(name: "Yaml", package: "YamlSwift"),
-            ],
-            plugins: devPlugins
+            ]
         ),
         .target(
             name: "Generator",
             dependencies: [
                 "Common",
                 "StencilSwiftKit"
-            ],
-            plugins: devPlugins
+            ]
         ),
         .testTarget(
             name: "buildconfigswiftTests",
@@ -107,3 +95,14 @@ let package = Package(
     ],
     swiftLanguageVersions: [.v5]
 )
+
+if isDevelop {
+    package.dependencies += [
+        .package(url: "https://github.com/realm/SwiftLint.git", from: "0.55.0"),
+    ]
+    package.targets.filter { $0.type == .regular }.forEach { target in
+        target.plugins = (target.plugins ?? []) + [
+            .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint"),
+        ]
+    }
+}
