@@ -11,7 +11,7 @@ fi
 if [[ "$(find Demo -depth 1 -name '*.xcodeproj')" == '' ]]; then
     echo '\e[33m`xcodeproj` in `Demo` not found, generating...\e[0m'
     $(dirname $0)/copy-lint-config.sh
-    xcrun --sdk macosx swift run --package-path Demo/Tools xcodegen --spec Demo/project.yml 
+    xcrun --sdk macosx swift run --package-path Tools xcodegen --spec Demo/project.yml 
 fi
 
 PROJECT_PATH=$(find Demo -depth 1 -name '*.xcodeproj' | head -n 1)
