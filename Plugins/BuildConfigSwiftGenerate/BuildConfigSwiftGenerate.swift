@@ -34,10 +34,10 @@ struct BuildConfigSwiftGenerate: BuildToolPlugin {
                 arguments: [
                     "-o",
                     generatedFileContainerPath.string,
-                    buildConfigDirectoryPath.string
+                    buildConfigDirectoryPath.string,
                 ],
                 outputFiles: [generatedFileContainerPath.appending(generatedFileName)]
-            )
+            ),
         ]
     }
 }
@@ -76,10 +76,10 @@ extension BuildConfigSwiftGenerate: XcodeBuildToolPlugin {
                 arguments: [
                     "-o",
                     generatedFileContainerPath.string,
-                    buildConfigDirectoryPath.string
+                    buildConfigDirectoryPath.string,
                 ],
                 outputFiles: [generatedFileContainerPath.appending(generatedFileName)]
-            )
+            ),
         ]
     }
 }
