@@ -2,6 +2,7 @@ included:
   - Sources
 excluded:
   - Demo
+  - DemoWithPackage
   - Tests
   - Package.swift
   - Dangerfile.swift
