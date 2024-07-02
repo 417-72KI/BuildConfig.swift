@@ -24,7 +24,7 @@ let package = Package(
         .package(url: "https://github.com/jpsim/SourceKitten.git", from: "0.35.0"),
         .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.1"),
         .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", from: "2.10.1"),
-        .package(url: "https://github.com/Kuniwak/MirrorDiffKit.git", from: "5.0.1"),
+        .package(url: "https://github.com/Kuniwak/MirrorDiffKit.git", from: "6.0.0"),
     ],
     targets: [
         .executableTarget(
