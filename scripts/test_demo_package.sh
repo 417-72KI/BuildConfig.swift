@@ -2,11 +2,13 @@
 
 set -o pipefail
 
-XCRESULT_PATH="$(pwd)/test_output/BuildConfigDemoPackage.xcresult"
+XCRESULT_PATH="$(git rev-parse --show-toplevel)/test_output/BuildConfigDemoPackage.xcresult"
 
 if [[ -e "$XCRESULT_PATH" ]]; then
     rm -rf "$XCRESULT_PATH"
 fi
+
+$(dirname $0)/copy-lint-config.sh
 
 cd DemoWithPackage
 SCHEME="$(xcrun --sdk macosx xcodebuild -list -json | jq -rc '.workspace.schemes[] | select(. | contains("Demo"))')"
