@@ -54,7 +54,7 @@ extension CodeGenerator {
                 withJSONObject: json,
                 options: [.sortedKeys, .prettyPrinted]
             )
-            rawDataString = String(data: rawData, encoding: .utf8) ?? ""
+            rawDataString = String(decoding: rawData, as: UTF8.self)
         }
         return try render(with: .rawData(asBinary: asBinary), dictionary: ["rawData": rawDataString])
     }

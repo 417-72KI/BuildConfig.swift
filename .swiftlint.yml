@@ -7,11 +7,7 @@ excluded:
   - Dangerfile.swift
 allow_zero_lintable_files: true
 opt_in_rules: [all]
-analyzer_rules:
-  - capture_variable
-  - explicit_self
-  - unused_declaration
-  - unused_import
+analyzer_rules: [all]
 disabled_rules:
   - anonymous_argument_in_multiline_closure
   - explicit_acl
@@ -28,8 +24,10 @@ disabled_rules:
   - missing_docs
   - no_extension_access_modifier
   - no_grouping_extension
+  - one_declaration_per_file
   - prefixed_toplevel_constant
   - required_deinit
+  - shorthand_argument
   - sorted_enum_cases
   - strict_fileprivate
   - switch_case_on_newline
