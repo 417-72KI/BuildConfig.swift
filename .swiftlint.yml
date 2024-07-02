@@ -1,7 +1,9 @@
 included:
   - Sources
+  - Plugins
 excluded:
   - Demo
+  - DemoWithPackage
   - Tests
   - Package.swift
   - Dangerfile.swift
@@ -22,6 +24,7 @@ disabled_rules:
   - indentation_width # https://github.com/realm/SwiftLint/issues/3046
   - let_var_whitespace # https://github.com/realm/SwiftLint/issues/2980
   - missing_docs
+  - multiline_arguments_brackets
   - no_extension_access_modifier
   - no_grouping_extension
   - one_declaration_per_file

@@ -99,6 +99,51 @@ jobs:
         with:
           name: BuildConfigDemo.xcresult
           path: test_output/BuildConfigDemo.xcresult
+  test_demo_with_package:
+    name: Test package based demo app
+    needs: generate-matrix
+    runs-on: macOS-14
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache SPM build directory
+        uses: actions/cache@v4
+        env:
+          cache-name: swiftpm
+        with:
+          path: |
+            DemoWithPackage/.build
+            DemoWithPackage/Tools/.build
+          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-
+            ${{ runner.os }}-
+      - name: Cache DerivedData
+        uses: actions/cache@v4
+        env:
+          cache-name: derived-data
+        with:
+          path: DemoWithPackage/DerivedData
+          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-
+            ${{ runner.os }}-
+      - name: Disable SwiftLint Plugin
+        run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
+      - name: test
+        run: ./scripts/test_demo_package.sh
+      - name: upload test results
+        if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: BuildConfigDemoPackage.xcresult
+          path: test_output/BuildConfigDemoPackage.xcresult
   report:
     name: Report
     needs: [test, test_demo]

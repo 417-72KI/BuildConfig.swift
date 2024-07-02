@@ -1,0 +1,137 @@
+name: BuildConfigSwiftDemoApp
+attributes:
+  ORGANIZATIONNAME: 417.72KI
+configs:
+  Debug: debug
+  Release: release
+settings:
+  base:
+    IPHONEOS_DEPLOYMENT_TARGET: 15.0
+    SWIFT_VERSION: 5.0
+    ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: ${inherited}
+    ALWAYS_SEARCH_USER_PATHS: false
+    CLANG_ENABLE_OBJC_ARC: true
+    CODE_SIGN_STYLE: Manual
+    TARGETED_DEVICE_FAMILY: 1
+    DEVELOPMENT_TEAM: ""
+    LIBRARY_SEARCH_PATHS: $(inherited)
+    CURRENT_PROJECT_VERSION: 1
+    MARKETING_VERSION: 1.0.0
+options:
+  xcodeVersion: 10.2
+  bundleIdPrefix: io.github.417-72KI
+packages:
+  BuildConfigSwiftDemo:
+    path: ../
+targets:
+  Development:
+    type: application
+    platform: iOS
+    sources: 
+      - main.swift
+      - Base.lproj
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDevelopmentRegion: $(DEVELOPMENT_LANGUAGE)
+        CFBundleExecutable: $(EXECUTABLE_NAME)
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleInfoDictionaryVersion: '6.0'
+        CFBundleName: $(PRODUCT_NAME)
+        CFBundlePackageType: APPL
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSRequiresIPhoneOS: true
+        UILaunchStoryboardName: LaunchScreen
+        UIRequiredDeviceCapabilities: 
+          - arm64
+        UISupportedInterfaceOrientations: 
+          - UIInterfaceOrientationPortrait
+    settings:
+      base:
+        PRODUCT_NAME: BuildConfigSwiftDemoDev
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.417-72KI.BuildConfigSwiftDemo.dev
+      configs:
+        debug: 
+          CODE_SIGN_IDENTITY: iPhone Developer
+          PROVISIONING_PROFILE_SPECIFIER: ""
+        release: 
+          CODE_SIGN_IDENTITY: iPhone Distribution
+          PROVISIONING_PROFILE_SPECIFIER: ""
+          EXCLUDED_SOURCE_FILE_NAMES: Mock*
+    dependencies:
+      - package: BuildConfigSwiftDemo
+  Staging:
+    type: application
+    platform: iOS
+    sources: 
+      - main.swift
+      - Base.lproj
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDevelopmentRegion: $(DEVELOPMENT_LANGUAGE)
+        CFBundleExecutable: $(EXECUTABLE_NAME)
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleInfoDictionaryVersion: '6.0'
+        CFBundleName: $(PRODUCT_NAME)
+        CFBundlePackageType: APPL
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSRequiresIPhoneOS: true
+        UILaunchStoryboardName: LaunchScreen
+        UIRequiredDeviceCapabilities: 
+          - arm64
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+    settings:
+      base:
+        PRODUCT_NAME: BuildConfigSwiftDemoStg
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.417-72KI.BuildConfigSwiftDemo.stg
+      configs:
+        debug: 
+          CODE_SIGN_IDENTITY: iPhone Developer
+          PROVISIONING_PROFILE_SPECIFIER: ""
+        release: 
+          CODE_SIGN_IDENTITY: iPhone Distribution
+          PROVISIONING_PROFILE_SPECIFIER: ""
+          EXCLUDED_SOURCE_FILE_NAMES: Mock*
+    dependencies:
+      - package: BuildConfigSwiftDemo
+  Production:
+    type: application
+    platform: iOS
+    sources: 
+      - main.swift
+      - Base.lproj
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDevelopmentRegion: $(DEVELOPMENT_LANGUAGE)
+        CFBundleExecutable: $(EXECUTABLE_NAME)
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleInfoDictionaryVersion: '6.0'
+        CFBundleName: $(PRODUCT_NAME)
+        CFBundlePackageType: APPL
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSRequiresIPhoneOS: true
+        UILaunchStoryboardName: LaunchScreen
+        UIRequiredDeviceCapabilities: 
+          - arm64
+        UISupportedInterfaceOrientations: 
+          - UIInterfaceOrientationPortrait
+    settings:
+      base:
+        PRODUCT_NAME: BuildConfigSwiftDemoProduction
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.417-72KI.BuildConfigSwiftDemo
+      configs:
+        debug: 
+          CODE_SIGN_IDENTITY: iPhone Developer
+          PROVISIONING_PROFILE_SPECIFIER: ""
+        release: 
+          CODE_SIGN_IDENTITY: iPhone Distribution
+          PROVISIONING_PROFILE_SPECIFIER: ""
+          EXCLUDED_SOURCE_FILE_NAMES: Mock*
+    dependencies:
+      - package: BuildConfigSwiftDemo

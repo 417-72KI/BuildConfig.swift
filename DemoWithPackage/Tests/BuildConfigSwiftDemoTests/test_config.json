@@ -1,0 +1,23 @@
+{
+    "api": {
+        "version": 100,
+        "host": "localhost",
+        "endpoint": {
+            "login": {
+                "path": "/login",
+                "method": "POST"
+            },
+            "profile": {
+                "path": "/profile",
+                "method": "GET"
+            },
+            "search": {
+                "path": "/search",
+                "method": "GET"
+            }
+        }
+    },
+    "environment": "staging",
+    "is_debug": false,
+    "pi": 3.14
+}

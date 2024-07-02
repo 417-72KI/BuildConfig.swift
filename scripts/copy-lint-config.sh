@@ -25,3 +25,4 @@ cat "${SRCROOT}/.swiftlint.yml" \
     | yq '. | .included = ["BuildConfigSwiftDemo"] 
             | .excluded = ["Tools", "Package.swift"]' \
     > "${SRCROOT}/Demo/.swiftlint.yml"
+cp "${SRCROOT}/Demo/.swiftlint.yml" "${SRCROOT}/DemoWithPackage/.swiftlint.yml"
