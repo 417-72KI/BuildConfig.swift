@@ -39,9 +39,10 @@ jobs:
           cache-name: swiftpm
         with:
           path: .build
-          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
+          key: ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
           restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-
             ${{ runner.os }}-${{ github.job }}-
             ${{ runner.os }}-
       - name: Disable SwiftLint Plugin
@@ -73,9 +74,10 @@ jobs:
           path: |
             Demo/.build
             Demo/Tools/.build
-          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
+          key: ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
           restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-
             ${{ runner.os }}-${{ github.job }}-
             ${{ runner.os }}-
       - name: Cache DerivedData
@@ -84,9 +86,10 @@ jobs:
           cache-name: derived-data
         with:
           path: Demo/DerivedData
-          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
+          key: ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
           restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-
             ${{ runner.os }}-${{ github.job }}-
             ${{ runner.os }}-
       - name: Disable SwiftLint Plugin
@@ -118,9 +121,10 @@ jobs:
           path: |
             DemoWithPackage/.build
             DemoWithPackage/Tools/.build
-          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
+          key: ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
           restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-
             ${{ runner.os }}-${{ github.job }}-
             ${{ runner.os }}-
       - name: Cache DerivedData
@@ -129,9 +133,10 @@ jobs:
           cache-name: derived-data
         with:
           path: DemoWithPackage/DerivedData
-          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
+          key: ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-${{ env.cache-name }}-${{ hashFiles('**/Package.swift') }}
           restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ github.job }}-${{ matrix.xcode_version }}-
             ${{ runner.os }}-${{ github.job }}-
             ${{ runner.os }}-
       - name: Disable SwiftLint Plugin
