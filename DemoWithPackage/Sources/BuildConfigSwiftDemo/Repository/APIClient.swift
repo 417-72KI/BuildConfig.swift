@@ -46,7 +46,7 @@ extension APIClient {
         return try decoder.decode(LoginResponse.self, from: data)
     }
 
-    @available(iOS 16.0, *)
+    @available(iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     func search(_ text: String) async throws -> SearchResponse {
         let endpoint = endpoint(\.search)
         let url = host.appendingPathComponent(endpoint.path)
