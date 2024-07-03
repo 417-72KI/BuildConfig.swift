@@ -3,7 +3,7 @@
 
 import PackageDescription
 
-let isDevelop = true
+let isDevelop = false
 
 let package = Package(
     name: "BuildConfig.swift",
