@@ -13,10 +13,10 @@ Pod::Spec.new do |s|
   s.author             = { "417.72KI" => "417.72ki@gmail.com" }
   s.social_media_url   = "http://twitter.com/417_72ki"
 
-  s.ios.deployment_target = "10.0"
-  s.osx.deployment_target = "10.9"
-  s.watchos.deployment_target = "3.0"
-  s.tvos.deployment_target = "10.0"
+  s.ios.deployment_target = "15.0"
+  s.osx.deployment_target = "12.0"
+  s.watchos.deployment_target = "8.0"
+  s.tvos.deployment_target = "15.0"
 
   s.requires_arc = true
   
