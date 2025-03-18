@@ -36,7 +36,7 @@ jobs:
           zip -j .build/${EXECUTABLE_NAME}-v${EXECUTABLE_VERSION}.zip .build/release/${EXECUTABLE_NAME} LICENSE
       - name: Create release
         if: success() && startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@c95fe1489396fe8a9eb87c0abf8aa5b2ef267fda # v2
         with:
           name: ${{ github.ref_name }}
           files: .build/${{ env.EXECUTABLE_NAME }}-v${{ env.EXECUTABLE_VERSION }}.zip

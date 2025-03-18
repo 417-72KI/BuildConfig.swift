@@ -159,7 +159,7 @@ jobs:
         with:
           path: test_output
       - run: ls -la test_output
-      - uses: kishikawakatsumi/xcresulttool@v1
+      - uses: kishikawakatsumi/xcresulttool@2b37f116695328d5e503ac8dadca0f1545a51da4 # v1
         with:
           path: |
             test_output/BuildConfig.swift.xcresult
