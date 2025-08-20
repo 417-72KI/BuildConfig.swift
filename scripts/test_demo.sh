@@ -25,7 +25,7 @@ xcrun --sdk macosx xcodebuild \
     -enableCodeCoverage YES \
     -project "${PROJECT_PATH}" \
     -scheme "${SCHEME}" \
-    -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
+    -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
     -derivedDataPath 'Demo/DerivedData' \
     -clonedSourcePackagesDirPath 'Demo/.build/SourcePackages' \
     -resultBundlePath "$XCRESULT_PATH" \
