@@ -112,7 +112,7 @@ jobs:
         with:
           path: test_output
       - run: ls -la test_output
-      - uses: kishikawakatsumi/xcresulttool@v1
+      - uses: slidoapp/xcresulttool@v3.1.0
         with:
           path: |
             test_output/BuildConfig.swift.xcresult
@@ -129,6 +129,6 @@ jobs:
         run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
       - name: Copy .swiftlint.yml for demo app
         run: sh ./scripts/copy-lint-config.sh
-      - uses: 417-72KI/danger-swiftlint@v5.7
+      - uses: 417-72KI/danger-swiftlint@v5.9
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
