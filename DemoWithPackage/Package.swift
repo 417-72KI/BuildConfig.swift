@@ -5,7 +5,7 @@ import CompilerPluginSupport
 
 let package = Package(
     name: "BuildConfigSwiftDemo",
-    platforms: [.macOS(.v14), .iOS(.v15)],
+    platforms: [.macOS(.v14), .iOS(.v16)],
     products: [
         .library(
             name: "BuildConfigSwiftDemo",
