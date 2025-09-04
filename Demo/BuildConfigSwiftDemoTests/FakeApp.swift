@@ -9,9 +9,13 @@
 import SwiftUI
 
 @objc(FakeApp)
-final class FakeApp: NSObject, App {
-    override init() { super.init() }
+enum FakeApp: Int { // avoid crash `apps must be value types class`
+    case fake
 
+    init() { self = .fake }
+}
+
+extension FakeApp: App {
     var body: some Scene {
         WindowGroup {
             Text("This is a fake app.")

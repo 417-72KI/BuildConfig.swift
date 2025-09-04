@@ -5,7 +5,7 @@ on:
 jobs:
   release-assets:
     name: Release Assets
-    runs-on: macOS-14
+    runs-on: macOS-15
     env:
       EXECUTABLE_NAME: buildconfigswift
       EXECUTABLE_VERSION: ${{ github.ref_name }}
@@ -44,7 +44,7 @@ jobs:
   podspec:
     name: Podspec
     needs: release-assets
-    runs-on: macOS-14
+    runs-on: macOS-15
     env:
       POD_VERSION: ${{ github.ref_name }}
     steps:

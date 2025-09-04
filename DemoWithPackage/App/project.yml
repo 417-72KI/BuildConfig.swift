@@ -6,7 +6,7 @@ configs:
   Release: release
 settings:
   base:
-    IPHONEOS_DEPLOYMENT_TARGET: 15.0
+    IPHONEOS_DEPLOYMENT_TARGET: 16.0
     SWIFT_VERSION: 5.0
     ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: ${inherited}
     ALWAYS_SEARCH_USER_PATHS: false

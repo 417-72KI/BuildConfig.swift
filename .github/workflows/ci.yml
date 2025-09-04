@@ -25,7 +25,7 @@ jobs:
   test:
     name: Test
     needs: generate-matrix
-    runs-on: macOS-14
+    runs-on: macOS-15
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
@@ -58,13 +58,16 @@ jobs:
   test_demo:
     name: Test demo app
     needs: generate-matrix
-    runs-on: macOS-14
+    runs-on: macOS-15
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
     steps:
+      - name: Install iOS 18.2 simulator
+        if: ${{ matrix.xcode_version == '16.2' }}
+        run: xcodebuild -downloadPlatform iOS -buildVersion 18.2
       - uses: actions/checkout@v4
       - name: Cache SPM build directory
         uses: actions/cache@v4
@@ -105,13 +108,16 @@ jobs:
   test_demo_with_package:
     name: Test package based demo app
     needs: generate-matrix
-    runs-on: macOS-14
+    runs-on: macOS-15
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
     steps:
+      - name: Install iOS 18.2 simulator
+        if: ${{ matrix.xcode_version == '16.2' }}
+        run: xcodebuild -downloadPlatform iOS -buildVersion 18.2
       - uses: actions/checkout@v4
       - name: Cache SPM build directory
         uses: actions/cache@v4
@@ -152,14 +158,14 @@ jobs:
   report:
     name: Report
     needs: [test, test_demo]
-    runs-on: macOS-14
+    runs-on: macOS-15
     if: ${{ (success() || failure()) }}
     steps:
       - uses: actions/download-artifact@v4
         with:
           path: test_output
       - run: ls -la test_output
-      - uses: kishikawakatsumi/xcresulttool@v1
+      - uses: slidoapp/xcresulttool@v3.1.0
         with:
           path: |
             test_output/BuildConfig.swift.xcresult
@@ -176,6 +182,6 @@ jobs:
         run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
       - name: Copy .swiftlint.yml for demo app
         run: sh ./scripts/copy-lint-config.sh
-      - uses: 417-72KI/danger-swiftlint@v5.7
+      - uses: 417-72KI/danger-swiftlint@v5.9
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

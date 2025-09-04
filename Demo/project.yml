@@ -6,7 +6,7 @@ configs:
   Release: release
 settings:
   base:
-    IPHONEOS_DEPLOYMENT_TARGET: 15.0
+    IPHONEOS_DEPLOYMENT_TARGET: 16.0
     SWIFT_VERSION: 5.0
     ALWAYS_SEARCH_USER_PATHS: false
     CLANG_ENABLE_OBJC_ARC: true
@@ -29,7 +29,7 @@ targets:
   BuildConfigSwiftDemo:
     type: application
     platform: iOS
-    deploymentTarget: 15.0
+    deploymentTarget: 16.0
     sources: 
       - BuildConfigSwiftDemo
     info:
