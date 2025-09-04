@@ -15,7 +15,7 @@ let package = Package(
     dependencies: [
         .package(path: "../"),
         .package(url: "https://github.com/DaveWoodCom/XCGLogger", from: "7.1.5"),
-        .package(url: "https://github.com/417-72KI/StubNetworkKit", from: "0.4.0"),
+        .package(url: "https://github.com/417-72KI/StubNetworkKit", from: "0.5.0"),
     ],
     targets: [
         .target(
