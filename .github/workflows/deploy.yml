@@ -10,7 +10,7 @@ jobs:
       EXECUTABLE_NAME: buildconfigswift
       EXECUTABLE_VERSION: ${{ github.ref_name }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Cache SPM build directory
         uses: actions/cache@v4
         env:
@@ -48,7 +48,7 @@ jobs:
     env:
       POD_VERSION: ${{ github.ref_name }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Lint
         run: pod spec lint
       - name: Deploy

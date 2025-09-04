@@ -17,7 +17,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - id: set-matrix
         run: |
           matrix=$(cat .github/matrix.json | jq -c .)
@@ -32,7 +32,7 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Cache SPM build directory
         uses: actions/cache@v4
         env:
@@ -68,7 +68,7 @@ jobs:
       - name: Install iOS 18.2 simulator
         if: ${{ matrix.xcode_version == '16.2' }}
         run: xcodebuild -downloadPlatform iOS -buildVersion 18.2
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Cache SPM build directory
         uses: actions/cache@v4
         env:
@@ -118,7 +118,7 @@ jobs:
       - name: Install iOS 18.2 simulator
         if: ${{ matrix.xcode_version == '16.2' }}
         run: xcodebuild -downloadPlatform iOS -buildVersion 18.2
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Cache SPM build directory
         uses: actions/cache@v4
         env:
@@ -177,7 +177,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Disable SwiftLint Plugin
         run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
       - name: Copy .swiftlint.yml for demo app
