@@ -34,7 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Cache SPM build directory
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         env:
           cache-name: swiftpm
         with:
@@ -70,7 +70,7 @@ jobs:
         run: xcodebuild -downloadPlatform iOS -buildVersion 18.2
       - uses: actions/checkout@v5
       - name: Cache SPM build directory
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         env:
           cache-name: swiftpm
         with:
@@ -84,7 +84,7 @@ jobs:
             ${{ runner.os }}-${{ github.job }}-
             ${{ runner.os }}-
       - name: Cache DerivedData
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         env:
           cache-name: derived-data
         with:
@@ -120,7 +120,7 @@ jobs:
         run: xcodebuild -downloadPlatform iOS -buildVersion 18.2
       - uses: actions/checkout@v5
       - name: Cache SPM build directory
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         env:
           cache-name: swiftpm
         with:
@@ -134,7 +134,7 @@ jobs:
             ${{ runner.os }}-${{ github.job }}-
             ${{ runner.os }}-
       - name: Cache DerivedData
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         env:
           cache-name: derived-data
         with:
