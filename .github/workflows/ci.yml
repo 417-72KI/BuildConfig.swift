@@ -161,7 +161,7 @@ jobs:
     runs-on: macOS-15
     if: ${{ (success() || failure()) }}
     steps:
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           path: test_output
       - run: ls -la test_output
