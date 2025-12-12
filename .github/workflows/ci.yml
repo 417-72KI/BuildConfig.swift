@@ -51,7 +51,7 @@ jobs:
         run: ./scripts/test.sh
       - name: Upload test results
         if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: BuildConfig.swift.xcresult
           path: test_output/BuildConfig.swift.xcresult
@@ -101,7 +101,7 @@ jobs:
         run: ./scripts/test_demo.sh
       - name: upload test results
         if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: BuildConfigDemo.xcresult
           path: test_output/BuildConfigDemo.xcresult
@@ -151,7 +151,7 @@ jobs:
         run: ./scripts/test_demo_package.sh
       - name: upload test results
         if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: BuildConfigDemoPackage.xcresult
           path: test_output/BuildConfigDemoPackage.xcresult
