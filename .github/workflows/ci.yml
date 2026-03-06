@@ -165,7 +165,7 @@ jobs:
         with:
           path: test_output
       - run: ls -la test_output
-      - uses: slidoapp/xcresulttool@v3.1.0
+      - uses: slidoapp/xcresulttool@0930e06ae335d8c5e2d2f311ee98d495889a6103 # v3.1.1
         with:
           path: |
             test_output/BuildConfig.swift.xcresult
