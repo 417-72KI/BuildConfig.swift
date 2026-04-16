@@ -19,7 +19,7 @@ packages:
     from: 7.0.1
   StubNetworkKit:
     url: https://github.com/417-72KI/StubNetworkKit.git
-    from: 0.3.0
+    from: 0.5.0
   # SwiftLint:
   #   url: https://github.com/realm/SwiftLint
   #   from: 0.53.0
