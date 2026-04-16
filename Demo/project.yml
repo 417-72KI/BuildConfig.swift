@@ -16,7 +16,7 @@ options:
 packages:
   XCGLogger:
     url: https://github.com/DaveWoodCom/XCGLogger
-    from: 7.0.1
+    from: 7.1.5
   StubNetworkKit:
     url: https://github.com/417-72KI/StubNetworkKit.git
     from: 0.3.0
