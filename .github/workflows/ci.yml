@@ -17,7 +17,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - id: set-matrix
         run: |
           matrix=$(cat .github/matrix.json | jq -c .)
@@ -32,9 +32,9 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Cache SPM build directory
-        uses: actions/cache@v5
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         env:
           cache-name: swiftpm
         with:
@@ -51,7 +51,7 @@ jobs:
         run: ./scripts/test.sh
       - name: Upload test results
         if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: BuildConfig.swift.xcresult
           path: test_output/BuildConfig.swift.xcresult
@@ -68,9 +68,9 @@ jobs:
       - name: Install iOS 18.2 simulator
         if: ${{ matrix.xcode_version == '16.2' }}
         run: xcodebuild -downloadPlatform iOS -buildVersion 18.2
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Cache SPM build directory
-        uses: actions/cache@v5
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         env:
           cache-name: swiftpm
         with:
@@ -84,7 +84,7 @@ jobs:
             ${{ runner.os }}-${{ github.job }}-
             ${{ runner.os }}-
       - name: Cache DerivedData
-        uses: actions/cache@v5
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         env:
           cache-name: derived-data
         with:
@@ -101,7 +101,7 @@ jobs:
         run: ./scripts/test_demo.sh
       - name: upload test results
         if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: BuildConfigDemo.xcresult
           path: test_output/BuildConfigDemo.xcresult
@@ -118,9 +118,9 @@ jobs:
       - name: Install iOS 18.2 simulator
         if: ${{ matrix.xcode_version == '16.2' }}
         run: xcodebuild -downloadPlatform iOS -buildVersion 18.2
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Cache SPM build directory
-        uses: actions/cache@v5
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         env:
           cache-name: swiftpm
         with:
@@ -134,7 +134,7 @@ jobs:
             ${{ runner.os }}-${{ github.job }}-
             ${{ runner.os }}-
       - name: Cache DerivedData
-        uses: actions/cache@v5
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         env:
           cache-name: derived-data
         with:
@@ -151,7 +151,7 @@ jobs:
         run: ./scripts/test_demo_package.sh
       - name: upload test results
         if: ${{ matrix.xcode_version == fromJson(needs.generate-matrix.outputs.matrix).xcode_version[0] && (success() || failure()) }}
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: BuildConfigDemoPackage.xcresult
           path: test_output/BuildConfigDemoPackage.xcresult
@@ -161,7 +161,7 @@ jobs:
     runs-on: macOS-15
     if: ${{ (success() || failure()) }}
     steps:
-      - uses: actions/download-artifact@v8
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           path: test_output
       - run: ls -la test_output
@@ -177,7 +177,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Disable SwiftLint Plugin
         run: sed -i -e 's/.*SwiftLint.*//g' Package.swift
       - name: Copy .swiftlint.yml for demo app
